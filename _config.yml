@@ -1,10 +1,11 @@
 # Configurations
-title:            Jekyll Gitbook
-longtitle:        Jekyll Gitbook
-author:           HE Tao
-email:            sighingnow@gmail.com
+title:            기록의 최전선
+longtitle:        Saehim's log
+author:           Saehim
+email:            saeilee.vxv@gmail.com
 description: >
-  Build Jekyll site with the GitBook style.
+  갓태어난 개발자의 공부 기록.
+  앎의 기록에서 멈추는 것이 아니라, 삶의 기록까지 나가길 바라며.
 
 version:          1.0
 gitbook_version:  3.2.3
