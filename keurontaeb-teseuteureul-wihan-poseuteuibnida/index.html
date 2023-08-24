@@ -7,8 +7,42 @@
     <title>크론탭 테스트를 위한 포스트입니다.</title>
     <link rel="stylesheet" href="../assets/built/screen.css%3Fv=6e6dc35a8b.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
 
+        .gh-toc > .toc-list {
+            position: relative;
+        }
 
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
     <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -16,15 +50,31 @@
     <meta property="og:site_name" content="new-pow&#x27;s space">
     <meta property="og:type" content="article">
     <meta property="og:title" content="크론탭 테스트를 위한 포스트입니다.">
-    <meta property="og:description" content="과연 11시에 이게 올라갈까요?">
+    <meta property="og:description" content="과연 11시에 이게 올라갈까요?
+
+
+
+toc 테스트
+
+
+
+toc 되나요?">
     <meta property="og:url" content="http://localhost:2369/keurontaeb-teseuteureul-wihan-poseuteuibnida/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-08-22T01:29:59.000Z">
-    <meta property="article:modified_time" content="2023-08-22T01:29:59.000Z">
+    <meta property="article:modified_time" content="2023-08-24T15:23:56.000Z">
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="크론탭 테스트를 위한 포스트입니다.">
-    <meta name="twitter:description" content="과연 11시에 이게 올라갈까요?">
+    <meta name="twitter:description" content="과연 11시에 이게 올라갈까요?
+
+
+
+toc 테스트
+
+
+
+toc 되나요?">
     <meta name="twitter:url" content="http://localhost:2369/keurontaeb-teseuteureul-wihan-poseuteuibnida/">
     <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta name="twitter:label1" content="Written by">
@@ -63,8 +113,8 @@
     "headline": "크론탭 테스트를 위한 포스트입니다.",
     "url": "http://localhost:2369/keurontaeb-teseuteureul-wihan-poseuteuibnida/",
     "datePublished": "2023-08-22T01:29:59.000Z",
-    "dateModified": "2023-08-22T01:29:59.000Z",
-    "description": "과연 11시에 이게 올라갈까요?",
+    "dateModified": "2023-08-24T15:23:56.000Z",
+    "description": "과연 11시에 이게 올라갈까요?\n\n\n\ntoc 테스트\n\n\n\ntoc 되나요?",
     "mainEntityOfPage": "http://localhost:2369/keurontaeb-teseuteureul-wihan-poseuteuibnida/"
 }
     </script>
@@ -180,8 +230,15 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 
                             </header>
 
+
             <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
                 <p>과연 11시에 이게 올라갈까요?</p>
+<h2 id="toc-%ED%85%8C%EC%8A%A4%ED%8A%B8">toc 테스트</h2>
+<h3 id="toc-%EB%90%98%EB%82%98%EC%9A%94">toc 되나요?</h3>
+
 		<section class="post-full-comments">
   <div id="disqus_thread"></div>
   <script>
@@ -266,7 +323,19 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
     </div>
 </div>
 <script src="../assets/built/main.min.js%3Fv=6e6dc35a8b"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
+    });
+</script>
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>
