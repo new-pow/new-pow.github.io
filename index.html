@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>new-pow&#x27;s space</title>
-    <link rel="stylesheet" href="assets/built/screen.css%3Fv=6e6dc35a8b.css">
+    <link rel="stylesheet" href="assets/built/screen.css%3Fv=513cb7c431.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
@@ -22,6 +22,7 @@
         .toc-list {
             overflow: hidden;
             list-style: none;
+            font-size: smaller;
         }
 
         @media (min-width: 1300px) {
@@ -97,8 +98,8 @@
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
     <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
-    <script defer src="public/cards.min.js%3Fv=6e6dc35a8b"></script>
-    <link rel="stylesheet" type="text/css" href="public/cards.min.css%3Fv=6e6dc35a8b.css">
+    <script defer src="public/cards.min.js%3Fv=513cb7c431"></script>
+    <link rel="stylesheet" type="text/css" href="public/cards.min.css%3Fv=513cb7c431.css">
     <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
 <link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <style>
@@ -118,6 +119,48 @@ h1, h2, h3, h4, h5, h6,
 {
 font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
     }
+    
+.gh-card-title
+{font-size: 3.0rem}
+    
+table {
+    margin: 20px auto;
+    width: 100%;
+    border-spacing:0;
+    border-collapse: collapse;
+}
+@media only screen and (min-width: 1220px) {
+    table {
+        margin: 40px auto;
+        max-width: 75%;
+    }
+}
+@media only screen and (min-width: 1600px) {
+    table {
+        max-width: 70%;
+    }
+}
+.table-wrap {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+table {
+    border: 2px solid #2a2f36;
+}
+table thead {
+    text-align: left;
+    font-weight: 600;
+}
+table thead th {
+    font-weight: 600;
+}
+table td,
+table th {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 400;
+}
 </style>
 
 <style>  
@@ -130,9 +173,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<style>:root {--ghost-accent-color: #ff2e2e;}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff2e2e;}</style>
 </head>
 
 <body class="home-template is-head-left-logo has-serif-body">
@@ -177,34 +218,59 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
             </h2>
 
             <div class="gh-topic-content">
-                    <article class="gh-card post tag-log tag-posts tag-2022 no-image large">
-    <a class="gh-card-link" href="hangeul-teseuteu-poseuteuibnida/index.html">
+                    <article class="gh-card post tag-datastructure tag-java no-image large">
+    <a class="gh-card-link" href="hashtable-java/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">해시테이블(Hash Table) 자바코드로 구현하기</h3>
+            </header>
+
+                        <div class="gh-card-excerpt">해시테이블이란?
+
+
+
+HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.
+
+
+각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.
+
+
+
+
+
+colors = {
+    "Red"    : "#FF0000"</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                    <article class="gh-card post tag-log tag-posts tag-2022 no-image">
+    <a class="gh-card-link" href="2022-log-2/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">2022년 회고 (2) 풀스택 국비교육 수강기</h3>
+            </header>
+
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-01-15">Jan 15, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                    <article class="gh-card post tag-log tag-posts tag-2022 no-image">
+    <a class="gh-card-link" href="2022-log-1/index.html">
 
         <div class="gh-card-wrapper">
             <header class="gh-card-header">
                 <h3 class="gh-card-title">2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기</h3>
             </header>
 
-                        <div class="gh-card-excerpt">개요
-
-엄청 늦었지만 2022년 회고.
-1편은 사회과학계열 전공 기획자가 개발자로 이직을 결심한 이야기.
-
-주의, 철저히 나의 얘기 기록하는 거라 딱히 도움은 안될 것 같습니다.. 굳이 따지자면 정보 10, 사담 90의 글이 될 예정입니다.
-
-
-
-
-
-
-
-
-기획자의 기쁨과 슬픔
-
-2022년 이전 : 커뮤니티 기획자로서의 일!
-2022년 1~2월 : 퇴사 여행, 사람만나기
-
-직업을 묻는 질문을</div>
 
             <footer class="gh-card-footer">
                 <span class="gh-card-author">saehim lee</span>
@@ -230,7 +296,11 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 
     <div class="gh-topic-content">
                 <article class="gh-card post tag-log tag-posts tag-2022 no-image">
-    <a class="gh-card-link" href="hangeul-teseuteu-poseuteuibnida/index.html">
+    <a class="gh-card-link" href="2022-log-2/index.html">
+        <h3 class="gh-card-title">2022년 회고 (2) 풀스택 국비교육 수강기</h3>
+    </a>
+</article>                <article class="gh-card post tag-log tag-posts tag-2022 no-image">
+    <a class="gh-card-link" href="2022-log-1/index.html">
         <h3 class="gh-card-title">2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기</h3>
     </a>
 </article>    </div>
@@ -257,7 +327,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 </div>
 
 
-<script src="assets/built/main.min.js%3Fv=6e6dc35a8b"></script>
+<script src="assets/built/main.min.js%3Fv=513cb7c431"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({

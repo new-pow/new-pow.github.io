@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>해시테이블(Hash Table) 자바코드로 구현하기</title>
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=513cb7c431.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
+
+        .gh-toc > .toc-list {
+            position: relative;
+        }
+
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+            font-size: smaller;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
+    <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="new-pow&#x27;s space">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="해시테이블(Hash Table) 자바코드로 구현하기">
+    <meta property="og:description" content="해시테이블이란?
+
+
+
+HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.
+
+
+각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.
+
+
+
+
+
+colors &#x3D; {
+    &quot;Red&quot;    : &quot;#FF0000&quot;">
+    <meta property="og:url" content="http://localhost:2369/hashtable-java/">
+    <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta property="article:published_time" content="2023-08-20T01:29:00.000Z">
+    <meta property="article:modified_time" content="2023-09-05T00:28:03.000Z">
+    <meta property="article:tag" content="datastructure">
+    <meta property="article:tag" content="Java">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="해시테이블(Hash Table) 자바코드로 구현하기">
+    <meta name="twitter:description" content="해시테이블이란?
+
+
+
+HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.
+
+
+각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.
+
+
+
+
+
+colors &#x3D; {
+    &quot;Red&quot;    : &quot;#FF0000&quot;">
+    <meta name="twitter:url" content="http://localhost:2369/hashtable-java/">
+    <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="saehim lee">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="datastructure, Java">
+    <meta name="twitter:site" content="@ghost">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1668">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "new-pow&#x27;s space",
+        "url": "http://localhost:2369/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/ringed-planet_1fa90-1.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "saehim lee",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/IMG_1283-1.JPG",
+            "width": 1440,
+            "height": 1080
+        },
+        "url": "http://localhost:2369/author/saehim/",
+        "sameAs": []
+    },
+    "headline": "해시테이블(Hash Table) 자바코드로 구현하기",
+    "url": "http://localhost:2369/hashtable-java/",
+    "datePublished": "2023-08-20T01:29:00.000Z",
+    "dateModified": "2023-09-05T00:28:03.000Z",
+    "keywords": "datastructure, Java",
+    "description": "\n\n\n\n해시테이블이란?\n\n\n\nHashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.\n\n\n각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.\n\n\n\n\n\ncolors &#x3D; {\n    &quot;Red&quot;    : &quot;#FF0000&quot;,\n    &quot;Green&quot;  : &quot;#00FF00&quot;,\n    &quot;Blue&quot;   : &quot;#0000FF&quot;,\n    &quot;White&quot;  : &quot;#FFFFFF&quot;,\n    &quot;Black&quot;  : &quot;#000000&quot;,\n    &quot;Yellow&quot; : &quot;#FFFF00&quot;,\n    &quot;Cyan&quot;   : &quot;#00FFFF&quot;,\n    &quot;Magenta&quot;: &quot;#FF00FF&quot;,\n    &quot;Gray&quot;   : &quot;#808080&quot;,\n    &quot;Orange&quot; : &quot;",
+    "mainEntityOfPage": "http://localhost:2369/hashtable-java/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.59">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
+    
+    <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
+    <script defer src="../public/cards.min.js%3Fv=513cb7c431"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=513cb7c431.css">
+    <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+<style>
+body,  
+h1, h2, h3, h4, h5, h6,
+.main-nav a,
+.subscribe-button,
+.page-title,
+.post-meta,
+.read-next-story .post:before,
+.pagination,
+.site-footer,
+.post-full-content,
+.post-card-excerpt,
+.post-full-custom-excerpt,
+[class^="icon-"]:before, [class*=" icon-"]:before
+{
+font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    }
+    
+.gh-card-title
+{font-size: 3.0rem}
+    
+table {
+    margin: 20px auto;
+    width: 100%;
+    border-spacing:0;
+    border-collapse: collapse;
+}
+@media only screen and (min-width: 1220px) {
+    table {
+        margin: 40px auto;
+        max-width: 75%;
+    }
+}
+@media only screen and (min-width: 1600px) {
+    table {
+        max-width: 70%;
+    }
+}
+.table-wrap {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+}
+table {
+    border: 2px solid #2a2f36;
+}
+table thead {
+    text-align: left;
+    font-weight: 600;
+}
+table thead th {
+    font-weight: 600;
+}
+table td,
+table th {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: 400;
+}
+</style>
+
+<style>  
+    .gh-canvas .article-image img {  
+	max-width: 350px;  
+	height: auto;  
+}  
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff2e2e;}</style>
+</head>
+
+<body class="post-template tag-datastructure tag-java is-head-left-logo has-serif-body">
+<div class="gh-site">
+
+    <header id="gh-head" class="gh-head gh-outer">
+        <div class="gh-head-inner gh-inner">
+            <div class="gh-head-brand">
+                <div class="gh-head-brand-wrapper">
+                    
+                    <a class="gh-head-logo" href="../index.html">
+                            <img src="../content/images/2023/08/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                    </a>
+                    
+                </div>
+                <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-home"><a href="../index.html">Home</a></li>
+    <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-projects"><a href="../projects/index.html">Projects</a></li>
+    <li class="nav-posts"><a href="../tag/posts/index.html">Posts</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    
+<main class="gh-main">
+        <article class="gh-article post tag-datastructure tag-java no-image">
+
+            <header class="gh-article-header gh-canvas">
+                    <a class="gh-article-tag" href="../tag/datastructure/index.html">datastructure</a>
+
+                <h1 class="gh-article-title">해시테이블(Hash Table) 자바코드로 구현하기</h1>
+
+                    <aside class="gh-article-sidebar">
+
+        <div class="gh-author-image-list">
+                <a class="gh-author-image" href="../author/saehim/index.html">
+                        <img src="../content/images/2023/08/IMG_1283-1.JPG" alt="saehim lee">
+                </a>
+        </div>
+
+        <div class="gh-author-name-list">
+                <h4 class="gh-author-name">
+                    <a href="../author/saehim/index.html">saehim lee</a>
+                </h4>
+                
+        </div>
+
+        <div class="gh-article-meta">
+            <div class="gh-article-meta-inner">
+                <time class="gh-article-date" datetime="2023-08-20">Aug 20, 2023</time>
+                    <span class="gh-article-meta-sep"></span>
+                    <span class="gh-article-length">7 min</span>
+            </div>
+        </div>
+
+    </aside>
+
+
+                            </header>
+
+
+            <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
+                <p></p>
+<h1 id="%ED%95%B4%EC%8B%9C%ED%85%8C%EC%9D%B4%EB%B8%94%EC%9D%B4%EB%9E%80">해시테이블이란?</h1>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Hash_table_3_1_1_0_1_0_0_SP.svg/1024px-Hash_table_3_1_1_0_1_0_0_SP.svg.png" class="kg-image" alt="한정되지 않은" loading="lazy"><figcaption><a href="https://en.wikipedia.org/wiki/Hash_table?ref=localhost"><span>https://en.wikipedia.org/wiki/Hash_table</span></a></figcaption></figure>
+<p>HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.</p>
+<p>각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.</p>
+<p></p>
+<pre><code class="language-JavaScript">colors = {
+    "Red"    : "#FF0000",
+    "Green"  : "#00FF00",
+    "Blue"   : "#0000FF",
+    "White"  : "#FFFFFF",
+    "Black"  : "#000000",
+    "Yellow" : "#FFFF00",
+    "Cyan"   : "#00FFFF",
+    "Magenta": "#FF00FF",
+    "Gray"   : "#808080",
+    "Orange" : "#FFA500"
+}</code></pre>
+<p>예를 들어 위의 구조에서 키는 "Gray", 값은 "#808080" 를 저장해두면 키인 Gray로 바로 값을 찾을 수 있습니다. 해시 함수를 통해 키인 "Gray"를 인덱스로 만든 후 배열의 인덱스 자리에  <code>{ “Gray” : "#808080” }</code> 를 저장합니다.</p>
+<p>여기서 인덱스의 범위는 해시 테이블의 크기에 의존적입니다. 예를 들어 해시테이블 크기가 100이면 해시 함수로 얻을 수 있는 인덱스의 범위는 0부터 99까지입니다.</p>
+<p>해시 테이블에서 를 할 때 평균 시간 복잡도는 테이블에 저장된 요소의 개수와는 무관하게 O(1)입니다.</p>
+<table>
+  <thead>
+    <tr><td>Algorithm</td><td>Average</td><td>Worse</td></tr>
+  </thead>
+  <tbody>
+  <tr><td>Search</td><td>O(1)</td><td>O(n)</td></tr>
+  <tr><td>Insert</td><td>O(1)</td><td>O(n)</td></tr>
+  <tr><td>Delete</td><td>O(1)</td><td>O(n)</td></tr>
+</tbody></table>
+<p>저장/삭제할 때 키Key를 기준으로 테이블에 저장/삭제할 위치를 계산하여 시행합니다. (시간복잡도 <code>O(1)</code>) 조회를 할 때도 위치 계산하여 <code>O(1)</code> 시간에 데이터를 조회합니다.</p>
+<p></p>
+<h2 id="%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%82%AC%EC%9A%A9%ED%95%98%EB%A9%B4-%EC%A2%8B%EC%9D%84%EA%B9%8C">어떻게 사용하면 좋을까?</h2>
+<h3 id="%EC%9E%A5%EC%A0%90">장점</h3>
+<ul><li>평균적으로 O(1)의 시간 복잡도로 조회,삽입, 삭제를 수행할 수 있어 데이터 접근을 빠르게 합니다.</li><li>키를 기반으로 값을 저장하고 검색하는 구조로 데이터 관계를 보다 쉽고 명확하게 관리가 가능합니다.</li><li>키Key는 유일한 값으로 저장해야하므로 중복을 방지할 수 있습니다.</li></ul>
+<h3 id="%EB%8B%A8%EC%A0%90">단점</h3>
+<ul><li>해시 함수의 결과값으로 나오는 Index의 값이 중복되면 해시충돌이 일어날 수 있습니다.</li><li>순서대로 배열에 저장되는 것이 아니므로 순서가 필요한 로직에는 사용하기 힘듭니다.</li></ul>
+<h3 id="%EC%82%AC%EC%9A%A9-%EC%98%88%EC%8B%9C">사용 예시</h3>
+<ul><li>데이터 중복 검사가 필요한 경우</li><li>데이터 접근을 빠르게 해야하는 경우</li><li>캐싱 Caching<ul><li>Redis에 Key-Value를 저장할 때 내부적으로 해시테이블 구조를 사용합니다.</li><li>이 경우 충돌하는 항목 중 하나를 삭제하여 해시 충돌을 처리하기도 합니다.</li></ul></li><li>Key-Value 구조로 데이터를 관리해야 하는 경우</li></ul>
+<p></p>
+<h2 id="%ED%95%B4%EC%8B%9C-%EC%B6%A9%EB%8F%8C-hash-collision">해시 충돌 Hash Collision</h2>
+<p>키Key에 해시 함수를 적용했을 때 결과 값이 동일한 데이터 2개가 있다고 했을 때 어떤 것을 어떻게 저장해야 할까요? 이렇게 해시 테이블 내에 삽입하고자 하는 메모리 위치에 다른 데이터가 저장을 시도하는 경우 해시 충돌이 발생한다고 합니다.</p>
+<p>만약 해시 함수의 결과값 범위가 무한하다면 이런 일이 일어나지 않겠지만, 해시 함수의 결과가 해시 테이블 크기 범위 이내이기 때문에 이러한 문제가 발생합니다.</p>
+<p>이에 대한 대표적인 해결법 2개를 적용한 구현 사례를 공유하겠습니다.</p>
+<p></p>
+<h2 id="separate-chaning">Separate Chaning</h2>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Hash_table_5_0_1_1_1_1_0_LL.svg/1024px-Hash_table_5_0_1_1_1_1_0_LL.svg.png" class="kg-image" alt="undefined" loading="lazy"><figcaption><a href="https://en.wikipedia.org/wiki/Hash_table?ref=localhost"><span>https://en.wikipedia.org/wiki/Hash_table</span></a></figcaption></figure>
+<p></p>
+<ul><li>해시 충돌이 일어나는 데이터를 연결 리스트 LinkedList 의 마지막 혹은 처음 노드로 연결해서 저장합니다.</li><li>해시 테이블 구현의 일반적인 방식입니다.</li></ul>
+<pre><code class="language-java">import java.util.*;
+
+public class SeparateChaningHashTable&lt;K, V&gt; implements HashTable{
+
+    private static final float LOAD_FACTOR = 0.75f;
+    private LinkedList&lt;Entry&lt;K, V&gt;&gt;[] tables;
+    private int size;
+
+    @Override
+    public void put(Object key, Object value) {
+        if (isResizingRequired()) {
+            resize();
+        }
+
+        Entry&lt;K, V&gt; objectObjectEntry = new Entry&lt;&gt;((K)key, (V)value);
+        tables[hashCode(key)].add(objectObjectEntry);
+        numberOfItems ++;
+    }
+</code></pre>
+<p>직접 구현할 때 내부 자료구조를 LinkedList의 배열로 구현할 수 있습니다.</p>
+<pre><code class="language-java">    @Override
+    public Object get(Object key) {
+        if (isEmpty()) {
+            throw new EmptyStackException();
+        }
+        return tables[hashCode(key)].stream()
+                .filter(e -&gt; e.getKey().equals(key))
+                .map(Entry::getValue).findAny()
+                .orElseThrow(() -&gt; new NoSuchElementException("해당하는 요소가 없습니다."));
+    }
+
+    public int hashCode(Object key) {
+        return Math.abs(key.hashCode()) % tables.length;
+    }
+}</code></pre>
+<p>조회를 할 때는 LinkedList를 탐색하여 Key가 일치하는 데이터를 반환합니다.</p>
+<p></p>
+<h2 id="open-addressing">Open Addressing</h2>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Hash_table_5_0_1_1_1_1_0_SP.svg/1024px-Hash_table_5_0_1_1_1_1_0_SP.svg.png" class="kg-image" alt="한정되지 않은" loading="lazy"><figcaption><a href="https://en.wikipedia.org/wiki/Hash_table?ref=localhost"><span>https://en.wikipedia.org/wiki/Hash_table</span></a></figcaption></figure>
+<ul><li>모든 항목 데이터가 배열에 저장되는 형태입니다.</li><li>새 항목을 삽입해야하는데 해시 충돌이 일어나면 해시된 슬롯부터 시작하여 비어있는 슬롯을 찾을 때까지 프로브 서열probe sequences 순서로 진행하면서 배열을 검사하여 먼저 찾는 빈 슬롯에 레코드를 저장합니다.</li><li>주로 사용하는 probe sequences 는 다음과 같습니다.<ul><li>선형 탐색 <a href="https://en.wikipedia.org/wiki/Linear_probing?ref=localhost">Linear probing</a><ul><li>프로브 사이 간격이 고정되어 있습니다. 보통 1입니다.</li></ul></li><li>이차원 프로빙 <a href="https://en.wikipedia.org/wiki/Quadratic_probing?ref=localhost">Quadratic probing</a><ul><li>원래 계산 결과값에 2차 다항식의 연속 출력을 추가하여 프로브 사이의 간격을 늘립니다.</li></ul></li><li>더블 해싱 <a href="https://en.wikipedia.org/wiki/Double_hashing?ref=localhost">Double hashing</a><ul><li>프로브 간의 간격을 보조 해시 함수로 계산합니다.</li></ul></li></ul></li></ul>
+<p></p>
+<p>다음은 선형 탐색 방식으로 구현한 사례입니다. (기본값 1)</p>
+<pre><code class="language-java">import java.util.*;
+
+public class LinearProbingHashTable&lt;K, V&gt; implements HashTable {
+
+    private static final float LOAD_FACTOR = 0.6f;
+    private Entry&lt;K,V&gt;[] tables;
+    private int size;
+
+    public LinearProbingHashTable(int capacity) {
+        this.tables = new Entry[capacity];
+        this.size = 0;
+    }
+
+}</code></pre>
+<p>Entry 배열을 내부 구조로 가지고 있습니다.</p>
+<pre><code class="language-java">    @Override
+    public void put(Object key, Object value) {
+        if (isResizingRequired()) {
+            resize();
+        }
+
+        Entry&lt;K, V&gt; objectEntry = new Entry&lt;&gt;((K) key, (V) value);
+        int index = hashCode((K) key);
+
+        // 같은 Key가 있는지도 확인해야 합니다.. 같은 Key가 있을 경우 삽입이 불가능합니다.
+
+        while (tables[index] != null) {
+            index = (index + 1) % tables.length;
+        }
+
+        tables[index] = objectEntry;
+        numberOfItems++;
+    }
+
+    @Override
+    public void remove(Object key) {
+        int index = hashCode((K) key);
+
+        for (int i=0; i&lt;tables.length; i++) {
+            if (tables[index].getKey().equals(key)) {
+                tables[index] = null;
+                numberOfItems --;
+                return;
+            }
+            index = (index+1)% tables.length;
+        }
+    }
+
+    @Override
+    public Object get(Object key) {
+        int index = hashCode((K) key);
+
+        for (int i=0; i&lt;tables.length; i++) {
+            if (tables[index] != null &amp;&amp; tables[index].getKey().equals(key)) {
+                return tables[index].getValue();
+            }
+            index = (index+1)% tables.length;
+        }
+
+        throw new NoSuchElementException();
+    }
+}
+</code></pre>
+<p>이렇게 구현할 때의 가장 잊기 쉬운 점은 결국 자료구조를 순회하며 키Key가 같은 것을 찾아야 한다는 점입니다. 조회를 할때나 삭제를 할 때도 해당 위치에 있는 키Key가 일치하는지 검증하고 일치하지 않다면 index를 +1씩 하며 순회하며 탐색해줍니다.</p>
+<p>이런 경우 시간복잡도가 최악의 경우 O(n)이 됩니다.</p>
+<p></p>
+<hr>
+<ul><li>코드 전체는 <a href="https://github.com/new-pow/playground/tree/main/data-structure/src/main/java/com/example/datastructure?ref=localhost">github</a>에서 확인하실 수 있습니다.</li></ul>
+<h2 id="%EC%B0%B8%EA%B3%A0%EC%9E%90%EB%A3%8C">참고자료</h2>
+<ul><li>원티드 프리온보딩 인턴십 백엔드 2주차 자료</li><li><a href="https://en.wikipedia.org/wiki/Hash_table?ref=localhost">Hash table wiki</a></li><li><a href="https://mangkyu.tistory.com/102?ref=localhost">[자료구조] 해시테이블(HashTable)이란?</a> (망나니 개발자)</li></ul>
+
+		<section class="post-full-comments">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:2369/hashtable-java/";
+      this.page.identifier = "ghost-64e40f8c749ee079fb78d291"
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + window.disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</section>
+
+            </section>
+
+        </article>
+
+    
+        </main>
+
+
+    <footer class="gh-foot gh-outer">
+        <div class="gh-foot-inner gh-inner">
+
+            <nav class="gh-foot-menu">
+                <ul class="nav">
+    <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-copyright">
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/built/main.min.js%3Fv=513cb7c431"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
+    });
+</script>
+<script>
+    var disqus_shortname = "new-pow-github-io-1"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tocbot.init({
+        tocSelector: '.toc',
+        /* contentSelector: '.post-content', */
+        contentSelector: '.gh-content',
+        hasInnerContainers: true
+    });
+</script>
+
+</body>
+
+</html>
