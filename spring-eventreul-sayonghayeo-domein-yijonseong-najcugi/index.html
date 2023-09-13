@@ -1,18 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Spring Event를 사용하여 도메인 의존성 낮추기</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=a2ab59ba81.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <link rel="preload" as="style" href="../assets/built/screen.css%3Fv=dab5167363.css" />
-    <link rel="preload" as="script" href="../assets/built/casper.js%3Fv=dab5167363" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
 
-    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css%3Fv=dab5167363.css" />
+        .gh-toc > .toc-list {
+            position: relative;
+        }
 
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+            font-size: smaller;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
     <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -98,8 +129,8 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
     <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
-    <script defer src="../public/cards.min.js%3Fv=dab5167363"></script>
-    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=dab5167363.css">
+    <script defer src="../public/cards.min.js%3Fv=a2ab59ba81"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=a2ab59ba81.css">
     <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
 <link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <style>
@@ -132,17 +163,21 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff2e2e;}</style>
-
 </head>
-<body class="post-template tag-posts tag-spring is-head-left-logo has-sans-body">
-<div class="viewport">
 
-    <header id="gh-head" class="gh-head outer is-header-hidden">
-        <div class="gh-head-inner inner">
+<body class="post-template tag-posts tag-spring is-head-left-logo">
+<div class="gh-site">
+
+    <header id="gh-head" class="gh-head gh-outer">
+        <div class="gh-head-inner gh-inner">
             <div class="gh-head-brand">
-                <a class="gh-head-logo no-image" href="../index.html">
-                        
-                </a>
+                <div class="gh-head-brand-wrapper">
+                    
+                    <a class="gh-head-logo" href="../index.html">
+                            
+                    </a>
+                    
+                </div>
                 <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
                 <button class="gh-burger"></button>
             </div>
@@ -157,57 +192,54 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
             </nav>
 
             <div class="gh-head-actions">
-                        <button class="gh-search gh-icon-btn" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                        <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
             </div>
         </div>
     </header>
 
-    <div class="site-content">
-        
+    
+<main class="gh-main">
+        <article class="gh-article post tag-posts tag-spring no-image">
 
+            <header class="gh-article-header gh-canvas">
+                    <a class="gh-article-tag" href="../tag/posts/index.html">Posts</a>
 
+                <h1 class="gh-article-title">Spring Event를 사용하여 도메인 의존성 낮추기</h1>
 
-<main id="site-main" class="site-main">
-<article class="article post tag-posts tag-spring no-image ">
+                    <aside class="gh-article-sidebar">
 
-    <header class="article-header gh-canvas">
-
-        <div class="article-tag post-card-tags">
-                <span class="post-card-primary-tag">
-                    <a href="../tag/posts/index.html">Posts</a>
-                </span>
+        <div class="gh-author-image-list">
+                <a class="gh-author-image" href="../author/saehim/index.html">
+                        <img src="../content/images/2023/08/IMG_1283-1.JPG" alt="saehim lee">
+                </a>
         </div>
 
-        <h1 class="article-title">Spring Event를 사용하여 도메인 의존성 낮추기</h1>
+        <div class="gh-author-name-list">
+                <h4 class="gh-author-name">
+                    <a href="../author/saehim/index.html">saehim lee</a>
+                </h4>
+                
+        </div>
 
-
-        <div class="article-byline">
-        <section class="article-byline-content">
-
-            <ul class="author-list">
-                <li class="author-list-item">
-                    <a href="../author/saehim/index.html" class="author-avatar">
-                        <img class="author-profile-image" src="../content/images/size/w100/2023/08/IMG_1283-1.JPG" alt="saehim lee" />
-                    </a>
-                </li>
-            </ul>
-
-            <div class="article-byline-meta">
-                <h4 class="author-name"><a href="../author/saehim/index.html">saehim lee</a></h4>
-                <div class="byline-meta-content">
-                    <time class="byline-meta-date" datetime="2023-08-22">Aug 22, 2023</time>
-                        <span class="byline-reading-time"><span class="bull">&bull;</span> 14 min read</span>
-                </div>
+        <div class="gh-article-meta">
+            <div class="gh-article-meta-inner">
+                <time class="gh-article-date" datetime="2023-08-22">Aug 22, 2023</time>
+                    <span class="gh-article-meta-sep"></span>
+                    <span class="gh-article-length">14 min</span>
             </div>
-
-        </section>
         </div>
 
+    </aside>
 
-    </header>
 
-    <section class="gh-content gh-canvas">
-        <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트 <a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a> 구현시 이슈 사항을 정리한 글입니다.</blockquote>
+                            </header>
+
+
+            <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
+                <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트 <a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a> 구현시 이슈 사항을 정리한 글입니다.</blockquote>
 <h1 id="%EC%83%81%ED%99%A9"><strong>상황</strong></h1>
 <p>Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이 높아지는 우려가 생겼습니다.</p>
 <pre><code class="language-java">@Component
@@ -419,32 +451,43 @@ public void handleSuccessful(GenericSpringEvent&lt;String&gt; event) {
 <hr>
 <h1 id="refs">Refs.</h1>
 <ul><li><a href="https://www.baeldung.com/spring-events?ref=localhost">https://www.baeldung.com/spring-events</a></li><li><a href="https://ivvve.github.io/2019/06/04/java/Spring/event-listener-3/?ref=localhost">https://ivvve.github.io/2019/06/04/java/Spring/event-listener-3/</a></li><li><a href="https://www.linkedin.com/pulse/thoughts-event-driven-architectures-mark-mishaev?ref=localhost"><strong>Thoughts About Event-Driven Architectures</strong></a></li><li>도메인 개발 시작하기 (최범균)</li></ul>
-    </section>
 
+		<section class="post-full-comments">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/";
+      this.page.identifier = "ghost-64e42a58749ee079fb78d2a2"
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + window.disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</section>
 
-</article>
-</main>
+            </section>
 
+        </article>
 
+                <div class="gh-read-next gh-canvas">
+                <section class="gh-pagehead">
+                    <h4 class="gh-pagehead-title">Read next</h4>
+                </section>
 
+                <div class="gh-topic gh-topic-grid">
+                    <div class="gh-topic-content">
+                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../hashtable-java/index.html">
 
-            <aside class="read-more-wrap outer">
-                <div class="read-more inner">
-                        
-<article class="post-card post no-image">
-
-
-    <div class="post-card-content">
-
-        <a class="post-card-content-link" href="../hashtable-java/index.html">
-            <header class="post-card-header">
-                <div class="post-card-tags">
-                </div>
-                <h2 class="post-card-title">
-                    해시테이블(Hash Table) 자바코드로 구현하기
-                </h2>
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">해시테이블(Hash Table) 자바코드로 구현하기</h3>
             </header>
-                <div class="post-card-excerpt">해시테이블이란?
+
+                    <div class="gh-card-excerpt">해시테이블이란?
 
 
 
@@ -459,31 +502,22 @@ HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Val
 
 colors = {
     "Red"    : "#FF0000"</div>
-        </a>
 
-        <footer class="post-card-meta">
-            <time class="post-card-meta-date" datetime="2023-08-20">Aug 20, 2023</time>
-                <span class="post-card-meta-length">7 min read</span>
-        </footer>
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../2022-log-3/index.html">
 
-    </div>
-
-</article>
-                        
-<article class="post-card post no-image">
-
-
-    <div class="post-card-content">
-
-        <a class="post-card-content-link" href="../2022-log-3/index.html">
-            <header class="post-card-header">
-                <div class="post-card-tags">
-                </div>
-                <h2 class="post-card-title">
-                    2022년 회고 (3) 백엔드 개발자가 되겠어 ✊
-                </h2>
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">2022년 회고 (3) 백엔드 개발자가 되겠어 ✊</h3>
             </header>
-                <div class="post-card-excerpt">난생처음 CS스터디
+
+                    <div class="gh-card-excerpt">난생처음 CS스터디
 우아한테크코스 프리코스 3기, 코드스쿼드 프리코스 후기
 
 
@@ -493,31 +527,22 @@ colors = {
 
 
 아직도 2022년 이라니 질릴만도 합니다만... 살면서 가장 바빴던 시기이자 가장 열정적인 시기를 보내고 있는만큼 좀 더 잘 기록하고 싶은 욕심에 글이 길어지고 있습니다. 1년을 3년처럼 살았으니</div>
-        </a>
 
-        <footer class="post-card-meta">
-            <time class="post-card-meta-date" datetime="2023-01-22">Jan 22, 2023</time>
-                <span class="post-card-meta-length">11 min read</span>
-        </footer>
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-01-22">Jan 22, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../2022-log-2/index.html">
 
-    </div>
-
-</article>
-                        
-<article class="post-card post no-image">
-
-
-    <div class="post-card-content">
-
-        <a class="post-card-content-link" href="../2022-log-2/index.html">
-            <header class="post-card-header">
-                <div class="post-card-tags">
-                </div>
-                <h2 class="post-card-title">
-                    2022년 회고 (2) 풀스택 국비교육 수강기
-                </h2>
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">2022년 회고 (2) 풀스택 국비교육 수강기</h3>
             </header>
-                <div class="post-card-excerpt">* 케케묵은 지난글 👇
+
+                    <div class="gh-card-excerpt">* 케케묵은 지난글 👇
    * 2023.02.01 - [💬/회고] - 2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기
 
 
@@ -532,34 +557,34 @@ colors = {
 
 
 어차피 1년정도 쉬기로 한거, 돈도 더 들지 않겠다 주말에는 지인의 카페에서 계속 알바를 하고 평일에는 9시부터 6시까지 풀스택</div>
-        </a>
 
-        <footer class="post-card-meta">
-            <time class="post-card-meta-date" datetime="2023-01-15">Jan 15, 2023</time>
-                <span class="post-card-meta-length">8 min read</span>
-        </footer>
-
-    </div>
-
-</article>
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-01-15">Jan 15, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                    </div>
                 </div>
-            </aside>
+            </div>
+
+        </main>
 
 
+    <footer class="gh-foot gh-outer">
+        <div class="gh-foot-inner gh-inner">
 
-    </div>
-
-    <footer class="site-footer outer">
-        <div class="inner">
-            <section class="copyright"><a href="../index.html"></a> &copy; 2023</section>
-            <nav class="site-footer-nav">
+            <nav class="gh-foot-menu">
                 <ul class="nav">
     <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
     <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
 </ul>
 
             </nav>
-            <div class="gh-powered-by"><a href="https://ghost.org/" target="_blank" rel="noopener">Powered by Ghost</a></div>
+
+            <div class="gh-copyright">
+                     © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+            </div>
         </div>
     </footer>
 
@@ -606,23 +631,20 @@ colors = {
         </div>
     </div>
 </div>
-<script
-    src="https://code.jquery.com/jquery-3.5.1.min.js"
-    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
-    crossorigin="anonymous">
-</script>
-<script src="../assets/built/casper.js%3Fv=dab5167363"></script>
+<script src="../assets/built/main.min.js%3Fv=a2ab59ba81"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
-$(document).ready(function () {
-    // Mobile Menu Trigger
-    $('.gh-burger').click(function () {
-        $('body').toggleClass('gh-head-open');
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
     });
-    // FitVids - Makes video embeds responsive
-    $(".gh-content").fitVids();
-});
 </script>
-
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>
@@ -647,4 +669,5 @@ $(document).ready(function () {
 </style>
 
 </body>
+
 </html>
