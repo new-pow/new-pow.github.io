@@ -30,7 +30,7 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     <meta property="og:url" content="http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-08-22T03:24:19.000Z">
-    <meta property="article:modified_time" content="2023-09-13T07:37:25.000Z">
+    <meta property="article:modified_time" content="2023-09-13T07:40:43.000Z">
     <meta property="article:tag" content="Posts">
     <meta property="article:tag" content="Spring">
     
@@ -85,7 +85,7 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     "headline": "Spring Event를 사용하여 도메인 의존성 낮추기",
     "url": "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/",
     "datePublished": "2023-08-22T03:24:19.000Z",
-    "dateModified": "2023-09-13T07:37:25.000Z",
+    "dateModified": "2023-09-13T07:40:43.000Z",
     "keywords": "Posts, Spring",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n\n상황\n\n\nSecondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이 높아지는 우려가 생겼습니다.\n\n\n@Component\n@RequiredArgsConstructor\npublic class ChatroomFacade {\n    private final ChatroomService chatRoomService;\n    private final ItemService itemService;\n    private final MemberService memberService;\n    private final ChatroomCacheService ",
     "mainEntityOfPage": "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/"
@@ -208,7 +208,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 
     <section class="gh-content gh-canvas">
         <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트 <a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a> 구현시 이슈 사항을 정리한 글입니다.</blockquote>
-<h2 id="%EC%83%81%ED%99%A9"><strong>상황</strong></h2>
+<h1 id="%EC%83%81%ED%99%A9"><strong>상황</strong></h1>
 <p>Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이 높아지는 우려가 생겼습니다.</p>
 <pre><code class="language-java">@Component
 @RequiredArgsConstructor
@@ -226,7 +226,7 @@ public class ChatroomFacade {
 <p>파사드 패턴으로 저수준 모듈인 서비스를 참조하고 있었는데, 이러다간 모든 도메인의 서비스를 다 참조하게 생겼습니다 👀</p>
 <p>그 외에도 몇가지 문제가 대두되는데요. 첫번째로는 하나의 트랜잭션으로 이 전체 로직이 다같이 묶이다보니 뭐 하나가 취소되더라도 롤백을 시켜야 하게됩니다. 예를들어 채팅알람을 보내는데 실패한다면 채팅 발송이 실패해야할까요? 다른 방식으로 이를 처리할 수도 있습니다. 두번째는 이 어플리케이션의 동작 성능에 다른 어플리케이션이 영향을 받습니다. 중간에 어떤 작업이 지연된다면 뒤에 명시된 작업들도 모두 지연될 수 있습니다.</p>
 <p></p>
-<h3 id="%EA%B5%AC%ED%98%84-%EB%AA%A8%EB%93%88-%EA%B5%AC%EC%A1%B0"><strong>구현 모듈 구조</strong></h3>
+<h2 id="%EA%B5%AC%ED%98%84-%EB%AA%A8%EB%93%88-%EA%B5%AC%EC%A1%B0"><strong>구현 모듈 구조</strong></h2>
 <p>현재의 패키지 구조입니다. 크게 api와 chat으로 나뉘어 있는데, 채팅에 대한 도메인과 로직이 복잡해지며 따로 분리한 결과입니다.</p>
 <pre><code>api
 ⎿ chatroom // 채팅방. 아이템과 구매자(member) 정보를 관리합니다.
@@ -263,7 +263,8 @@ global // 전역에서 사용하는 model, exception, config 등을 정의하고
 <blockquote><strong>💡 다른 예시</strong><br>만약 회원가입을 한 회원에게 다음과 같은 서비스 로직이 동시에 적용되어야 한다면 어떻게 해야할까요?<br><br>- 회원에게 가입 환영 이메일을 발송합니다.<br>- 회원이 입력한 추천인에게 포인트를 줍니다.<br>- 회원에게 가입 기념 쿠폰을 발행합니다.<br>- …</blockquote>
 <p>이런 경우에 어떻게 도메인간의 의존성을 낮추고 코드를 간결하게 할 수 있을까 학습해보다 Spring Event 를 도입해보기로 했습니다. Spring Event를 통해 비동기로 연동되는 로직을 처리하거나 같은 트랜젝션 안에서 처리하게 구현할 수도 있습니다. 이렇게 처리하게 되니 기능 확장과 연동에 큰 자유를 얻게 되어서 좋았습니다.</p>
 <p></p>
-<h2 id="spring-event"><strong>Spring Event</strong></h2>
+<hr>
+<h1 id="spring-event"><strong>Spring Event</strong></h1>
 <p>여기서 event는 사전적인 의미 그대로 ‘과거 일어난 어떤 일’이라고 이해하면 쉬운데요. 예를 들어 위의 상황의 경우에서는 “회원이 채팅 메시지를 발송한다”가 하나의 이벤트가 될 수 있습니다.</p>
 <p>Spring Event를 통해 이벤트가 발생하면 그 이벤트가 트리거가 되어 반응하여 원하는 동작을 수행하는 기능을 구현할 수 있습니다.</p>
 <p>SpringEvent는 ApplicationContext가 제공하는 기능 중 하나입니다.</p>
@@ -275,13 +276,14 @@ global // 전역에서 사용하는 model, exception, config 등을 정의하고
 <p>이벤트를 도입하려면 다음의 구성을 구현해야 합니다.</p>
 <ol><li>이벤트 : 이벤트 퍼블리셔를 통해 발행될 이벤트</li><li>이벤트 생성 주체 : 이벤트를 생성하여 Event Publisher에 이벤트를 전달합니다.</li><li>이벤트 퍼블리셔(이벤트 디스패처) : 해당 이벤트를 처리할 수 있는 핸들러에 이벤트를 전파합니다. (어노테이션을 기반으로 동작하며 해당하는 메서드를 invoke시키는 방식입니다.)</li><li>이벤트 핸들러 (이벤트 리스너) : 최종적으로 이벤트를 받아 처리합니다.</li></ol>
 <p></p>
-<h3 id="springevent%EB%A5%BC-%EC%A0%81%EC%9A%A9%EC%8B%9C%EC%BC%9C%EB%B3%B4%EC%9E%90"><strong>SpringEvent를 적용시켜보자</strong></h3>
+<h2 id="springevent%EB%A5%BC-%EC%A0%81%EC%9A%A9%EC%8B%9C%EC%BC%9C%EB%B3%B4%EC%9E%90"><strong>SpringEvent를 적용시켜보자</strong></h2>
 <p>위에서 언급한 구성을 구현하여 다음과 같은 이벤트 처리 로직을 구현하려고 합니다.</p>
 <ol><li><code>BubbleService</code> 에서 <strong><code>Events.raise()</code></strong>&nbsp;메서드를 통해 <code>arrivedEvent</code> 을 발행시킵니다.</li><li>그럼 퍼블리셔(디스패처)를 거쳐 이벤트가 발행되었을 때</li><li>각 다른 도메인의 <code>arrivedEvent</code> 핸들러가 동작합니다.</li></ol>
 <figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/bowB0n/btstTr9b58F/HDCCUWlot21rPojYnLn4c1/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">Events는 EventPublisher를 가지고&nbsp;있으므로 같은 노드로 표현했습니다.</span></figcaption></figure>
 <p></p>
-<h3 id="%EA%B5%AC%ED%98%84%EC%82%AC%ED%95%AD"><strong>구현사항</strong></h3>
-<ul><li><strong>BaseEvent</strong><ul><li>먼저 모든 event에 공통으로 적용할 필드를 기반으로 BaseEvent 를 구현하였습니다.</li><li>Spring Framework 4.2 이전 버전을 사용하는 경우&nbsp;이벤트를&nbsp;ApplicationEvent를 확장해서 사용해야하지만, 이후 버전에서는 클래스를 확장하지 않고 구현할 수 있습니다.</li><li>제네릭으로 이벤트 유형의 정보를 같이 전달하는 것도 가능합니다.</li></ul></li></ul>
+<h2 id="%EA%B5%AC%ED%98%84%EC%82%AC%ED%95%AD"><strong>구현사항</strong></h2>
+<h3 id="baseevent"><strong>BaseEvent</strong></h3>
+<ul><ul><li>먼저 모든 event에 공통으로 적용할 필드를 기반으로 BaseEvent 를 구현하였습니다.</li><li>Spring Framework 4.2 이전 버전을 사용하는 경우&nbsp;이벤트를&nbsp;ApplicationEvent를 확장해서 사용해야하지만, 이후 버전에서는 클래스를 확장하지 않고 구현할 수 있습니다.</li><li>제네릭으로 이벤트 유형의 정보를 같이 전달하는 것도 가능합니다.</li></ul></ul>
 <pre><code class="language-java">@Getter
 public abstract class BaseEvent ~~extends ApplicationEvent~~ {
     private Instant createdAt;
@@ -291,7 +293,8 @@ public abstract class BaseEvent ~~extends ApplicationEvent~~ {
     }
 }
 </code></pre>
-<ul><li><strong>Event 구현</strong><ul><li>이를 확장하여 구체적인 이벤트를 구현해주었습니다.</li><li>해당 이벤트는 사용자가 발송한 채팅이 도착했을 때 발행되는 이벤트입니다.</li></ul></li></ul>
+<h3 id="event-%EA%B5%AC%ED%98%84"><strong>Event 구현</strong></h3>
+<ul><ul><li>이를 확장하여 구체적인 이벤트를 구현해주었습니다.</li><li>해당 이벤트는 사용자가 발송한 채팅이 도착했을 때 발행되는 이벤트입니다.</li></ul></ul>
 <pre><code class="language-java">@Getter
 public class ChatBubbleArrivedEvent extends BaseEvent {
     private final ChatBubble chatBubble;
@@ -307,6 +310,7 @@ public class ChatBubbleArrivedEvent extends BaseEvent {
     }
 }
 </code></pre>
+<h3 id="events-%EA%B5%AC%ED%98%84">Events 구현</h3>
 <ul><li><strong>Event 를 발행을 시킬 클래스 Events 를 만들었습니다.</strong></li></ul>
 <pre><code class="language-java">public class Events {
     private static ApplicationEventPublisher publisher;
@@ -322,6 +326,8 @@ public class ChatBubbleArrivedEvent extends BaseEvent {
     }
 }
 </code></pre>
+<p></p>
+<h3 id="event-%EB%B0%9C%ED%96%89-%EC%A3%BC%EC%B2%B4-%EA%B5%AC%ED%98%84">Event 발행 주체 구현</h3>
 <ul><li><strong>Service 에서 Event를 발생시킵니다.</strong></li></ul>
 <pre><code class="language-java">@Transactional
     public void publish(String topic, ChatBubble message) {
@@ -332,6 +338,8 @@ public class ChatBubbleArrivedEvent extends BaseEvent {
         Events.raise(new ChatBubbleArrivedEvent(message)); // 이벤트를 발생시킵니다.
     }
 </code></pre>
+<p></p>
+<h3 id="event-handle-%EB%A1%9C%EC%A7%81-%EA%B5%AC%ED%98%84">Event Handle 로직 구현</h3>
 <ul><li><strong>EventListener를 구현합니다.</strong></li></ul>
 <pre><code class="language-java">@EventListener // 채팅방 메타 정보를 업데이트합니다.
 public void chatBubbleArrivedEventHandler(**ChatBubbleArrivedEvent** event) throws NotChatroomMemberException {
@@ -344,7 +352,7 @@ public void chatBubbleArrivedEventHandler(**ChatBubbleArrivedEvent** event) thro
 <p>이렇게 구현할 경우 다음과 같은 타임라인으로 동작합니다.</p>
 <figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/0lgcK/btstX3fpDfk/Pw4WDKIbTyJ6r7CiEtgKG1/img.png" class="kg-image" alt loading="lazy"></figure>
 <p></p>
-<h3 id="%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%B2%98%EB%A6%AC"><strong>비동기 이벤트 처리</strong></h3>
+<h2 id="%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%B2%98%EB%A6%AC"><strong>비동기 이벤트 처리</strong></h2>
 <p>모든 이벤트가 순서대로 연쇄적으로 발생하지 않아도 되므로 비동기 이벤트 처리를 하는 편이 어플리케이션 효율성에 유리하다고 판단했습니다. 예를 들어 상대방이 채팅 메시지를 보냈을 때 채팅 metainfo 업데이트가 몇 초 후에 동작해도 상관이 없는 것이지요.</p>
 <p>비동기 이벤트로 해당 코드를 바꾸기 위해서는 간단히 다음과 같이 어노테이션을 붙여주면 됩니다. 이 핸들링 메서드를 여러개 구현하면 이벤트가 발행될 때 모두 실행됩니다.</p>
 <pre><code class="language-java">@Async // 비동기 이벤트처리합니다.
@@ -368,7 +376,7 @@ public class BackendApplication {
 }
 </code></pre>
 <p></p>
-<h3 id="%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B0%9C%ED%96%89-%EC%A3%BC%EC%B2%B4%EC%9D%98-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EB%8B%A8%EA%B3%84%EC%99%80-%EB%B0%94%EC%9D%B8%EB%94%A9-transactionaleventlistener"><strong>이벤트 발행 주체의 트랜잭션 단계와 바인딩 <code>@TransactionalEventListener</code></strong></h3>
+<h2 id="%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B0%9C%ED%96%89-%EC%A3%BC%EC%B2%B4%EC%9D%98-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EB%8B%A8%EA%B3%84%EC%99%80-%EB%B0%94%EC%9D%B8%EB%94%A9-transactionaleventlistener"><strong>이벤트 발행 주체의 트랜잭션 단계와 바인딩 <code>@TransactionalEventListener</code></strong></h2>
 <p>이 어노테이션을 사용해 이벤트 리스너 실행과 트랜젝션 단계를 바인딩하여 실행할 수 있습니다.</p>
 <p>phase 정의를 잘 활용하면 채팅 메시지 발송이 실패했을 때의 로직을 구현할 수 있을 것 같습니다.</p>
 <ul><li><code>AFTER_COMMIT</code> : (기본값)은 트랜잭션이 <strong>성공적으로 완료된 경우 이벤트를 발생시키는 데 사용됩니다.</strong></li><li><code>AFTER_ROLLBACK</code> : 트랜잭션이 <strong>롤백된 경우</strong></li><li><code>AFTER_COMPLETION</code> : 트랜잭션이 <strong>완료된 경우</strong></li><li><code>BEFORE_COMMIT</code> : 트랜잭션 커밋 직전에 실행</li></ul>
@@ -377,8 +385,9 @@ public void handleCustom(CustomSpringEvent event) {
     log.info("Handling event inside a transaction BEFORE COMMIT.");
 }
 </code></pre>
-<h3 id="%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A5%BC-%EA%B5%AC%ED%98%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4"><strong>조건부 이벤트를 구현할 수 있습니다.</strong></h3>
-<p>이벤트 내부 정보로 플래그를 구현하고 이를 `condition` 에 작성해주면 조건부로 이벤트를 만들 수 있습니다.</p>
+<p></p>
+<h2 id="%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EA%B5%AC%ED%98%84"><strong>조건부 이벤트 구현</strong></h2>
+<p>이벤트 내부 정보로 플래그를 구현하고 이를 <code>condition</code> 에 작성해주면 조건부로 이벤트를 만들 수 있습니다.</p>
 <pre><code class="language-java">public GenericSpringEvent T {
 	private boolean notificationAgree; // 플래그를 구현합니다.
 }
@@ -389,11 +398,11 @@ public void handleSuccessful(GenericSpringEvent&lt;String&gt; event) {
 }
 </code></pre>
 <p></p>
-<h2 id="%EA%B5%AC%ED%98%84%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EA%B0%9C%EC%84%A0%ED%95%A0-%EC%A0%90"><strong>구현의 한계와 개선할 점</strong></h2>
-<h3 id="%EC%BD%94%EB%93%9C-%EA%B0%80%EB%8F%85%EC%84%B1%EA%B3%BC-%EB%94%94%EB%B2%84%EA%B9%85-%EB%AC%B8%EC%A0%9C"><strong>코드 가독성과 디버깅 문제</strong></h3>
+<h1 id="%EA%B5%AC%ED%98%84%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EA%B0%9C%EC%84%A0%ED%95%A0-%EC%A0%90"><strong>구현의 한계와 개선할 점</strong></h1>
+<h2 id="%EC%BD%94%EB%93%9C-%EA%B0%80%EB%8F%85%EC%84%B1%EA%B3%BC-%EB%94%94%EB%B2%84%EA%B9%85-%EB%AC%B8%EC%A0%9C"><strong>코드 가독성과 디버깅 문제</strong></h2>
 <p>이와 같이 이벤트를 구현하여 서비스 로직을 연동하였을 때, 도메인 의존성을 낮추려는 목표는 훌륭히 달성하였습니다. 하지만 이벤트 발행이 어떤 영향을 미치는 지 코드를 읽기 어려워졌다는 단점이 있습니다. 이벤트를 발행했을 때 어떤 로직이 발생하는 지 테스트와 디버깅을 하기 힘들어졌다는 점 또한 아쉬운 점입니다.</p>
 <p></p>
-<h3 id="%EB%A1%9C%EC%BB%AC-%ED%95%B8%EB%93%A4%EB%9F%AC%EC%9D%98-%ED%95%9C%EA%B3%84"><strong>로컬 핸들러의 한계</strong></h3>
+<h2 id="%EB%A1%9C%EC%BB%AC-%ED%95%B8%EB%93%A4%EB%9F%AC%EC%9D%98-%ED%95%9C%EA%B3%84"><strong>로컬 핸들러의 한계</strong></h2>
 <p>Spring Event는 어플리케이션 로컬 핸들러로 이루어지므로 하나의 어플리케이션에서 실행한다는 한계점이 있습니다. 특히 다음의 주의사항을 고려해야 합니다.</p>
 <ul><li>로컬 핸들러의 경우 이벤트 유실 주의<ul><li>이벤트를 핸들링하다 예외 발생 등으로 실패하면 해당 이벤트는 유실될 수 있습니다.</li></ul></li><li>이벤트 재처리하며 멱등성 주의<ul><li>만약 이벤트 재처리를 위한 로직을 구현한다면, 재처리를 통해 데이터가 변경되거나 의도와 다르게 어플리케이션이 동작하지는 않는지 주의해야 합니다.</li></ul></li></ul>
 <p>MSA를 구현한다면 서비스간 이벤트 핸들링을 하는 것이 힘듭니다. 이럴경우 다음의 대안들이 있습니다.</p>
@@ -406,6 +415,7 @@ public void handleSuccessful(GenericSpringEvent&lt;String&gt; event) {
 <p></p>
 <p>Spring Event 구현하고 이벤트 기반 아키텍처를 공부하면서 도움이 되었던 글과 영상을 남깁니다.</p>
 <ul><li><a href="https://techblog.woowahan.com/13101/?ref=localhost">배민스토어에 이벤트 기반 아키텍처를 곁들인...</a></li><li><a href="https://techblog.woowahan.com/7835/?ref=localhost">회원시스템 이벤트기반 아키텍처 구축하기</a></li><li><a href="https://www.youtube.com/watch?v=lCxgddyxDyg&ref=localhost">2200만 사용자를 위한 채팅 시스템 아키텍처</a></li></ul>
+<p></p>
 <hr>
 <h1 id="refs">Refs.</h1>
 <ul><li><a href="https://www.baeldung.com/spring-events?ref=localhost">https://www.baeldung.com/spring-events</a></li><li><a href="https://ivvve.github.io/2019/06/04/java/Spring/event-listener-3/?ref=localhost">https://ivvve.github.io/2019/06/04/java/Spring/event-listener-3/</a></li><li><a href="https://www.linkedin.com/pulse/thoughts-event-driven-architectures-mark-mishaev?ref=localhost"><strong>Thoughts About Event-Driven Architectures</strong></a></li><li>도메인 개발 시작하기 (최범균)</li></ul>
