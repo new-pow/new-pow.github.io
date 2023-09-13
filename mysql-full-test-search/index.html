@@ -73,7 +73,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     <meta property="og:url" content="http://localhost:2369/mysql-full-test-search/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-08-19T21:07:52.000Z">
-    <meta property="article:modified_time" content="2023-09-13T13:41:10.000Z">
+    <meta property="article:modified_time" content="2023-09-13T13:54:50.000Z">
     <meta property="article:tag" content="Posts">
     <meta property="article:tag" content="Database">
     <meta property="article:tag" content="Refactoring">
@@ -142,7 +142,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     "headline": "MySQL 검색 기능 개선하기 : Full-text search",
     "url": "http://localhost:2369/mysql-full-test-search/",
     "datePublished": "2023-08-19T21:07:52.000Z",
-    "dateModified": "2023-09-13T13:41:10.000Z",
+    "dateModified": "2023-09-13T13:54:50.000Z",
     "keywords": "Posts, Database, Refactoring, Secondhand",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n\n\n\n\n발단 : 왜 이것이 필요했나?\n\n\n\nSecondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들어 이런거요.\n\n\n[이미지 출처 : https://kikimong.com/7179]\n\n\n\n\n먼저 데이터는 이런식으로 들어가 있습니다. 법정동 코드를 pk 로 하였습니다. 행정동 코드보다 법정동 코드를 선택한 이유는 변동이 더 적기 때문입니다. [참고링크 : 법정동과 행정동의 차이는?]\n\n\n그래서 이것을 어떻게 구현하면 좋을까요?\n\n\n * 이 글은 mysql 8.0 InnoDB 환경에서 테스트 되었습니다.\n\n\n\n\n\n\n\n\n\n전개\n\n\n\n\n초기 구현 방법 Where ~ like\n\n\n사실 이 프로젝트의 기간 제한이 있었습니다. 총 4주간의 기간동안 처음 구현하는 채팅 시스템까지 모두 구현하는 것이 목표였기 때문에 이 로직에 투자할 시간이 매우 적었습니다. 그래서 가장 처음에는 가장",
     "mainEntityOfPage": "http://localhost:2369/mysql-full-test-search/"
@@ -491,6 +491,33 @@ List&lt;Region&gt; findAllByAddress(@Param("address") String address);</code></p
                 <div class="gh-topic gh-topic-grid">
                     <div class="gh-topic-content">
                             <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">Spring Event를 사용하여 도메인 의존성 낮추기</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+발단
+
+
+
+Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-22">Aug 22, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
     <a class="gh-card-link" href="../hashtable-java/index.html">
 
         <div class="gh-card-wrapper">
@@ -545,36 +572,6 @@ colors = {
             </footer>
         </div>
     </a>
-</article>                            <article class="gh-card post no-image">
-    <a class="gh-card-link" href="../2022-log-2/index.html">
-
-        <div class="gh-card-wrapper">
-            <header class="gh-card-header">
-                <h3 class="gh-card-title">2022년 회고 (2) 풀스택 국비교육 수강기</h3>
-            </header>
-
-                    <div class="gh-card-excerpt">* 케케묵은 지난글 👇
-   * 2023.02.01 - [💬/회고] - 2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기
-
-
-
-국비 교육 과정을 듣기로 한다.
-
-
-2022년 6월~10월 : 국비교육 수강
-
-
-사실 지금 생각해보면 한없이 가벼운 선택이었다.
-
-
-어차피 1년정도 쉬기로 한거, 돈도 더 들지 않겠다 주말에는 지인의 카페에서 계속 알바를 하고 평일에는 9시부터 6시까지 풀스택</div>
-
-            <footer class="gh-card-footer">
-                <span class="gh-card-author">saehim lee</span>
-                <time class="gh-card-date" datetime="2023-01-15">Jan 15, 2023</time>
-            </footer>
-        </div>
-    </a>
 </article>                    </div>
                 </div>
             </div>
@@ -589,6 +586,7 @@ colors = {
                 <ul class="nav">
     <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
     <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+    <li class="nav-project-secondhand"><a href="../tag/secondhand/index.html">Project-Secondhand</a></li>
 </ul>
 
             </nav>
