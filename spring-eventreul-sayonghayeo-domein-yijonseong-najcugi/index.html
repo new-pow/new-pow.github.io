@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>Spring Event를 사용하여 도메인 의존성 낮추기</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <link rel="preload" as="style" href="../assets/built/screen.css%3Fv=dab5167363.css" />
+    <link rel="preload" as="script" href="../assets/built/casper.js%3Fv=dab5167363" />
+
+    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css%3Fv=dab5167363.css" />
+
+    <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Spring Event를 사용하여 도메인 의존성 낮추기">
+    <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+상황
+
+
+Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이">
+    <meta property="og:url" content="http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/">
+    <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta property="article:published_time" content="2023-08-22T03:24:19.000Z">
+    <meta property="article:modified_time" content="2023-09-13T07:37:25.000Z">
+    <meta property="article:tag" content="Posts">
+    <meta property="article:tag" content="Spring">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Spring Event를 사용하여 도메인 의존성 낮추기">
+    <meta name="twitter:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+상황
+
+
+Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이">
+    <meta name="twitter:url" content="http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/">
+    <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="saehim lee">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Posts, Spring">
+    <meta name="twitter:site" content="@ghost">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1668">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "",
+        "url": "http://localhost:2369/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/size/w256h256/2023/08/ringed-planet_1fa90.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "saehim lee",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/IMG_1283-1.JPG",
+            "width": 1440,
+            "height": 1080
+        },
+        "url": "http://localhost:2369/author/saehim/",
+        "sameAs": []
+    },
+    "headline": "Spring Event를 사용하여 도메인 의존성 낮추기",
+    "url": "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/",
+    "datePublished": "2023-08-22T03:24:19.000Z",
+    "dateModified": "2023-09-13T07:37:25.000Z",
+    "keywords": "Posts, Spring",
+    "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n\n상황\n\n\nSecondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이 높아지는 우려가 생겼습니다.\n\n\n@Component\n@RequiredArgsConstructor\npublic class ChatroomFacade {\n    private final ChatroomService chatRoomService;\n    private final ItemService itemService;\n    private final MemberService memberService;\n    private final ChatroomCacheService ",
+    "mainEntityOfPage": "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.62">
+    <link rel="alternate" type="application/rss+xml" title="" href="../rss/index.html">
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
+    
+    <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
+    <script defer src="../public/cards.min.js%3Fv=dab5167363"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=dab5167363.css">
+    <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+<style>
+body,  
+h1, h2, h3, h4, h5, h6,
+.main-nav a,
+.subscribe-button,
+.page-title,
+.post-meta,
+.read-next-story .post:before,
+.pagination,
+.site-footer,
+.post-full-content,
+.post-card-excerpt,
+.post-full-custom-excerpt,
+[class^="icon-"]:before, [class*=" icon-"]:before
+{
+font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    }
+</style>
+
+<style>  
+.gh-canvas .article-image img {  
+	max-width: 350px;  
+	height: auto;  
+}  
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff2e2e;}</style>
+
+</head>
+<body class="post-template tag-posts tag-spring is-head-left-logo has-sans-body">
+<div class="viewport">
+
+    <header id="gh-head" class="gh-head outer is-header-hidden">
+        <div class="gh-head-inner inner">
+            <div class="gh-head-brand">
+                <a class="gh-head-logo no-image" href="../index.html">
+                        
+                </a>
+                <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-projects"><a href="../projects/index.html">Projects</a></li>
+    <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    <div class="site-content">
+        
+
+
+
+<main id="site-main" class="site-main">
+<article class="article post tag-posts tag-spring no-image ">
+
+    <header class="article-header gh-canvas">
+
+        <div class="article-tag post-card-tags">
+                <span class="post-card-primary-tag">
+                    <a href="../tag/posts/index.html">Posts</a>
+                </span>
+        </div>
+
+        <h1 class="article-title">Spring Event를 사용하여 도메인 의존성 낮추기</h1>
+
+
+        <div class="article-byline">
+        <section class="article-byline-content">
+
+            <ul class="author-list">
+                <li class="author-list-item">
+                    <a href="../author/saehim/index.html" class="author-avatar">
+                        <img class="author-profile-image" src="../content/images/size/w100/2023/08/IMG_1283-1.JPG" alt="saehim lee" />
+                    </a>
+                </li>
+            </ul>
+
+            <div class="article-byline-meta">
+                <h4 class="author-name"><a href="../author/saehim/index.html">saehim lee</a></h4>
+                <div class="byline-meta-content">
+                    <time class="byline-meta-date" datetime="2023-08-22">Aug 22, 2023</time>
+                        <span class="byline-reading-time"><span class="bull">&bull;</span> 14 min read</span>
+                </div>
+            </div>
+
+        </section>
+        </div>
+
+
+    </header>
+
+    <section class="gh-content gh-canvas">
+        <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트 <a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a> 구현시 이슈 사항을 정리한 글입니다.</blockquote>
+<h2 id="%EC%83%81%ED%99%A9"><strong>상황</strong></h2>
+<p>Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이 높아지는 우려가 생겼습니다.</p>
+<pre><code class="language-java">@Component
+@RequiredArgsConstructor
+public class ChatroomFacade {
+    private final ChatroomService chatRoomService;
+    private final ItemService itemService;
+    private final MemberService memberService;
+    private final ChatroomCacheService chatroomCacheService;
+
+		// 기타 등등 코드들
+}
+</code></pre>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/ZZsvZ/btstMlCDdNR/cSNRFpK1sqKtimKiKNWVK1/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">이미지 출처 : WIKI&nbsp;Facade</span></figcaption></figure>
+<p></p>
+<p>파사드 패턴으로 저수준 모듈인 서비스를 참조하고 있었는데, 이러다간 모든 도메인의 서비스를 다 참조하게 생겼습니다 👀</p>
+<p>그 외에도 몇가지 문제가 대두되는데요. 첫번째로는 하나의 트랜잭션으로 이 전체 로직이 다같이 묶이다보니 뭐 하나가 취소되더라도 롤백을 시켜야 하게됩니다. 예를들어 채팅알람을 보내는데 실패한다면 채팅 발송이 실패해야할까요? 다른 방식으로 이를 처리할 수도 있습니다. 두번째는 이 어플리케이션의 동작 성능에 다른 어플리케이션이 영향을 받습니다. 중간에 어떤 작업이 지연된다면 뒤에 명시된 작업들도 모두 지연될 수 있습니다.</p>
+<p></p>
+<h3 id="%EA%B5%AC%ED%98%84-%EB%AA%A8%EB%93%88-%EA%B5%AC%EC%A1%B0"><strong>구현 모듈 구조</strong></h3>
+<p>현재의 패키지 구조입니다. 크게 api와 chat으로 나뉘어 있는데, 채팅에 대한 도메인과 로직이 복잡해지며 따로 분리한 결과입니다.</p>
+<pre><code>api
+⎿ chatroom // 채팅방. 아이템과 구매자(member) 정보를 관리합니다.
+⎿ item // 중고 상품.
+⎿ member // 회원.
+⎿ oauth // 회원 인증인가.
+⎿ region // 동네 지역.
+⎿ wishlist // 관심 상품.
+
+chat // 실시간 채팅에 대한 도메인들을 모아두었습니다.
+⎿ bubble // 채팅 메시지 도메인.
+⎿ metainfo // 채팅방 metainfo 도메인. 채팅방 인원, 안읽은 채팅수, 마지막 메시지를 관리합니다.
+⎿ notification // 현재 접속중인 member와 실시간 채팅 알람.
+
+global // 전역에서 사용하는 model, exception, config 등을 정의하고 있습니다.
+</code></pre>
+<p>이렇게 패키지 구조가 되어있을 때 도메인간 의존도가 복잡해질만한 로직과 수도코드는 다음과 같습니다.</p>
+<ul><li>사용자가 채팅 메시지를 발송한다.<ul><li>채팅 알람을 상대방이 받을 수 있다.</li><li>채팅 메시지가 저장되어야 한다.</li><li>채팅방 MetaInfo를 ‘안 읽은 메시지’ 개수와 ‘채팅방에 마지막으로 발송된 메시지’가 갱신되어야 한다.</li></ul></li></ul>
+<pre><code class="language-java">// messagePublishFacade에서
+
+@Transactional
+  public void publish(String topic, ChatBubble message) {
+    message.ready();
+    redisTemplate.convertAndSend(topic, message); // 채팅방 topic으로 pub
+            
+    chatbubbleService.save(message) // db에 저장
+    chatNotificationService.push(message) // 회원에게 알람 발송
+    chatMetainfoService.update(message) // metainfo 수정
+  }
+</code></pre>
+<p>이 외에도 코드가 복잡해질 수 있는 비즈니스 로직이 매우 많았습니다.</p>
+<p>이렇듯 하나의 트리거가 발생했을 때 연쇄적으로 일어나야 하는 서비스 로직이 여럿 있습니다. 심지어 이러한 코드의 문제는 하나의 트랜젝션에서 실행되므로 하나의 익셉션이 발생하면 모두 취소가 된다거나 하나의 로직이 모두 실행될 때까지 다른 로직들의 대기시간이 길어진다는 단점이 있습니다.</p>
+<p>그리고 만약 로직이 더 추가된다면? 점점 파사드와 서비스가 비대해지며 코드가 더 복잡해질 수 있습니다.</p>
+<blockquote><strong>💡 다른 예시</strong><br>만약 회원가입을 한 회원에게 다음과 같은 서비스 로직이 동시에 적용되어야 한다면 어떻게 해야할까요?<br><br>- 회원에게 가입 환영 이메일을 발송합니다.<br>- 회원이 입력한 추천인에게 포인트를 줍니다.<br>- 회원에게 가입 기념 쿠폰을 발행합니다.<br>- …</blockquote>
+<p>이런 경우에 어떻게 도메인간의 의존성을 낮추고 코드를 간결하게 할 수 있을까 학습해보다 Spring Event 를 도입해보기로 했습니다. Spring Event를 통해 비동기로 연동되는 로직을 처리하거나 같은 트랜젝션 안에서 처리하게 구현할 수도 있습니다. 이렇게 처리하게 되니 기능 확장과 연동에 큰 자유를 얻게 되어서 좋았습니다.</p>
+<p></p>
+<h2 id="spring-event"><strong>Spring Event</strong></h2>
+<p>여기서 event는 사전적인 의미 그대로 ‘과거 일어난 어떤 일’이라고 이해하면 쉬운데요. 예를 들어 위의 상황의 경우에서는 “회원이 채팅 메시지를 발송한다”가 하나의 이벤트가 될 수 있습니다.</p>
+<p>Spring Event를 통해 이벤트가 발생하면 그 이벤트가 트리거가 되어 반응하여 원하는 동작을 수행하는 기능을 구현할 수 있습니다.</p>
+<p>SpringEvent는 ApplicationContext가 제공하는 기능 중 하나입니다.</p>
+<figure class="kg-card kg-code-card"><pre><code class="language-java">public interface ApplicationContext extends EnvironmentCapable, ListableBeanFactory, HierarchicalBeanFactory,
+		MessageSource, ApplicationEventPublisher, ResourcePatternResolver {
+</code></pre><figcaption><p><span style="white-space: pre-wrap;">실제 ApplicationContext는 ApplicationEventPublisher 를 참조합니다.</span></p></figcaption></figure>
+<ul><li>동작 방식은 다음의 블로그 글을 참고했습니다. <a href="https://blog.naver.com/gngh0101/222020512119?ref=localhost">참고링크</a></li></ul>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/GgQBq/btstRuetizW/kZIVKLO1LZktEzRiLQE92k/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">출처 : 도메인&nbsp;주도 개발 시작하기</span></figcaption></figure>
+<p>이벤트를 도입하려면 다음의 구성을 구현해야 합니다.</p>
+<ol><li>이벤트 : 이벤트 퍼블리셔를 통해 발행될 이벤트</li><li>이벤트 생성 주체 : 이벤트를 생성하여 Event Publisher에 이벤트를 전달합니다.</li><li>이벤트 퍼블리셔(이벤트 디스패처) : 해당 이벤트를 처리할 수 있는 핸들러에 이벤트를 전파합니다. (어노테이션을 기반으로 동작하며 해당하는 메서드를 invoke시키는 방식입니다.)</li><li>이벤트 핸들러 (이벤트 리스너) : 최종적으로 이벤트를 받아 처리합니다.</li></ol>
+<p></p>
+<h3 id="springevent%EB%A5%BC-%EC%A0%81%EC%9A%A9%EC%8B%9C%EC%BC%9C%EB%B3%B4%EC%9E%90"><strong>SpringEvent를 적용시켜보자</strong></h3>
+<p>위에서 언급한 구성을 구현하여 다음과 같은 이벤트 처리 로직을 구현하려고 합니다.</p>
+<ol><li><code>BubbleService</code> 에서 <strong><code>Events.raise()</code></strong>&nbsp;메서드를 통해 <code>arrivedEvent</code> 을 발행시킵니다.</li><li>그럼 퍼블리셔(디스패처)를 거쳐 이벤트가 발행되었을 때</li><li>각 다른 도메인의 <code>arrivedEvent</code> 핸들러가 동작합니다.</li></ol>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/bowB0n/btstTr9b58F/HDCCUWlot21rPojYnLn4c1/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">Events는 EventPublisher를 가지고&nbsp;있으므로 같은 노드로 표현했습니다.</span></figcaption></figure>
+<p></p>
+<h3 id="%EA%B5%AC%ED%98%84%EC%82%AC%ED%95%AD"><strong>구현사항</strong></h3>
+<ul><li><strong>BaseEvent</strong><ul><li>먼저 모든 event에 공통으로 적용할 필드를 기반으로 BaseEvent 를 구현하였습니다.</li><li>Spring Framework 4.2 이전 버전을 사용하는 경우&nbsp;이벤트를&nbsp;ApplicationEvent를 확장해서 사용해야하지만, 이후 버전에서는 클래스를 확장하지 않고 구현할 수 있습니다.</li><li>제네릭으로 이벤트 유형의 정보를 같이 전달하는 것도 가능합니다.</li></ul></li></ul>
+<pre><code class="language-java">@Getter
+public abstract class BaseEvent ~~extends ApplicationEvent~~ {
+    private Instant createdAt;
+
+	    protected BaseEvent() {
+        this.createdAt = Instant.now();
+    }
+}
+</code></pre>
+<ul><li><strong>Event 구현</strong><ul><li>이를 확장하여 구체적인 이벤트를 구현해주었습니다.</li><li>해당 이벤트는 사용자가 발송한 채팅이 도착했을 때 발행되는 이벤트입니다.</li></ul></li></ul>
+<pre><code class="language-java">@Getter
+public class ChatBubbleArrivedEvent extends BaseEvent {
+    private final ChatBubble chatBubble;
+
+    public ChatBubbleArrivedEvent(ChatBubble chatBubble) {
+        super();
+        this.chatBubble = chatBubble;
+        log.info("ChatBubble Arrived Event Occur = {}", chatBubble.toString());
+    }
+
+    public String getChatReceiverId() {
+        return chatBubble.getReceiver();
+    }
+}
+</code></pre>
+<ul><li><strong>Event 를 발행을 시킬 클래스 Events 를 만들었습니다.</strong></li></ul>
+<pre><code class="language-java">public class Events {
+    private static ApplicationEventPublisher publisher;
+
+    static void setPublisher(ApplicationEventPublisher publisher) {
+        Events.publisher = publisher;
+    }
+
+    public static void raise(BaseEvent event) {
+        if (publisher!=null) {
+            publisher.publishEvent(event);
+        }
+    }
+}
+</code></pre>
+<ul><li><strong>Service 에서 Event를 발생시킵니다.</strong></li></ul>
+<pre><code class="language-java">@Transactional
+    public void publish(String topic, ChatBubble message) {
+        log.debug("pub log : " +  message.toString() + "/ topic: " + topic);
+        message.ready();
+        redisTemplate.convertAndSend(topic, message);
+
+        Events.raise(new ChatBubbleArrivedEvent(message)); // 이벤트를 발생시킵니다.
+    }
+</code></pre>
+<ul><li><strong>EventListener를 구현합니다.</strong></li></ul>
+<pre><code class="language-java">@EventListener // 채팅방 메타 정보를 업데이트합니다.
+public void chatBubbleArrivedEventHandler(**ChatBubbleArrivedEvent** event) throws NotChatroomMemberException {
+    ChatBubble chatBubble = event.getChatBubble();
+    Chatroom chatroom = getChatroom(chatBubble.getRoomId());
+    chatroom.updateLastMessage(chatBubble);
+    Chatroom saveChatroom = metaInfoRepository.save(chatroom);
+}
+</code></pre>
+<p>이렇게 구현할 경우 다음과 같은 타임라인으로 동작합니다.</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/0lgcK/btstX3fpDfk/Pw4WDKIbTyJ6r7CiEtgKG1/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<h3 id="%EB%B9%84%EB%8F%99%EA%B8%B0-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%B2%98%EB%A6%AC"><strong>비동기 이벤트 처리</strong></h3>
+<p>모든 이벤트가 순서대로 연쇄적으로 발생하지 않아도 되므로 비동기 이벤트 처리를 하는 편이 어플리케이션 효율성에 유리하다고 판단했습니다. 예를 들어 상대방이 채팅 메시지를 보냈을 때 채팅 metainfo 업데이트가 몇 초 후에 동작해도 상관이 없는 것이지요.</p>
+<p>비동기 이벤트로 해당 코드를 바꾸기 위해서는 간단히 다음과 같이 어노테이션을 붙여주면 됩니다. 이 핸들링 메서드를 여러개 구현하면 이벤트가 발행될 때 모두 실행됩니다.</p>
+<pre><code class="language-java">@Async // 비동기 이벤트처리합니다.
+@EventListener
+public void chatBubbleArrivedEventHandler(ChatBubbleArrivedEvent event) throws NotChatroomMemberException {
+    ChatBubble chatBubble = event.getChatBubble();
+    Chatroom chatroom = getChatroom(chatBubble.getRoomId());
+    chatroom.updateLastMessage(chatBubble);
+    Chatroom saveChatroom = metaInfoRepository.save(chatroom);
+    Events.raise(ChatNotificationEvent.of(saveChatroom, chatBubble));
+}
+</code></pre>
+<pre><code class="language-java">@EnableAsync // 이것도 붙여주어야 적용됩니다.
+@SpringBootApplication
+public class BackendApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(BackendApplication.class, args);
+	}
+
+}
+</code></pre>
+<p></p>
+<h3 id="%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%B0%9C%ED%96%89-%EC%A3%BC%EC%B2%B4%EC%9D%98-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EB%8B%A8%EA%B3%84%EC%99%80-%EB%B0%94%EC%9D%B8%EB%94%A9-transactionaleventlistener"><strong>이벤트 발행 주체의 트랜잭션 단계와 바인딩 <code>@TransactionalEventListener</code></strong></h3>
+<p>이 어노테이션을 사용해 이벤트 리스너 실행과 트랜젝션 단계를 바인딩하여 실행할 수 있습니다.</p>
+<p>phase 정의를 잘 활용하면 채팅 메시지 발송이 실패했을 때의 로직을 구현할 수 있을 것 같습니다.</p>
+<ul><li><code>AFTER_COMMIT</code> : (기본값)은 트랜잭션이 <strong>성공적으로 완료된 경우 이벤트를 발생시키는 데 사용됩니다.</strong></li><li><code>AFTER_ROLLBACK</code> : 트랜잭션이 <strong>롤백된 경우</strong></li><li><code>AFTER_COMPLETION</code> : 트랜잭션이 <strong>완료된 경우</strong></li><li><code>BEFORE_COMMIT</code> : 트랜잭션 커밋 직전에 실행</li></ul>
+<pre><code class="language-java">@TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT) // 이런식으로 사용합니다.
+public void handleCustom(CustomSpringEvent event) {
+    log.info("Handling event inside a transaction BEFORE COMMIT.");
+}
+</code></pre>
+<h3 id="%EC%A1%B0%EA%B1%B4%EB%B6%80-%EC%9D%B4%EB%B2%A4%ED%8A%B8%EB%A5%BC-%EA%B5%AC%ED%98%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%8A%B5%EB%8B%88%EB%8B%A4"><strong>조건부 이벤트를 구현할 수 있습니다.</strong></h3>
+<p>이벤트 내부 정보로 플래그를 구현하고 이를 `condition` 에 작성해주면 조건부로 이벤트를 만들 수 있습니다.</p>
+<pre><code class="language-java">public GenericSpringEvent T {
+	private boolean notificationAgree; // 플래그를 구현합니다.
+}
+</code></pre>
+<pre><code class="language-java">@EventListener(condition = "#event.notificationAgree") // 이벤트를 조건부로 만드는 것도 가능합니다.
+public void handleSuccessful(GenericSpringEvent&lt;String&gt; event) {
+    log.info("Handling generic event (conditional).");
+}
+</code></pre>
+<p></p>
+<h2 id="%EA%B5%AC%ED%98%84%EC%9D%98-%ED%95%9C%EA%B3%84%EC%99%80-%EA%B0%9C%EC%84%A0%ED%95%A0-%EC%A0%90"><strong>구현의 한계와 개선할 점</strong></h2>
+<h3 id="%EC%BD%94%EB%93%9C-%EA%B0%80%EB%8F%85%EC%84%B1%EA%B3%BC-%EB%94%94%EB%B2%84%EA%B9%85-%EB%AC%B8%EC%A0%9C"><strong>코드 가독성과 디버깅 문제</strong></h3>
+<p>이와 같이 이벤트를 구현하여 서비스 로직을 연동하였을 때, 도메인 의존성을 낮추려는 목표는 훌륭히 달성하였습니다. 하지만 이벤트 발행이 어떤 영향을 미치는 지 코드를 읽기 어려워졌다는 단점이 있습니다. 이벤트를 발행했을 때 어떤 로직이 발생하는 지 테스트와 디버깅을 하기 힘들어졌다는 점 또한 아쉬운 점입니다.</p>
+<p></p>
+<h3 id="%EB%A1%9C%EC%BB%AC-%ED%95%B8%EB%93%A4%EB%9F%AC%EC%9D%98-%ED%95%9C%EA%B3%84"><strong>로컬 핸들러의 한계</strong></h3>
+<p>Spring Event는 어플리케이션 로컬 핸들러로 이루어지므로 하나의 어플리케이션에서 실행한다는 한계점이 있습니다. 특히 다음의 주의사항을 고려해야 합니다.</p>
+<ul><li>로컬 핸들러의 경우 이벤트 유실 주의<ul><li>이벤트를 핸들링하다 예외 발생 등으로 실패하면 해당 이벤트는 유실될 수 있습니다.</li></ul></li><li>이벤트 재처리하며 멱등성 주의<ul><li>만약 이벤트 재처리를 위한 로직을 구현한다면, 재처리를 통해 데이터가 변경되거나 의도와 다르게 어플리케이션이 동작하지는 않는지 주의해야 합니다.</li></ul></li></ul>
+<p>MSA를 구현한다면 서비스간 이벤트 핸들링을 하는 것이 힘듭니다. 이럴경우 다음의 대안들이 있습니다.</p>
+<ul><li>메시지 큐를 사용합니다. -&gt; 이 방법을 가장 많이 사용하는 것 같습니다.<ul><li>카프카, 레빗MQ 등 메시징 시스템</li></ul></li><li>이벤트 저장소와 이벤트 포워더를 사용합니다.<ul><li>이벤트 저장소 DB와 포워더를 구현하여 사용합니다.</li><li>이벤트 유실 가능성을 줄일 수 있습니다.</li></ul></li><li>이벤트 저장소와 이벤트 제공 API를 사용합니다.<ul><li>이벤트 저장소 DB와 외부 API를 사용합니다.</li></ul></li></ul>
+<p>이에 대한 자세한 정보는 `도메인 개발 시작하기` 책에서 참고할 수 있으며 현재 프로젝트 규모에서는 다루지 않았습니다만 중요한 이벤트라거나 좀 더 복잡한 구조의 어플리케이션, 혹은 MSA에서는 적극 메시지 큐, 이벤트 저장소 도입을 고려할 것입니다.</p>
+<p></p>
+<h3 id="%EC%8B%A4%EB%AC%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EC%82%AC%EC%9A%A9"><strong>실무에서의 이벤트 사용</strong></h3>
+<p>실무 사례에서 카프카, 레빗MQ 등 메시징 시스템을 필두로 이벤트를 기반한 아키텍처를 손쉽게 찾아볼 수 있습니다. 물론 실무에서는 로컬 핸들링만이 아니라 계층적으로 이를 구조화하고 이벤트 저장소를 도입한 이벤트 기반 아키텍처를 구현한 모습입니다.</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/461GC/btstVixsvg4/6nqNRxdy6RfwKmAhZfhYh0/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">이런 식으로 이벤트의 발행과 구독으로 어플리케이션 구동이 연동될 수 있습니다. 출처 : https://techblog.woowahan.com/7835/</span></figcaption></figure>
+<p></p>
+<p>Spring Event 구현하고 이벤트 기반 아키텍처를 공부하면서 도움이 되었던 글과 영상을 남깁니다.</p>
+<ul><li><a href="https://techblog.woowahan.com/13101/?ref=localhost">배민스토어에 이벤트 기반 아키텍처를 곁들인...</a></li><li><a href="https://techblog.woowahan.com/7835/?ref=localhost">회원시스템 이벤트기반 아키텍처 구축하기</a></li><li><a href="https://www.youtube.com/watch?v=lCxgddyxDyg&ref=localhost">2200만 사용자를 위한 채팅 시스템 아키텍처</a></li></ul>
+<hr>
+<h1 id="refs">Refs.</h1>
+<ul><li><a href="https://www.baeldung.com/spring-events?ref=localhost">https://www.baeldung.com/spring-events</a></li><li><a href="https://ivvve.github.io/2019/06/04/java/Spring/event-listener-3/?ref=localhost">https://ivvve.github.io/2019/06/04/java/Spring/event-listener-3/</a></li><li><a href="https://www.linkedin.com/pulse/thoughts-event-driven-architectures-mark-mishaev?ref=localhost"><strong>Thoughts About Event-Driven Architectures</strong></a></li><li>도메인 개발 시작하기 (최범균)</li></ul>
+    </section>
+
+
+</article>
+</main>
+
+
+
+
+            <aside class="read-more-wrap outer">
+                <div class="read-more inner">
+                        
+<article class="post-card post no-image">
+
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="../hashtable-java/index.html">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                </div>
+                <h2 class="post-card-title">
+                    해시테이블(Hash Table) 자바코드로 구현하기
+                </h2>
+            </header>
+                <div class="post-card-excerpt">해시테이블이란?
+
+
+
+HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.
+
+
+각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.
+
+
+
+
+
+colors = {
+    "Red"    : "#FF0000"</div>
+        </a>
+
+        <footer class="post-card-meta">
+            <time class="post-card-meta-date" datetime="2023-08-20">Aug 20, 2023</time>
+                <span class="post-card-meta-length">7 min read</span>
+        </footer>
+
+    </div>
+
+</article>
+                        
+<article class="post-card post no-image">
+
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="../2022-log-3/index.html">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                </div>
+                <h2 class="post-card-title">
+                    2022년 회고 (3) 백엔드 개발자가 되겠어 ✊
+                </h2>
+            </header>
+                <div class="post-card-excerpt">난생처음 CS스터디
+우아한테크코스 프리코스 3기, 코드스쿼드 프리코스 후기
+
+
+ * 케케묵은 지난글 👇
+   * 2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기
+   * 2022년 회고 (2) 풀스택 국비교육 수강기
+
+
+아직도 2022년 이라니 질릴만도 합니다만... 살면서 가장 바빴던 시기이자 가장 열정적인 시기를 보내고 있는만큼 좀 더 잘 기록하고 싶은 욕심에 글이 길어지고 있습니다. 1년을 3년처럼 살았으니</div>
+        </a>
+
+        <footer class="post-card-meta">
+            <time class="post-card-meta-date" datetime="2023-01-22">Jan 22, 2023</time>
+                <span class="post-card-meta-length">11 min read</span>
+        </footer>
+
+    </div>
+
+</article>
+                        
+<article class="post-card post no-image">
+
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="../2022-log-2/index.html">
+            <header class="post-card-header">
+                <div class="post-card-tags">
+                </div>
+                <h2 class="post-card-title">
+                    2022년 회고 (2) 풀스택 국비교육 수강기
+                </h2>
+            </header>
+                <div class="post-card-excerpt">* 케케묵은 지난글 👇
+   * 2023.02.01 - [💬/회고] - 2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기
+
+
+
+국비 교육 과정을 듣기로 한다.
+
+
+2022년 6월~10월 : 국비교육 수강
+
+
+사실 지금 생각해보면 한없이 가벼운 선택이었다.
+
+
+어차피 1년정도 쉬기로 한거, 돈도 더 들지 않겠다 주말에는 지인의 카페에서 계속 알바를 하고 평일에는 9시부터 6시까지 풀스택</div>
+        </a>
+
+        <footer class="post-card-meta">
+            <time class="post-card-meta-date" datetime="2023-01-15">Jan 15, 2023</time>
+                <span class="post-card-meta-length">8 min read</span>
+        </footer>
+
+    </div>
+
+</article>
+                </div>
+            </aside>
+
+
+
+    </div>
+
+    <footer class="site-footer outer">
+        <div class="inner">
+            <section class="copyright"><a href="../index.html"></a> &copy; 2023</section>
+            <nav class="site-footer-nav">
+                <ul class="nav">
+    <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
+    <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+</ul>
+
+            </nav>
+            <div class="gh-powered-by"><a href="https://ghost.org/" target="_blank" rel="noopener">Powered by Ghost</a></div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script
+    src="https://code.jquery.com/jquery-3.5.1.min.js"
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+    crossorigin="anonymous">
+</script>
+<script src="../assets/built/casper.js%3Fv=dab5167363"></script>
+<script>
+$(document).ready(function () {
+    // Mobile Menu Trigger
+    $('.gh-burger').click(function () {
+        $('body').toggleClass('gh-head-open');
+    });
+    // FitVids - Makes video embeds responsive
+    $(".gh-content").fitVids();
+});
+</script>
+
+<script>
+    var disqus_shortname = "new-pow-github-io-1"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tocbot.init({
+        tocSelector: '.toc',
+        /* contentSelector: '.post-content', */
+        contentSelector: '.gh-content',
+        hasInnerContainers: true
+    });
+</script>
+
+<style>
+    .article-image {
+        max-width: 500px;
+        margin: 0 auto !important;
+        float: none !important;
+	}
+</style>
+
+</body>
+</html>
