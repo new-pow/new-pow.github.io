@@ -71,7 +71,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-17T02:16:04.000Z">
-    <meta property="article:modified_time" content="2023-09-17T06:53:24.000Z">
+    <meta property="article:modified_time" content="2023-09-17T12:59:30.000Z">
     <meta property="article:tag" content="Projects">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Java">
@@ -139,7 +139,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     "headline": "API 성능개선 : 페이징 cursor 방식으로 개선하기",
     "url": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/",
     "datePublished": "2023-09-17T02:16:04.000Z",
-    "dateModified": "2023-09-17T06:53:24.000Z",
+    "dateModified": "2023-09-17T12:59:30.000Z",
     "keywords": "Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\nAPI 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.\n\n\n * M1 16GB 메모리 환경에서 테스트되었습니다.\n\n\n\n\n\n\n200만건의 데이터를 넣어보자\n\n\nDummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서 테이블 3개에 동시에 데이터를 넣어야 했기 때문에 프로시저를 통해 랜덤한 데이터를 넣어주고자 했습니다.\n\n\n더미 데이터를 넣는 가장 빠른 방법은 csv로 데이터를 만든 후 dump insert하는 것이 가장 빠르겠지만, 랜덤하게 변수를 설정하는 부분이 다른 문서 편집기를 사용하는 것보다 MySQL 프로시저를 이용하는 편이 더 편했기 때문에 아래와 같이 프로시저를 만들고 실행시켰습니다. 200만건이 들어가는데에는 15분정도가 소요되었",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/"
@@ -249,7 +249,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
             <div class="gh-article-meta-inner">
                 <time class="gh-article-date" datetime="2023-09-17">Sep 17, 2023</time>
                     <span class="gh-article-meta-sep"></span>
-                    <span class="gh-article-length">7 min</span>
+                    <span class="gh-article-length">13 min</span>
             </div>
         </div>
 
@@ -342,7 +342,26 @@ Hibernate: select itemcounts0_.id as id1_5_0_, itemcounts0_.chat_counts as chat_
 Hibernate: select region0_.id as id1_7_0_, region0_.city as city2_7_0_, region0_.county as county3_7_0_, region0_.district as district4_7_0_ from region region0_ where region0_.id=?</code></pre>
 <p></p>
 <h2 id="%EC%8B%A4%ED%96%89-%EC%8B%9C%EA%B0%84-%ED%99%95%EC%9D%B8">실행 시간 확인</h2>
-<p>200만건의 데이터를 넣고서 가장 놀라웠던 부분이 실행 시간이 엄청나게 늘었다는 점입니다. offset 방식의 페이지네이션</p>
+<p>200만건의 데이터를 넣고서 가장 놀라웠던 부분이 실행 시간이 엄청나게 늘었다는 점입니다. offset 방식을 사용한 페이지네이션의 한계를 보여줍니다.</p>
+<ul><li>실제 작성한 java 코드입니다.</li></ul>
+<pre><code class="language-java">@Override
+public Slice&lt;Item&gt; findAllByBasedRegion(Long categoryId, Long sellerId, List&lt;Status&gt; sales, Long regionId, Pageable pageable) {
+    int pageSize = pageable.getPageSize()+1;
+
+    List&lt;Item&gt; fetch = jpaQueryFactory.selectFrom(item)
+            .where(
+                    eqRegion(regionId),
+                    eqCategory(categoryId),
+                    inSales(sales),
+                    eqSeller(sellerId),
+                    item.isDeleted.eq(false)
+            )
+            .offset(pageable.getOffset())
+            .limit(pageSize)
+            .orderBy(item.id.desc())
+            .fetch();
+    return new SliceImpl&lt;&gt;(getContents(fetch, pageSize-1), pageable, hasNext(fetch, pageSize-1));
+}</code></pre>
 <ul><li>첫 페이지의 경우 별 문제가 없었습니다.</li></ul>
 <pre><code class="language-http">http://localhost:8080/items?region=1168065000&amp;page=0</code></pre>
 <figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-12.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
@@ -385,10 +404,61 @@ create index fk_item_region_is_deleted on item (region_id, is_deleted);
 <p></p>
 <p></p>
 <h2 id="no-offset-%EB%B0%A9%EC%8B%9D%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EC%84%A0">No-offset 방식으로 개선</h2>
-<h3 id="cursor-%EB%B0%A9%EC%8B%9D">Cursor 방식</h3>
+<h3 id="offset%EC%9D%84-%EC%82%AC%EC%9A%A9%ED%95%9C-%ED%8E%98%EC%9D%B4%EC%A7%80-%EB%B0%A9%EC%8B%9D%EC%9D%98-%EB%AC%B8%EC%A0%9C%EC%A0%90">Offset을 사용한 페이지 방식의 문제점</h3>
 <p>이전의 쿼리가 offset 방식으로 구현된 것을 Cursor 방식으로 바꾸기로 하였습니다.</p>
-<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page?ref=localhost"><div class="kg-bookmark-content"><div class="kg-bookmark-title">OFFSET is bad for skipping previous rows</div><div class="kg-bookmark-description">OFFSET doesn’t deliver stable results and makes the query slow. Key-set pagination does neither.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://use-the-index-luke.com/static/favicon-180.6NClWosG.png" alt></div></div><div class="kg-bookmark-thumbnail"><img src="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png" alt></div></a></figure>
+<p>오프셋 방식은 페이지 번호만 알면 되므로 간편하고 처리가 매우 쉽습니다. 임의의 페이지에 접근하려고 할 때는 해당 페이지의 offset인 페이지 번호만 알면됩니다.</p>
+<pre><code class="language-sql">-- 대표적인 offset 방식 페이지네이션의 쿼리 예시
+
+SELECT *
+FROM sales
+ORDER BY sale_date DESC
+LIMIT 10 OFFSET 10</code></pre>
+<p>하지만 이 방식을 뜯어보면 치명적인 단점을 발견할 수가 있습니다.</p>
+<h4 id="%EB%92%B7-%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A1%9C-%EA%B0%88-%EC%88%98%EB%A1%9D-%EC%84%B1%EB%8A%A5-%EC%A0%80%ED%95%98">뒷 페이지로 갈 수록 성능 저하</h4>
+<p>오프셋 방식은 첫번째 레코드부터 마지막 레코드까지 번호를 매기고 원하는 페이지의 내용에서 필요없는 방식을 삭제하는 방법이기 때문에 첫 페이지는 별 문제가 없지만 점점 뒤의 페이지 일수록 빠른 성능 저하가 일어납니다. 스캔할 인덱스 범위가 더 커지기 때문입니다.</p>
+<figure class="kg-card kg-image-card"><img src="https://use-the-index-luke.com/static/fig07_02_topn_paging.en.GlofBsmI.png" class="kg-image" alt loading="lazy"></figure>
+<p>위의 예시 쿼리로 보았을 때 페이지 4의 레코드를 불러오기 위해서는 <code>SALE_DATE</code> 로 정렬된 레코드를 순서대로 읽어 4페이지 분량까지 스캔한 후, 3페이지의 분량을 삭제하는 방식인 것입니다.</p>
+<h4 id="%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%B6%94%EA%B0%80%EC%8B%9C-%EC%A4%91%EB%B3%B5-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EB%85%B8%EC%B6%9C">데이터 추가시 중복 데이터 노출</h4>
+<p>또 다른 문제점은 만약 페이지 요청과 다음 페이지 요청 사이에 누군가 글을 삭제하거나 작성하면 페이지 내용이 밀려 중복된 데이터가 노출될 수 있다는 것입니다. 스크롤을 이용한 UI를 사용하는 환경에서는 조회 데이터가 누적되어 보이므로 치명적인 단점입니다.  새로고침 하거나 다른 페이지를 조회했다 다시 오지 않는 이상 데이터가 정정될 수도 없습니다. (같은 데이터가 여러번 보이면 아무리 봐도.. <code>200 OK</code>가 무색하게 사용자에게는 렉이나 오류처럼 보일것 같지요... 👀)</p>
 <p></p>
+<h3 id="cursor-%EB%B0%A9%EC%8B%9D">Cursor 방식</h3>
+<p>그래서 대안이 offset을 사용하지 않는 방식입니다. 이전 페이지의 마지막 값을 사용하여 하한을 지정하는 방식입니다.</p>
+<pre><code class="language-sql">SELECT *
+  FROM sales
+ WHERE sale_date &lt; ?
+ ORDER BY sale_date DESC
+ FETCH FIRST 10 ROWS ONLY</code></pre>
+<p>이 방법에서는 정렬 순서와 인덱싱이 매우 중요합니다. 인덱싱을 잘 활용하여 데이터 스캔하는 범위를 줄일수록 성능 개선에 효과적이기 때문입니다.</p>
+<pre><code class="language-sql">CREATE INDEX sl_dtid ON sales (sale_date, sale_id) -- 정렬조건에 맞는 인덱스를 생성해줍니다.
+
+SELECT *
+  FROM sales
+ WHERE (sale_date, sale_id) &lt; (?, ?)
+ ORDER BY sale_date DESC, sale_id DESC
+ FETCH FIRST 10 ROWS ONLY</code></pre>
+<p>초반에는 큰 차이가 나지 않지만 뒷 페이지 접근을 시도하면 차이점을 확연히 느낄 수가 있었습니다.</p>
+<figure class="kg-card kg-image-card"><img src="https://use-the-index-luke.com/static/fig07_03_topn_skipping.en.zEIfVArH.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>👇 이 내용을 이해하는 데는 해당 링크가 큰 도움이 되었습니다.</p>
+<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page?ref=localhost"><div class="kg-bookmark-content"><div class="kg-bookmark-title">OFFSET is bad for skipping previous rows</div><div class="kg-bookmark-description">OFFSET doesn’t deliver stable results and makes the query slow. Key-set pagination does neither.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://use-the-index-luke.com/static/favicon-180.6NClWosG.png" alt></div></div><div class="kg-bookmark-thumbnail"><img src="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png" alt></div></a></figure>
+<p>아래는 cursor 방식으로 개선한 Java 코드입니다.</p>
+<pre><code class="language-java">public Slice&lt;Item&gt; findAllByIdAndRegion(Long last, Long categoryId, Long sellerId, List&lt;Status&gt; sales, Long regionId, Pageable pageable) {
+    int pageSize = pageable.getPageSize()+1;
+
+    List&lt;Item&gt; fetch = jpaQueryFactory.selectFrom(item)
+            .where(
+                    eqLast(last),
+                    eqRegion(regionId),
+                    eqCategory(categoryId),
+                    inSales(sales),
+                    eqSeller(sellerId),
+                    item.isDeleted.eq(false)
+            )
+            .limit(pageSize)
+            .orderBy(item.id.desc())
+            .fetch();
+    return new SliceImpl&lt;&gt;(getContents(fetch, pageSize-1), pageable, hasNext(fetch, pageSize-1));
+}</code></pre>
 <p></p>
 <h3 id="%EC%8B%A4%ED%96%89-%EC%BF%BC%EB%A6%AC">실행 쿼리</h3>
 <pre><code class="language-sql">// region 검증을 위한 조회
@@ -403,10 +473,25 @@ Hibernate: select itemcounts0_.id as id1_5_0_, itemcounts0_.chat_counts as chat_
 </code></pre>
 <p></p>
 <h2 id="%EA%B0%9C%EC%84%A0-%EA%B2%B0%EA%B3%BC">개선 결과</h2>
-<ul><li>첫 페이지에 대한 요청<ul><li>비슷한 결과가 나왔습니다.</li></ul></li></ul>
+<ul><li>첫 페이지에 대한 요청<ul><li>개선 이전과 비슷한 결과가 나왔습니다.</li></ul></li></ul>
+<pre><code class="language-http">http://localhost:8080/v2/items?regionId=1168065000</code></pre>
 <figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-13.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
-<ul><li>거의 끝 페이지 (version 1 테스트시 같은 데이터 내용) 요청<ul><li>실행 시간 138 ms로 약 1000% 성능 개선이 되었습니다.</li></ul></li></ul>
+<ul><li>거의 끝 페이지 (version 1 테스트시 같은 데이터 내용) 요청<ul><li>실행 시간 138 ms로 약 1000% 성능 개선이 되었음을 알 수 있습니다.</li></ul></li></ul>
+<pre><code class="language-http">http://localhost:8080/v2/items?regionId=1168065000&amp;last=1050</code></pre>
 <figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-14.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
+<p></p>
+<h1 id="%EA%B0%9C%EC%84%A0%EC%9D%98-%ED%95%9C%EA%B3%84%EC%A0%90">개선의 한계점</h1>
+<h2 id="api-%EC%9A%94%EC%B2%AD-%EA%B0%92%EC%9D%84-%EB%B0%94%EA%BE%B8%EC%A7%80-%EC%95%8A%EA%B3%A0-offset%EC%9D%84-%EB%B0%94%EA%BF%80-%EC%88%98-%EC%9E%88%EB%8A%94%EC%A7%80">API 요청 값을 바꾸지 않고 Offset을 바꿀 수 있는지?</h2>
+<p>이번 API 개선을 하면서 불가피하게 version 2의 API를 만들어야 했습니다. API 요청하는 서비스가 계속 지속되고 있는 상태에서 요청 파라미터의 개편이 있었기 때문에 기존 API를 유지한 채 진행한 것입니다. <a href="https://rnathsus.tistory.com/339?ref=localhost" rel="noreferrer">[API 버저닝 참고링크]</a></p>
+<p>이를 유지하며 개선하다보니 요청 파라미터를 유치한채 cursor 방식으로 개편하는 방법에 대해 고민해보았는데요. 카운트 쿼리를 추가로 날리게 되고, 게시물의 중복 표시 문제가 해결되지 않는 것 같아 v2의 API를 구현하였습니다.</p>
+<h2 id="%ED%95%9C%EB%B2%88%EC%97%90-1000%ED%8E%98%EC%9D%B4%EC%A7%80%EB%A5%BC-%EC%9A%94%EC%B2%AD%ED%95%98%EA%B3%A0-%EC%8B%B6%EC%9D%84-%EB%95%8C%EB%8A%94-%EC%96%B4%EB%96%BB%EA%B2%8C-%ED%95%98%EC%A7%80">한번에 1000페이지를 요청하고 싶을 때는 어떻게 하지?</h2>
+<p>이번에는 무한 스크롤 형태의 페이징 형식이었지만 번호로 라벨링 되는 페이지 형식의 UI일 때는 언급했듯이 count 쿼리를 추가하여 한번에 성능 저하없이 이동할 수 있지 않을까 싶습니다.</p>
+<p>대다수의 대형 서비스에서는 애초에 조회 가능한 데이터 수를 한정해 두는 것 같습니다. <a href="https://jeong-pro.tistory.com/244?ref=localhost" rel="noreferrer">[참고한 링크: MySQL LIMIT 최적화(feat. 구글이&nbsp;검색결과를 최대 1,000건만 제공하는 이유)]</a></p>
+<p></p>
+<hr>
+<h1 id="refs">Refs.</h1>
+<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page?ref=localhost"><div class="kg-bookmark-content"><div class="kg-bookmark-title">OFFSET is bad for skipping previous rows</div><div class="kg-bookmark-description">OFFSET doesn’t deliver stable results and makes the query slow. Key-set pagination does neither.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://use-the-index-luke.com/static/favicon-180.6NClWosG.png" alt></div></div><div class="kg-bookmark-thumbnail"><img src="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png" alt></div></a></figure>
+<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://jojoldu.tistory.com/530?category=637935&ref=localhost"><div class="kg-bookmark-content"><div class="kg-bookmark-title">3-1. 페이징 성능 개선하기 - 검색 버튼 사용시 페이지 건수 고정하기</div><div class="kg-bookmark-description">모든 코드는 Github에 있습니다. 앞서 포스팅에서 실질 페이징 쿼리 성능을 올리는 방법들을 소개 드렸는데요. 1. 페이징 성능 개선하기 - No Offset 사용하기 2. 페이징 성능 개선하기 - 커버링 인덱스 사용하기 페이징 기능을 구현하는데 있어, 페이징 쿼리 자체를 개선하는 것도 방법이지만 그 외 다른 기능을 개선하는 방법도 함께할 수 있습니다. 여기서 말하는 그 외 기능은 바로 count 쿼리입니다. 일반적인 페이징 기능에 있어 데이터 조회와 함께 매번 함께 수행되는 것이 바로 count 쿼리인데요. 해당 조건으로 조회되…</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://jojoldu.tistory.com/favicon.ico" alt><span class="kg-bookmark-author">TISTORY</span><span class="kg-bookmark-publisher">향로</span></div></div><div class="kg-bookmark-thumbnail"><img src="https://img1.daumcdn.net/thumb/R800x0/?scode=mtistory2&amp;fname=https%3A%2F%2Ft1.daumcdn.net%2Fcfile%2Ftistory%2F99277B4D5F9ECA120B" alt></div></a></figure>
 
 		<section class="post-full-comments">
   <div id="disqus_thread"></div>
