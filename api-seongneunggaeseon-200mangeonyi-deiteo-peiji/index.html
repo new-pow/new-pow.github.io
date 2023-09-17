@@ -71,7 +71,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-17T02:16:04.000Z">
-    <meta property="article:modified_time" content="2023-09-17T04:03:16.000Z">
+    <meta property="article:modified_time" content="2023-09-17T06:53:24.000Z">
     <meta property="article:tag" content="Projects">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Java">
@@ -139,7 +139,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     "headline": "API 성능개선 : 페이징 cursor 방식으로 개선하기",
     "url": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/",
     "datePublished": "2023-09-17T02:16:04.000Z",
-    "dateModified": "2023-09-17T04:03:16.000Z",
+    "dateModified": "2023-09-17T06:53:24.000Z",
     "keywords": "Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\nAPI 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.\n\n\n * M1 16GB 메모리 환경에서 테스트되었습니다.\n\n\n\n\n\n\n200만건의 데이터를 넣어보자\n\n\nDummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서 테이블 3개에 동시에 데이터를 넣어야 했기 때문에 프로시저를 통해 랜덤한 데이터를 넣어주고자 했습니다.\n\n\n더미 데이터를 넣는 가장 빠른 방법은 csv로 데이터를 만든 후 dump insert하는 것이 가장 빠르겠지만, 랜덤하게 변수를 설정하는 부분이 다른 문서 편집기를 사용하는 것보다 MySQL 프로시저를 이용하는 편이 더 편했기 때문에 아래와 같이 프로시저를 만들고 실행시켰습니다. 200만건이 들어가는데에는 15분정도가 소요되었",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/"
@@ -364,7 +364,8 @@ fk_item_member_idx
 fk_item_region1_idx</code></pre>
 <pre><code class="language-sql">create index fk_item_category_index
     on item (category);</code></pre>
-<p>검색 조건 중 category 에 대한 index가 없어서 추가해주었습니다. 그러나 쿼리에서는 무조건 지역 정보가 기본으로 하고 검색 조건이 필터링에 따라 추가되는 형태라 이 인덱스를 절대 타지 않습니다.</p>
+<p>검색 조건 중 category 에 대한 index가 없어서 추가해주었습니다. 그러나 쿼리에서는 무조건 지역 정보가 기본으로 하고 검색 조건이 필터링에 따라 추가되는 형태라 이 인덱스를 절대 타지 않았습니다. 그래서 필터 조건이 되는 region 조건을 추가하여 인덱스를 탈 수 있는 조건이 되도록 했습니다.</p>
+<p> </p>
 <ul><li>아래는 가장 기본적인 검색 쿼리로 했을 때의 실행계획입니다.</li></ul>
 <pre><code class="language-sql">+--+-----------+------+----------+----+-------------------+-------------------+-------+-----+----+--------+--------------------------------+
 |id|select_type|table |partitions|type|possible_keys      |key                |key_len|ref  |rows|filtered|Extra                           |
@@ -372,8 +373,6 @@ fk_item_region1_idx</code></pre>
 |1 |SIMPLE     |item0_|NULL      |ref |fk_item_region1_idx|fk_item_region1_idx|8      |const|1   |50      |Using where; Backward index scan|
 +--+-----------+------+----------+----+-------------------+-------------------+-------+-----+----+--------+--------------------------------+
 </code></pre>
-<p></p>
-<p>다음과 같이 필터 조건으로 인해 나올 수 있는 인덱스를 추가해줄 수 있었습니다.</p>
 <pre><code class="language-sql">-- 기본 검색일 때
 create index fk_item_region_is_deleted on item (region_id, is_deleted);
 
@@ -387,7 +386,7 @@ create index fk_item_region_is_deleted on item (region_id, is_deleted);
 <p></p>
 <h2 id="no-offset-%EB%B0%A9%EC%8B%9D%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EC%84%A0">No-offset 방식으로 개선</h2>
 <h3 id="cursor-%EB%B0%A9%EC%8B%9D">Cursor 방식</h3>
-<p></p>
+<p>이전의 쿼리가 offset 방식으로 구현된 것을 Cursor 방식으로 바꾸기로 하였습니다.</p>
 <figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page?ref=localhost"><div class="kg-bookmark-content"><div class="kg-bookmark-title">OFFSET is bad for skipping previous rows</div><div class="kg-bookmark-description">OFFSET doesn’t deliver stable results and makes the query slow. Key-set pagination does neither.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://use-the-index-luke.com/static/favicon-180.6NClWosG.png" alt></div></div><div class="kg-bookmark-thumbnail"><img src="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png" alt></div></a></figure>
 <p></p>
 <p></p>
