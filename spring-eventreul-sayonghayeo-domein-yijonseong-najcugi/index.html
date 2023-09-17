@@ -48,6 +48,7 @@
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
     
+    <meta property="og:site_name" content="new-pow&#x27;s space">
     <meta property="og:type" content="article">
     <meta property="og:title" content="Spring Event를 사용하여 도메인 의존성 낮추기">
     <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
@@ -69,6 +70,7 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     <meta property="article:tag" content="Posts">
     <meta property="article:tag" content="Spring">
     <meta property="article:tag" content="Secondhand">
+    <meta property="article:tag" content="Projects">
     
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
@@ -90,7 +92,7 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     <meta name="twitter:label1" content="Written by">
     <meta name="twitter:data1" content="saehim lee">
     <meta name="twitter:label2" content="Filed under">
-    <meta name="twitter:data2" content="Posts, Spring, Secondhand">
+    <meta name="twitter:data2" content="Posts, Spring, Secondhand, Projects">
     <meta name="twitter:site" content="@ghost">
     <meta property="og:image:width" content="2000">
     <meta property="og:image:height" content="1668">
@@ -101,11 +103,11 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     "@type": "Article",
     "publisher": {
         "@type": "Organization",
-        "name": "",
+        "name": "new-pow&#x27;s space",
         "url": "http://localhost:2369/",
         "logo": {
             "@type": "ImageObject",
-            "url": "http://localhost:2369/content/images/size/w256h256/2023/08/ringed-planet_1fa90.png",
+            "url": "http://localhost:2369/content/images/2023/09/ringed-planet_1fa90-1.png",
             "width": 60,
             "height": 60
         }
@@ -126,14 +128,14 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
     "url": "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/",
     "datePublished": "2023-08-22T03:24:19.000Z",
     "dateModified": "2023-09-13T13:55:02.000Z",
-    "keywords": "Posts, Spring, Secondhand",
+    "keywords": "Posts, Spring, Secondhand, Projects",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n\n\n\n\n발단\n\n\n\nSecondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이 높아지는 우려가 생겼습니다.\n\n\n@Component\n@RequiredArgsConstructor\npublic class ChatroomFacade {\n    private final ChatroomService chatRoomService;\n    private final ItemService itemService;\n    private final MemberService memberService;\n    private final ChatroomCacheServ",
     "mainEntityOfPage": "http://localhost:2369/spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/"
 }
     </script>
 
     <meta name="generator" content="Ghost 5.62">
-    <link rel="alternate" type="application/rss+xml" title="" href="../rss/index.html">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
     
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
@@ -171,10 +173,10 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff2e2e;}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
 </head>
 
-<body class="post-template tag-posts tag-spring tag-secondhand is-head-left-logo">
+<body class="post-template tag-posts tag-spring tag-secondhand tag-projects is-head-left-logo">
 <div class="gh-site">
 
     <header id="gh-head" class="gh-head gh-outer">
@@ -183,7 +185,8 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
                 <div class="gh-head-brand-wrapper">
                     
                     <a class="gh-head-logo" href="../index.html">
-                            
+                            <img src="../content/images/2023/09/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                                <img src="../content/images/2023/09/ringed-planet_1fa90.png" alt="new-pow&#x27;s space">
                     </a>
                     
                 </div>
@@ -208,7 +211,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 
     
 <main class="gh-main">
-        <article class="gh-article post tag-posts tag-spring tag-secondhand no-image">
+        <article class="gh-article post tag-posts tag-spring tag-secondhand tag-projects no-image">
 
             <header class="gh-article-header gh-canvas">
                     <a class="gh-article-tag" href="../tag/posts/index.html">Posts</a>
@@ -501,6 +504,38 @@ public void handleSuccessful(GenericSpringEvent&lt;String&gt; event) {
                 <div class="gh-topic gh-topic-grid">
                     <div class="gh-topic-content">
                             <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">API 성능개선 : 페이징 cursor 방식으로 개선하기</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-09-17">Sep 17, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
     <a class="gh-card-link" href="../mysql-full-test-search/index.html">
 
         <div class="gh-card-wrapper">
@@ -565,31 +600,6 @@ colors = {
             </footer>
         </div>
     </a>
-</article>                            <article class="gh-card post no-image">
-    <a class="gh-card-link" href="../2022-log-3/index.html">
-
-        <div class="gh-card-wrapper">
-            <header class="gh-card-header">
-                <h3 class="gh-card-title">2022년 회고 (3) 백엔드 개발자가 되겠어 ✊</h3>
-            </header>
-
-                    <div class="gh-card-excerpt">난생처음 CS스터디
-우아한테크코스 프리코스 3기, 코드스쿼드 프리코스 후기
-
-
- * 케케묵은 지난글 👇
-   * 2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기
-   * 2022년 회고 (2) 풀스택 국비교육 수강기
-
-
-아직도 2022년 이라니 질릴만도 합니다만... 살면서 가장 바빴던 시기이자 가장 열정적인 시기를 보내고 있는만큼 좀 더 잘 기록하고 싶은 욕심에 글이 길어지고 있습니다. 1년을 3년처럼 살았으니</div>
-
-            <footer class="gh-card-footer">
-                <span class="gh-card-author">saehim lee</span>
-                <time class="gh-card-date" datetime="2023-01-22">Jan 22, 2023</time>
-            </footer>
-        </div>
-    </a>
 </article>                    </div>
                 </div>
             </div>
@@ -610,7 +620,7 @@ colors = {
             </nav>
 
             <div class="gh-copyright">
-                     © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
             </div>
         </div>
     </footer>

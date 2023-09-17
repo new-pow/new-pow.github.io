@@ -48,6 +48,7 @@
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
     
+    <meta property="og:site_name" content="new-pow&#x27;s space">
     <meta property="og:type" content="article">
     <meta property="og:title" content="MySQL 검색 기능 개선하기 : Full-text search">
     <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
@@ -73,11 +74,12 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     <meta property="og:url" content="http://localhost:2369/mysql-full-test-search/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-08-19T21:07:52.000Z">
-    <meta property="article:modified_time" content="2023-09-13T13:54:50.000Z">
+    <meta property="article:modified_time" content="2023-09-15T03:18:40.000Z">
     <meta property="article:tag" content="Posts">
     <meta property="article:tag" content="Database">
     <meta property="article:tag" content="Refactoring">
     <meta property="article:tag" content="Secondhand">
+    <meta property="article:tag" content="Projects">
     
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
@@ -107,7 +109,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     <meta name="twitter:label1" content="Written by">
     <meta name="twitter:data1" content="saehim lee">
     <meta name="twitter:label2" content="Filed under">
-    <meta name="twitter:data2" content="Posts, Database, Refactoring, Secondhand">
+    <meta name="twitter:data2" content="Posts, Database, Refactoring, Secondhand, Projects">
     <meta name="twitter:site" content="@ghost">
     <meta property="og:image:width" content="2000">
     <meta property="og:image:height" content="1668">
@@ -118,11 +120,11 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     "@type": "Article",
     "publisher": {
         "@type": "Organization",
-        "name": "",
+        "name": "new-pow&#x27;s space",
         "url": "http://localhost:2369/",
         "logo": {
             "@type": "ImageObject",
-            "url": "http://localhost:2369/content/images/size/w256h256/2023/08/ringed-planet_1fa90.png",
+            "url": "http://localhost:2369/content/images/2023/09/ringed-planet_1fa90-1.png",
             "width": 60,
             "height": 60
         }
@@ -142,15 +144,15 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     "headline": "MySQL 검색 기능 개선하기 : Full-text search",
     "url": "http://localhost:2369/mysql-full-test-search/",
     "datePublished": "2023-08-19T21:07:52.000Z",
-    "dateModified": "2023-09-13T13:54:50.000Z",
-    "keywords": "Posts, Database, Refactoring, Secondhand",
+    "dateModified": "2023-09-15T03:18:40.000Z",
+    "keywords": "Posts, Database, Refactoring, Secondhand, Projects",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n\n\n\n\n발단 : 왜 이것이 필요했나?\n\n\n\nSecondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들어 이런거요.\n\n\n[이미지 출처 : https://kikimong.com/7179]\n\n\n\n\n먼저 데이터는 이런식으로 들어가 있습니다. 법정동 코드를 pk 로 하였습니다. 행정동 코드보다 법정동 코드를 선택한 이유는 변동이 더 적기 때문입니다. [참고링크 : 법정동과 행정동의 차이는?]\n\n\n그래서 이것을 어떻게 구현하면 좋을까요?\n\n\n * 이 글은 mysql 8.0 InnoDB 환경에서 테스트 되었습니다.\n\n\n\n\n\n\n\n\n\n전개\n\n\n\n\n초기 구현 방법 Where ~ like\n\n\n사실 이 프로젝트의 기간 제한이 있었습니다. 총 4주간의 기간동안 처음 구현하는 채팅 시스템까지 모두 구현하는 것이 목표였기 때문에 이 로직에 투자할 시간이 매우 적었습니다. 그래서 가장 처음에는 가장",
     "mainEntityOfPage": "http://localhost:2369/mysql-full-test-search/"
 }
     </script>
 
     <meta name="generator" content="Ghost 5.62">
-    <link rel="alternate" type="application/rss+xml" title="" href="../rss/index.html">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
     
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
@@ -188,10 +190,10 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff2e2e;}</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
 </head>
 
-<body class="post-template tag-posts tag-database tag-refactoring tag-secondhand is-head-left-logo">
+<body class="post-template tag-posts tag-database tag-refactoring tag-secondhand tag-projects is-head-left-logo">
 <div class="gh-site">
 
     <header id="gh-head" class="gh-head gh-outer">
@@ -200,7 +202,8 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
                 <div class="gh-head-brand-wrapper">
                     
                     <a class="gh-head-logo" href="../index.html">
-                            
+                            <img src="../content/images/2023/09/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                                <img src="../content/images/2023/09/ringed-planet_1fa90.png" alt="new-pow&#x27;s space">
                     </a>
                     
                 </div>
@@ -225,7 +228,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 
     
 <main class="gh-main">
-        <article class="gh-article post tag-posts tag-database tag-refactoring tag-secondhand no-image">
+        <article class="gh-article post tag-posts tag-database tag-refactoring tag-secondhand tag-projects no-image">
 
             <header class="gh-article-header gh-canvas">
                     <a class="gh-article-tag" href="../tag/posts/index.html">Posts</a>
@@ -455,9 +458,7 @@ List&lt;Region&gt; findAllByAddress(@Param("address") String address);</code></p
 <p></p>
 <h2 id="%EA%B7%BC%EC%B2%98-%EB%8F%99%EB%84%A4-%EA%B2%80%EC%83%89%EC%9D%80-%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B5%AC%ED%98%84%ED%95%A0-%EC%88%98-%EC%9E%88%EC%9D%84%EA%B9%8C">근처 동네 검색은 어떻게 구현할 수 있을까?</h2>
 <p>실제 당근마켓은 인접한 동네를 알 수 있는 기능이 있습니다. 이것은 어떻게 구현할 수 있을까요? 지금의 구현 방법으로는 문자열에 기반하기 때문에 제가 만약 강남구 끝자락에 있어도 인접한 구가 우선순위로 반환되지 않습니다. 이때문에 다양한 생각을 했었던 것을 나열하자면 다음과 같습니다.</p>
-<ul><li>검색엔진 등을 통해 인접한 동네 정보를 별도로 저장합니다.</li><li>행정표준코드는 지명 정보와 일치하게 구성되어 있습니다.  이에 대해 더 분석해보아도 될 것 같습니다.</li></ul>
-<figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-6.png" class="kg-image" alt loading="lazy" width="1928" height="948" srcset="../content/images/size/w600/2023/09/image-6.png 600w, ../content/images/size/w1000/2023/09/image-6.png 1000w, ../content/images/size/w1600/2023/09/image-6.png 1600w, ../content/images/2023/09/image-6.png 1928w" sizes="(min-width: 720px) 720px"></figure>
-<ul><li>위도와 경도 등 이미 부여된 좌표를 이용하여 인접 동네에 대한 탐색 기준을 새로 정합니다.<ul><li>예를 들어 배달의 민족은 <code>S2</code> 를 통해 행정동과 좌표를 매핑하여 배달 좌표를 디테일하게 지정합니다. <a href="https://techblog.woowahan.com/2717/?ref=localhost" rel="noreferrer">[참고링크]</a></li></ul></li></ul>
+<ul><li>검색엔진 등을 통해 인접한 동네 정보를 별도로 저장합니다.</li><li>행정표준코드는 지명 정보와 일치하게 구성되어 있습니다.  이에 대해 더 분석해보아도 될 것 같습니다.</li><li>위도와 경도 등 이미 부여된 좌표를 이용하여 인접 동네에 대한 탐색 기준을 새로 정합니다.<ul><li>MySQL에서 좌표 사이 거리를 구하는 쿼리가 있어서 첨부합니다.&nbsp;<a href="https://pumpapapumpa.tistory.com/2?ref=localhost" rel="noopener">[참고링크]</a>&nbsp;</li><li>예를 들어 배달의 민족은 <code>S2</code> 를 통해 행정동과 좌표를 매핑하여 배달 좌표를 디테일하게 지정합니다. <a href="https://techblog.woowahan.com/2717/?ref=localhost" rel="noreferrer">[참고링크]</a></li></ul></li></ul>
 <p></p>
 <hr>
 <h1 id="refs">Refs.</h1>
@@ -491,6 +492,38 @@ List&lt;Region&gt; findAllByAddress(@Param("address") String address);</code></p
                 <div class="gh-topic gh-topic-grid">
                     <div class="gh-topic-content">
                             <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">API 성능개선 : 페이징 cursor 방식으로 개선하기</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-09-17">Sep 17, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
     <a class="gh-card-link" href="../spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/index.html">
 
         <div class="gh-card-wrapper">
@@ -547,31 +580,6 @@ colors = {
             </footer>
         </div>
     </a>
-</article>                            <article class="gh-card post no-image">
-    <a class="gh-card-link" href="../2022-log-3/index.html">
-
-        <div class="gh-card-wrapper">
-            <header class="gh-card-header">
-                <h3 class="gh-card-title">2022년 회고 (3) 백엔드 개발자가 되겠어 ✊</h3>
-            </header>
-
-                    <div class="gh-card-excerpt">난생처음 CS스터디
-우아한테크코스 프리코스 3기, 코드스쿼드 프리코스 후기
-
-
- * 케케묵은 지난글 👇
-   * 2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기
-   * 2022년 회고 (2) 풀스택 국비교육 수강기
-
-
-아직도 2022년 이라니 질릴만도 합니다만... 살면서 가장 바빴던 시기이자 가장 열정적인 시기를 보내고 있는만큼 좀 더 잘 기록하고 싶은 욕심에 글이 길어지고 있습니다. 1년을 3년처럼 살았으니</div>
-
-            <footer class="gh-card-footer">
-                <span class="gh-card-author">saehim lee</span>
-                <time class="gh-card-date" datetime="2023-01-22">Jan 22, 2023</time>
-            </footer>
-        </div>
-    </a>
 </article>                    </div>
                 </div>
             </div>
@@ -592,7 +600,7 @@ colors = {
             </nav>
 
             <div class="gh-copyright">
-                     © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
             </div>
         </div>
     </footer>

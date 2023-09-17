@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>API 성능개선 : 페이징 cursor 방식으로 개선하기</title>
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=a2ab59ba81.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
+
+        .gh-toc > .toc-list {
+            position: relative;
+        }
+
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+            font-size: smaller;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
+    <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="new-pow&#x27;s space">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="API 성능개선 : 페이징 cursor 방식으로 개선하기">
+    <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서">
+    <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/">
+    <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta property="article:published_time" content="2023-09-17T02:16:04.000Z">
+    <meta property="article:modified_time" content="2023-09-17T04:03:16.000Z">
+    <meta property="article:tag" content="Projects">
+    <meta property="article:tag" content="Secondhand">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="SpringDataJpa">
+    <meta property="article:tag" content="Refactoring">
+    <meta property="article:tag" content="Database">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="API 성능개선 : 페이징 cursor 방식으로 개선하기">
+    <meta name="twitter:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서">
+    <meta name="twitter:url" content="http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/">
+    <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="saehim lee">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database">
+    <meta name="twitter:site" content="@ghost">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1668">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "new-pow&#x27;s space",
+        "url": "http://localhost:2369/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/09/ringed-planet_1fa90-1.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "saehim lee",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/IMG_1283-1.JPG",
+            "width": 1440,
+            "height": 1080
+        },
+        "url": "http://localhost:2369/author/saehim/",
+        "sameAs": []
+    },
+    "headline": "API 성능개선 : 페이징 cursor 방식으로 개선하기",
+    "url": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/",
+    "datePublished": "2023-09-17T02:16:04.000Z",
+    "dateModified": "2023-09-17T04:03:16.000Z",
+    "keywords": "Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database",
+    "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\nAPI 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.\n\n\n * M1 16GB 메모리 환경에서 테스트되었습니다.\n\n\n\n\n\n\n200만건의 데이터를 넣어보자\n\n\nDummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서 테이블 3개에 동시에 데이터를 넣어야 했기 때문에 프로시저를 통해 랜덤한 데이터를 넣어주고자 했습니다.\n\n\n더미 데이터를 넣는 가장 빠른 방법은 csv로 데이터를 만든 후 dump insert하는 것이 가장 빠르겠지만, 랜덤하게 변수를 설정하는 부분이 다른 문서 편집기를 사용하는 것보다 MySQL 프로시저를 이용하는 편이 더 편했기 때문에 아래와 같이 프로시저를 만들고 실행시켰습니다. 200만건이 들어가는데에는 15분정도가 소요되었",
+    "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.62">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
+    
+    <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
+    <script defer src="../public/cards.min.js%3Fv=a2ab59ba81"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=a2ab59ba81.css">
+    <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+<style>
+body,  
+h1, h2, h3, h4, h5, h6,
+.main-nav a,
+.subscribe-button,
+.page-title,
+.post-meta,
+.read-next-story .post:before,
+.pagination,
+.site-footer,
+.post-full-content,
+.post-card-excerpt,
+.post-full-custom-excerpt,
+[class^="icon-"]:before, [class*=" icon-"]:before
+{
+font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    }
+</style>
+
+<style>  
+.gh-canvas .article-image img {  
+	max-width: 350px;  
+	height: auto;  
+}  
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
+</head>
+
+<body class="post-template tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database is-head-left-logo">
+<div class="gh-site">
+
+    <header id="gh-head" class="gh-head gh-outer">
+        <div class="gh-head-inner gh-inner">
+            <div class="gh-head-brand">
+                <div class="gh-head-brand-wrapper">
+                    
+                    <a class="gh-head-logo" href="../index.html">
+                            <img src="../content/images/2023/09/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                                <img src="../content/images/2023/09/ringed-planet_1fa90.png" alt="new-pow&#x27;s space">
+                    </a>
+                    
+                </div>
+                <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-projects"><a href="../projects/index.html">Projects</a></li>
+    <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    
+<main class="gh-main">
+        <article class="gh-article post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database no-image">
+
+            <header class="gh-article-header gh-canvas">
+                    <a class="gh-article-tag" href="../tag/projects/index.html">Projects</a>
+
+                <h1 class="gh-article-title">API 성능개선 : 페이징 cursor 방식으로 개선하기</h1>
+
+                    <aside class="gh-article-sidebar">
+
+        <div class="gh-author-image-list">
+                <a class="gh-author-image" href="../author/saehim/index.html">
+                        <img src="../content/images/2023/08/IMG_1283-1.JPG" alt="saehim lee">
+                </a>
+        </div>
+
+        <div class="gh-author-name-list">
+                <h4 class="gh-author-name">
+                    <a href="../author/saehim/index.html">saehim lee</a>
+                </h4>
+                
+        </div>
+
+        <div class="gh-article-meta">
+            <div class="gh-article-meta-inner">
+                <time class="gh-article-date" datetime="2023-09-17">Sep 17, 2023</time>
+                    <span class="gh-article-meta-sep"></span>
+                    <span class="gh-article-length">7 min</span>
+            </div>
+        </div>
+
+    </aside>
+
+
+                            </header>
+
+
+            <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
+                <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트&nbsp;<a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a>&nbsp;구현시 이슈 사항을 정리한 글입니다.</blockquote>
+<p>API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.</p>
+<ul><li>M1 16GB 메모리 환경에서 테스트되었습니다.</li></ul>
+<p></p>
+<h1 id="200%EB%A7%8C%EA%B1%B4%EC%9D%98-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%A5%BC-%EB%84%A3%EC%96%B4%EB%B3%B4%EC%9E%90">200만건의 데이터를 넣어보자</h1>
+<p>Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서 테이블 3개에 동시에 데이터를 넣어야 했기 때문에 프로시저를 통해 랜덤한 데이터를 넣어주고자 했습니다.</p>
+<p>더미 데이터를 넣는 가장 빠른 방법은 csv로 데이터를 만든 후 dump insert하는 것이 가장 빠르겠지만, 랜덤하게 변수를 설정하는 부분이 다른 문서 편집기를 사용하는 것보다 MySQL 프로시저를 이용하는 편이 더 편했기 때문에 아래와 같이 프로시저를 만들고 실행시켰습니다. 200만건이 들어가는데에는 15분정도가 소요되었습니다. (이는 실행 환경마다 약간씩 다를 것 같습니다.)</p>
+<p></p>
+<pre><code class="language-sql">DELIMITER $$
+
+CREATE PROCEDURE InsertDummyData()
+BEGIN
+    DECLARE i INT DEFAULT 1; -- 1부터 삽입
+
+    WHILE i &lt;= 1000000 DO
+
+        SET @title = CONCAT('중고거래 물품 #', i);
+        SET @price = FLOOR(RAND() * 1000000) + 1;
+        SET @category = FLOOR(RAND() * 12) + 1;
+        SET @region_id = 1168065000; -- 지역값은 고정하였습니다.
+    
+        -- item_contents 테이블에 삽입
+        INSERT INTO item_contents (contents, detail_image_url)
+        VALUES ('랜덤한 내용 #', "https://placeimg.com/200/100/any");
+    
+        SET @item_contents_id = LAST_INSERT_ID();
+    
+        -- item_counts 테이블에 삽입
+        INSERT INTO item_counts (hits, like_counts, chat_counts)
+        VALUES (FLOOR(RAND() * 1000), FLOOR(RAND() * 1000), FLOOR(RAND() * 1000));
+    
+        SET @item_counts_id = LAST_INSERT_ID();
+    
+        -- item 테이블에 데이터 삽입
+        INSERT INTO item (title, price, status, category, thumbnail_url, created_at, updated_at, seller_id, item_counts_id, region_id, item_contents_id, is_deleted)
+        VALUES (@title, @price, 'ON_SALE', @category, "[{'url':'https://placeimg.com/200/100/any'}]", NOW(), NULL, 1, @item_counts_id, @region_id, @item_contents_id, 0);
+    
+        SET i = i + 1;
+    
+        -- 10000건마다 COMMIT 수행
+        IF i % 10000 = 0 THEN COMMIT;
+        END IF;
+
+  END WHILE;
+  COMMIT;
+
+END $$
+DELIMITER ;
+
+-- 정의한 프로시저를 호출합니다.
+call InsertDummyData();</code></pre>
+<p></p>
+<p></p>
+<h1 id="%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0%EC%9D%84-%EC%9C%84%ED%95%B4-%EA%B8%B0%EC%A1%B4-api-%EB%B6%84%EC%84%9D">성능 개선을 위해 기존 API 분석</h1>
+<p>가장 많이 호출되는 메서드인 item 목록 조회 쿼리를 Postman을 통해 실행시켜 보았습니다.</p>
+<p></p>
+<ul><li>HTTP 요청사항</li></ul>
+<pre><code class="language-http">GET /items?regionId=1168065000&amp;page=0 HTTP/1.1
+Host: localhost:8080</code></pre>
+<ul><li>실행되는 쿼리</li></ul>
+<pre><code class="language-bash">// 지역 유효성 검증을 위해 지역 id로 검색합니다.
+Hibernate: select region0_.id as id1_7_0_, region0_.city as city2_7_0_, region0_.county as county3_7_0_, region0_.district as district4_7_0_ from region region0_ where region0_.id=?
+
+// item을 조회합니다.
+Hibernate: select item0_.id as id1_3_, item0_.created_at as created_2_3_, item0_.updated_at as updated_3_3_, item0_.category as category4_3_, item0_.item_contents_id as item_co10_3_, item0_.item_counts_id as item_co11_3_, item0_.is_deleted as is_delet5_3_, item0_.price as price6_3_, item0_.region_id as region_12_3_, item0_.seller_id as seller_13_3_, item0_.status as status7_3_, item0_.thumbnail_url as thumbnai8_3_, item0_.title as title9_3_ from item item0_ where item0_.region_id=? and item0_.is_deleted=? order by item0_.id desc limit ?, ?
+
+// item의 조회수를 조회합니다. (batch size를 늘려주어 n+1을 1+1로 개선한 상태)
+Hibernate: select itemcounts0_.id as id1_5_0_, itemcounts0_.chat_counts as chat_cou2_5_0_, itemcounts0_.hits as hits3_5_0_, itemcounts0_.is_deleted as is_delet4_5_0_, itemcounts0_.like_counts as like_cou5_5_0_ from item_counts itemcounts0_ where itemcounts0_.id in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+
+// 로그인한 멤버 조회합니다.
+Hibernate: select member0_.id as id1_6_0_, member0_.member_id as member_i2_6_0_, member0_.oauth as oauth3_6_0_, member0_.profile_img_url as profile_4_6_0_ from member member0_ where member0_.id=?
+
+// item의 조회수를 분할하여 조회합니다.
+Hibernate: select itemcounts0_.id as id1_5_0_, itemcounts0_.chat_counts as chat_cou2_5_0_, itemcounts0_.hits as hits3_5_0_, itemcounts0_.is_deleted as is_delet4_5_0_, itemcounts0_.like_counts as like_cou5_5_0_ from item_counts itemcounts0_ where itemcounts0_.id=?
+
+// 지역을 다시 조회합니다. (item 에 대한 1+1 쿼리로 나가는 듯)
+Hibernate: select region0_.id as id1_7_0_, region0_.city as city2_7_0_, region0_.county as county3_7_0_, region0_.district as district4_7_0_ from region region0_ where region0_.id=?</code></pre>
+<p></p>
+<h2 id="%EC%8B%A4%ED%96%89-%EC%8B%9C%EA%B0%84-%ED%99%95%EC%9D%B8">실행 시간 확인</h2>
+<p>200만건의 데이터를 넣고서 가장 놀라웠던 부분이 실행 시간이 엄청나게 늘었다는 점입니다. offset 방식의 페이지네이션</p>
+<ul><li>첫 페이지의 경우 별 문제가 없었습니다.</li></ul>
+<pre><code class="language-http">http://localhost:8080/items?region=1168065000&amp;page=0</code></pre>
+<figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-12.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
+<ul><li>거의 끝 페이지를 요청을 했을 때 실행 시간이 10배로 늘어납니다.</li></ul>
+<pre><code class="language-http">http://localhost:8080/items?region=1168065000&amp;page=42012</code></pre>
+<figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-11.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
+<p></p>
+<p></p>
+<h1 id="%F0%9F%92%AA-%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0%EC%9D%84-%ED%95%98%EC%9E%90">💪 성능 개선을 하자 </h1>
+<h2 id="%EC%BF%BC%EB%A6%AC-%EC%A0%95%EB%A6%AC">쿼리 정리</h2>
+<p>중복으로 나가는 쿼리를 삭제하기 위해 서비스 로직을 확인하였습니다. 지역 쿼리가 추가로 나가는 부분을 개선하였습니다.</p>
+<ul><li><code>item count</code> 쿼리가 추가로 발생하는 부분은 hibernate가 쿼리를 캐싱한 결과입니다. <a href="https://42class.com/dev/jpa-batchsize/?ref=localhost" rel="noreferrer">[참고한 링크]</a> 쿼리에 대한 캐싱 설정을 수정하면 다른 API 효율에 영향을 미칠 수 있을 것 같아 권장한 설정값대로 두었습니다.</li></ul>
+<p></p>
+<h2 id="%EC%9D%B8%EB%8D%B1%EC%8A%A4-%EC%B6%94%EA%B0%80">인덱스 추가</h2>
+<pre><code class="language-sql">-- 기존 인덱스
+fk_item_item_contents1_idx
+fk_item_item_count_idx
+fk_item_member_idx
+fk_item_region1_idx</code></pre>
+<pre><code class="language-sql">create index fk_item_category_index
+    on item (category);</code></pre>
+<p>검색 조건 중 category 에 대한 index가 없어서 추가해주었습니다. 그러나 쿼리에서는 무조건 지역 정보가 기본으로 하고 검색 조건이 필터링에 따라 추가되는 형태라 이 인덱스를 절대 타지 않습니다.</p>
+<ul><li>아래는 가장 기본적인 검색 쿼리로 했을 때의 실행계획입니다.</li></ul>
+<pre><code class="language-sql">+--+-----------+------+----------+----+-------------------+-------------------+-------+-----+----+--------+--------------------------------+
+|id|select_type|table |partitions|type|possible_keys      |key                |key_len|ref  |rows|filtered|Extra                           |
++--+-----------+------+----------+----+-------------------+-------------------+-------+-----+----+--------+--------------------------------+
+|1 |SIMPLE     |item0_|NULL      |ref |fk_item_region1_idx|fk_item_region1_idx|8      |const|1   |50      |Using where; Backward index scan|
++--+-----------+------+----------+----+-------------------+-------------------+-------+-----+----+--------+--------------------------------+
+</code></pre>
+<p></p>
+<p>다음과 같이 필터 조건으로 인해 나올 수 있는 인덱스를 추가해줄 수 있었습니다.</p>
+<pre><code class="language-sql">-- 기본 검색일 때
+create index fk_item_region_is_deleted on item (region_id, is_deleted);
+
++--+-----------+------+----------+----+-------------------------+-------------------------+-------+-----------+----+--------+-------------------+
+|id|select_type|table |partitions|type|possible_keys            |key                      |key_len|ref        |rows|filtered|Extra              |
++--+-----------+------+----------+----+-------------------------+-------------------------+-------+-----------+----+--------+-------------------+
+|1 |SIMPLE     |item0_|NULL      |ref |fk_item_region_is_deleted|fk_item_region_is_deleted|10     |const,const|1   |100     |Backward index scan|
++--+-----------+------+----------+----+-------------------------+-------------------------+-------+-----------+----+--------+-------------------+
+</code></pre>
+<p></p>
+<p></p>
+<h2 id="no-offset-%EB%B0%A9%EC%8B%9D%EC%9C%BC%EB%A1%9C-%EA%B0%9C%EC%84%A0">No-offset 방식으로 개선</h2>
+<h3 id="cursor-%EB%B0%A9%EC%8B%9D">Cursor 방식</h3>
+<p></p>
+<figure class="kg-card kg-bookmark-card"><a class="kg-bookmark-container" href="https://use-the-index-luke.com/sql/partial-results/fetch-next-page?ref=localhost"><div class="kg-bookmark-content"><div class="kg-bookmark-title">OFFSET is bad for skipping previous rows</div><div class="kg-bookmark-description">OFFSET doesn’t deliver stable results and makes the query slow. Key-set pagination does neither.</div><div class="kg-bookmark-metadata"><img class="kg-bookmark-icon" src="https://use-the-index-luke.com/static/favicon-180.6NClWosG.png" alt></div></div><div class="kg-bookmark-thumbnail"><img src="https://use-the-index-luke.com/static/util_squirrel.og.fMeqdSQq.png" alt></div></a></figure>
+<p></p>
+<p></p>
+<h3 id="%EC%8B%A4%ED%96%89-%EC%BF%BC%EB%A6%AC">실행 쿼리</h3>
+<pre><code class="language-sql">// region 검증을 위한 조회
+Hibernate: select region0_.id as id1_7_0_, region0_.city as city2_7_0_, region0_.county as county3_7_0_, region0_.district as district4_7_0_ from region region0_ where region0_.id=?
+// item 조회
+Hibernate: select item0_.id as id1_3_, item0_.created_at as created_2_3_, item0_.updated_at as updated_3_3_, item0_.category as category4_3_, item0_.item_contents_id as item_co10_3_, item0_.item_counts_id as item_co11_3_, item0_.is_deleted as is_delet5_3_, item0_.price as price6_3_, item0_.region_id as region_12_3_, item0_.seller_id as seller_13_3_, item0_.status as status7_3_, item0_.thumbnail_url as thumbnai8_3_, item0_.title as title9_3_ from item item0_ where item0_.id&lt;? and item0_.region_id=? and item0_.is_deleted=? order by item0_.id desc limit ?
+// item count 조회
+Hibernate: select itemcounts0_.id as id1_5_0_, itemcounts0_.chat_counts as chat_cou2_5_0_, itemcounts0_.hits as hits3_5_0_, itemcounts0_.is_deleted as is_delet4_5_0_, itemcounts0_.like_counts as like_cou5_5_0_ from item_counts itemcounts0_ where itemcounts0_.id in (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+// login member 조회
+Hibernate: select member0_.id as id1_6_0_, member0_.member_id as member_i2_6_0_, member0_.oauth as oauth3_6_0_, member0_.profile_img_url as profile_4_6_0_ from member member0_ where member0_.id=?
+Hibernate: select itemcounts0_.id as id1_5_0_, itemcounts0_.chat_counts as chat_cou2_5_0_, itemcounts0_.hits as hits3_5_0_, itemcounts0_.is_deleted as is_delet4_5_0_, itemcounts0_.like_counts as like_cou5_5_0_ from item_counts itemcounts0_ where itemcounts0_.id=?
+</code></pre>
+<p></p>
+<h2 id="%EA%B0%9C%EC%84%A0-%EA%B2%B0%EA%B3%BC">개선 결과</h2>
+<ul><li>첫 페이지에 대한 요청<ul><li>비슷한 결과가 나왔습니다.</li></ul></li></ul>
+<figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-13.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
+<ul><li>거의 끝 페이지 (version 1 테스트시 같은 데이터 내용) 요청<ul><li>실행 시간 138 ms로 약 1000% 성능 개선이 되었습니다.</li></ul></li></ul>
+<figure class="kg-card kg-image-card"><img src="../content/images/2023/09/image-14.png" class="kg-image" alt loading="lazy" width="461" height="267"></figure>
+
+		<section class="post-full-comments">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/";
+      this.page.identifier = "ghost-650416927e046f38de8c26b3"
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + window.disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</section>
+
+            </section>
+
+        </article>
+
+                <div class="gh-read-next gh-canvas">
+                <section class="gh-pagehead">
+                    <h4 class="gh-pagehead-title">Read next</h4>
+                </section>
+
+                <div class="gh-topic gh-topic-grid">
+                    <div class="gh-topic-content">
+                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../mysql-full-test-search/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">MySQL 검색 기능 개선하기 : Full-text search</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+발단 : 왜 이것이 필요했나?
+
+
+
+Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들어 이런거요.
+
+
+[이미지 출처 : https://kikimong.com/7179]
+
+
+
+
+먼저 데이터는 이런식으로 들어가 있습니다. 법정동 코드를 pk 로 하였습니다. 행정동 코드보다 법정동 코드를 선택한 이유는 변동이 더</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">Spring Event를 사용하여 도메인 의존성 낮추기</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+발단
+
+
+
+Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-22">Aug 22, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../hashtable-java/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">해시테이블(Hash Table) 자바코드로 구현하기</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">해시테이블이란?
+
+
+
+HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.
+
+
+각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.
+
+
+
+
+
+colors = {
+    "Red"    : "#FF0000"</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+    <footer class="gh-foot gh-outer">
+        <div class="gh-foot-inner gh-inner">
+
+            <nav class="gh-foot-menu">
+                <ul class="nav">
+    <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
+    <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+    <li class="nav-project-secondhand"><a href="../tag/secondhand/index.html">🗂️ Project: Secondhand</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-copyright">
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/built/main.min.js%3Fv=a2ab59ba81"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
+    });
+</script>
+<script>
+    var disqus_shortname = "new-pow-github-io-1"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tocbot.init({
+        tocSelector: '.toc',
+        /* contentSelector: '.post-content', */
+        contentSelector: '.gh-content',
+        hasInnerContainers: true
+    });
+</script>
+
+<style>
+    .article-image {
+        max-width: 500px;
+        margin: 0 auto !important;
+        float: none !important;
+	}
+</style>
+
+</body>
+
+</html>
