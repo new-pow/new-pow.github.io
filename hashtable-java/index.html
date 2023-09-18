@@ -450,7 +450,7 @@ public class LinearProbingHashTable&lt;K, V&gt; implements HashTable {
 
         <div class="gh-card-wrapper">
             <header class="gh-card-header">
-                <h3 class="gh-card-title">API 성능개선 : 페이징 cursor 방식으로 개선하기</h3>
+                <h3 class="gh-card-title">API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</h3>
             </header>
 
                     <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
@@ -513,29 +513,38 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
         </div>
     </a>
 </article>                            <article class="gh-card post no-image">
-    <a class="gh-card-link" href="../spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/index.html">
+    <a class="gh-card-link" href="../api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/index.html">
 
         <div class="gh-card-wrapper">
             <header class="gh-card-header">
-                <h3 class="gh-card-title">Spring Event를 사용하여 도메인 의존성 낮추기</h3>
+                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 성능을 개선해보자</h3>
             </header>
 
-                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
 
 
 
 
 
 
-발단
+Cache에 대하여
 
 
 
-Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이</div>
+
+
+
+
+
+
+
+
+
+Cache는 어디에 써야 가장 좋나요?</div>
 
             <footer class="gh-card-footer">
                 <span class="gh-card-author">saehim lee</span>
-                <time class="gh-card-date" datetime="2023-08-22">Aug 22, 2023</time>
+                <time class="gh-card-date" datetime="2023-09-18">Sep 18, 2023</time>
             </footer>
         </div>
     </a>

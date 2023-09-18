@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>API 성능개선 : 페이징 cursor 방식으로 개선하기</title>
+    <title>API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</title>
     <link rel="stylesheet" href="../assets/built/screen.css%3Fv=a2ab59ba81.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
@@ -50,7 +50,7 @@
     
     <meta property="og:site_name" content="new-pow&#x27;s space">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="API 성능개선 : 페이징 cursor 방식으로 개선하기">
+    <meta property="og:title" content="API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자">
     <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
 
 
@@ -71,7 +71,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-17T02:16:04.000Z">
-    <meta property="article:modified_time" content="2023-09-17T12:59:30.000Z">
+    <meta property="article:modified_time" content="2023-09-18T09:06:33.000Z">
     <meta property="article:tag" content="Projects">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Java">
@@ -81,7 +81,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="API 성능개선 : 페이징 cursor 방식으로 개선하기">
+    <meta name="twitter:title" content="API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자">
     <meta name="twitter:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
 
 
@@ -136,10 +136,10 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
         "url": "http://localhost:2369/author/saehim/",
         "sameAs": []
     },
-    "headline": "API 성능개선 : 페이징 cursor 방식으로 개선하기",
+    "headline": "API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자",
     "url": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/",
     "datePublished": "2023-09-17T02:16:04.000Z",
-    "dateModified": "2023-09-17T12:59:30.000Z",
+    "dateModified": "2023-09-18T09:06:33.000Z",
     "keywords": "Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\nAPI 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.\n\n\n * M1 16GB 메모리 환경에서 테스트되었습니다.\n\n\n\n\n\n\n200만건의 데이터를 넣어보자\n\n\nDummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서 테이블 3개에 동시에 데이터를 넣어야 했기 때문에 프로시저를 통해 랜덤한 데이터를 넣어주고자 했습니다.\n\n\n더미 데이터를 넣는 가장 빠른 방법은 csv로 데이터를 만든 후 dump insert하는 것이 가장 빠르겠지만, 랜덤하게 변수를 설정하는 부분이 다른 문서 편집기를 사용하는 것보다 MySQL 프로시저를 이용하는 편이 더 편했기 때문에 아래와 같이 프로시저를 만들고 실행시켰습니다. 200만건이 들어가는데에는 15분정도가 소요되었",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/"
@@ -228,7 +228,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
             <header class="gh-article-header gh-canvas">
                     <a class="gh-article-tag" href="../tag/projects/index.html">Projects</a>
 
-                <h1 class="gh-article-title">API 성능개선 : 페이징 cursor 방식으로 개선하기</h1>
+                <h1 class="gh-article-title">API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</h1>
 
                     <aside class="gh-article-sidebar">
 
@@ -317,7 +317,7 @@ call InsertDummyData();</code></pre>
 <p></p>
 <p></p>
 <h1 id="%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0%EC%9D%84-%EC%9C%84%ED%95%B4-%EA%B8%B0%EC%A1%B4-api-%EB%B6%84%EC%84%9D">성능 개선을 위해 기존 API 분석</h1>
-<p>가장 많이 호출되는 메서드인 item 목록 조회 쿼리를 Postman을 통해 실행시켜 보았습니다.</p>
+<p>가장 많이 호출되는 메서드인 item 목록 조회 쿼리를 Postman을 통해 실행시켜 보았습니다. 가장 초반에 구현하고 요구사항에 맞추기위해 조금씩 수정했던터라 효율면에서 가장 우려되는 API였습니다.</p>
 <p></p>
 <ul><li>HTTP 요청사항</li></ul>
 <pre><code class="language-http">GET /items?regionId=1168065000&amp;page=0 HTTP/1.1
@@ -556,6 +556,42 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
         </div>
     </a>
 </article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 성능을 개선해보자</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+Cache에 대하여
+
+
+
+
+
+
+
+
+
+
+
+
+Cache는 어디에 써야 가장 좋나요?</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-09-18">Sep 18, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
     <a class="gh-card-link" href="../spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/index.html">
 
         <div class="gh-card-wrapper">
@@ -579,36 +615,6 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
             <footer class="gh-card-footer">
                 <span class="gh-card-author">saehim lee</span>
                 <time class="gh-card-date" datetime="2023-08-22">Aug 22, 2023</time>
-            </footer>
-        </div>
-    </a>
-</article>                            <article class="gh-card post no-image">
-    <a class="gh-card-link" href="../hashtable-java/index.html">
-
-        <div class="gh-card-wrapper">
-            <header class="gh-card-header">
-                <h3 class="gh-card-title">해시테이블(Hash Table) 자바코드로 구현하기</h3>
-            </header>
-
-                    <div class="gh-card-excerpt">해시테이블이란?
-
-
-
-HashMap이라고도 알려진 해시 테이블(HashTable)은 키(Key)를 값(Value)로 매핑하는 추상 데이터 유형입니다. 내부적으로 연관 배열(associative array)나 딕셔너리(dictionary)을 사용하여 데이터를 저장합니다.
-
-
-각 키Key에 해시 함수를 사용하여 해시코드라고도 하는 인덱스(index)를 생성하고 이 index 위치에 값(Value)가 저장됩니다.
-
-
-
-
-
-colors = {
-    "Red"    : "#FF0000"</div>
-
-            <footer class="gh-card-footer">
-                <span class="gh-card-author">saehim lee</span>
-                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
             </footer>
         </div>
     </a>
