@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>new-pow&#x27;s space</title>
-    <link rel="stylesheet" href="assets/built/screen.css%3Fv=5da2a29edc.css">
+    <link rel="stylesheet" href="assets/built/screen.css%3Fv=22b213e016.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
@@ -49,7 +49,6 @@ Backend developer Saehim Lee.">
     <link rel="icon" href="content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
-    <link rel="next" href="page/2.html">
     
     <meta property="og:site_name" content="new-pow&#x27;s space">
     <meta property="og:type" content="website">
@@ -102,8 +101,8 @@ Backend developer Saehim Lee.">
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
     <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
-    <script defer src="public/cards.min.js%3Fv=5da2a29edc"></script>
-    <link rel="stylesheet" type="text/css" href="public/cards.min.css%3Fv=5da2a29edc.css">
+    <script defer src="public/cards.min.js%3Fv=22b213e016"></script>
+    <link rel="stylesheet" type="text/css" href="public/cards.min.css%3Fv=22b213e016.css">
     <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
 <link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <style>
@@ -175,33 +174,11 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
     <div class="gh-inner">
         <section class="gh-topic gh-topic-grid">
             <h2 class="gh-topic-name">
-                    <a href="page/2.html">Latest</a>
+                    Latest
             </h2>
 
             <div class="gh-topic-content">
-                    <article class="gh-card post tag-secondhand tag-cache tag-projects tag-posts no-image large">
-    <a class="gh-card-link" href="api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/index.html">
-
-        <div class="gh-card-wrapper">
-            <header class="gh-card-header">
-                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</h3>
-            </header>
-
-                        <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
-
-
-사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.
-
-
-그런데 학습을 하다보니 레디스가 주로 쓰이는 용도인 Cache에 대해서 구현 욕심이 스멀스멀 올라오더라고요�</div>
-
-            <footer class="gh-card-footer">
-                <span class="gh-card-author">saehim lee</span>
-                <time class="gh-card-date" datetime="2023-09-18">Sep 18, 2023</time>
-            </footer>
-        </div>
-    </a>
-</article>                    <article class="gh-card post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database no-image">
+                    <article class="gh-card post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database no-image large">
     <a class="gh-card-link" href="api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
 
         <div class="gh-card-wrapper">
@@ -209,6 +186,23 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
                 <h3 class="gh-card-title">API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</h3>
             </header>
 
+                        <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서</div>
 
             <footer class="gh-card-footer">
                 <span class="gh-card-author">saehim lee</span>
@@ -291,10 +285,24 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
             </footer>
         </div>
     </a>
+</article>                    <article class="gh-card post tag-log tag-posts tag-2022 no-image">
+    <a class="gh-card-link" href="2022-log-1/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">2022년 회고 (1) 커뮤니티 기획자가 개발자를 꿈꾸게된 이야기</h3>
+            </header>
+
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-01-08">Jan 8, 2023</time>
+            </footer>
+        </div>
+    </a>
 </article>            </div>
 
             <footer class="gh-topic-footer">
-                    <a class="gh-topic-link" href="page/2.html">Show more <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></a>
             </footer>
         </section>
 
@@ -309,11 +317,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
     </header>
 
     <div class="gh-topic-content">
-                <article class="gh-card post tag-secondhand tag-cache tag-projects tag-posts no-image">
-    <a class="gh-card-link" href="api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/index.html">
-        <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</h3>
-    </a>
-</article>                <article class="gh-card post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database no-image">
+                <article class="gh-card post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database no-image">
     <a class="gh-card-link" href="api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
         <h3 class="gh-card-title">API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</h3>
     </a>
@@ -373,7 +377,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
 </div>
 
 
-<script src="assets/built/main.min.js%3Fv=5da2a29edc"></script>
+<script src="assets/built/main.min.js%3Fv=22b213e016"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
