@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>PostgreSQL에서 Full text search 사용하고 싶다면 : pg_bigm 모듈 사용하기</title>
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=22b213e016.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
+
+        .gh-toc > .toc-list {
+            position: relative;
+        }
+
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+            font-size: smaller;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
+    <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="new-pow&#x27;s space">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="PostgreSQL에서 Full text search 사용하고 싶다면 : pg_bigm 모듈 사용하기">
+    <meta property="og:description" content="연관글
+MySQL 검색 기능 개선하기 : Full-text search
+
+
+
+들어가며
+
+
+최근 영상에 데이터 라벨링을 하기 위한 REST API와 WAS를 구축하고 있습니다. 이전에 여러번 진행했던 토이 프로젝트들과는 다르게 서비스를 구축하다보니 기술 스택 설정부터 모호한 서비스 요구사항 등등.. 이런저런 새로운 도전들을 하게되었습니다.
+
+
+가장 새로운 도전 중 하나는 그동안 제 2의 고향과 같았던 🥹 MySQL을 떠나">
+    <meta property="og:url" content="http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/">
+    <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta property="article:published_time" content="2023-10-02T14:34:58.000Z">
+    <meta property="article:modified_time" content="2023-10-02T14:34:58.000Z">
+    <meta property="article:publisher" content="https://www.facebook.com/ghost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="PostgreSQL에서 Full text search 사용하고 싶다면 : pg_bigm 모듈 사용하기">
+    <meta name="twitter:description" content="연관글
+MySQL 검색 기능 개선하기 : Full-text search
+
+
+
+들어가며
+
+
+최근 영상에 데이터 라벨링을 하기 위한 REST API와 WAS를 구축하고 있습니다. 이전에 여러번 진행했던 토이 프로젝트들과는 다르게 서비스를 구축하다보니 기술 스택 설정부터 모호한 서비스 요구사항 등등.. 이런저런 새로운 도전들을 하게되었습니다.
+
+
+가장 새로운 도전 중 하나는 그동안 제 2의 고향과 같았던 🥹 MySQL을 떠나">
+    <meta name="twitter:url" content="http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/">
+    <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="saehim lee">
+    <meta name="twitter:site" content="@ghost">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1668">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "new-pow&#x27;s space",
+        "url": "http://localhost:2369/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/09/ringed-planet_1fa90-1.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "saehim lee",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/IMG_1283-1.JPG",
+            "width": 1440,
+            "height": 1080
+        },
+        "url": "http://localhost:2369/author/saehim/",
+        "sameAs": []
+    },
+    "headline": "PostgreSQL에서 Full text search 사용하고 싶다면 : pg_bigm 모듈 사용하기",
+    "url": "http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/",
+    "datePublished": "2023-10-02T14:34:58.000Z",
+    "dateModified": "2023-10-02T14:34:58.000Z",
+    "description": "연관글\nMySQL 검색 기능 개선하기 : Full-text search\n\n\n\n들어가며\n\n\n최근 영상에 데이터 라벨링을 하기 위한 REST API와 WAS를 구축하고 있습니다. 이전에 여러번 진행했던 토이 프로젝트들과는 다르게 서비스를 구축하다보니 기술 스택 설정부터 모호한 서비스 요구사항 등등.. 이런저런 새로운 도전들을 하게되었습니다.\n\n\n가장 새로운 도전 중 하나는 그동안 제 2의 고향과 같았던 🥹 MySQL을 떠나 다른 RDB를 사용하게 된 것인데요. 같은 RDB라 크게 달라질 것이 없다고 생각했지만.. 역시 세상에는 거저 지나가는 것들이 없었습니다.\n\n\n💡여담으로 제대로 PostgreSQL의 장점을 사용해보지 못한 상태에서, MySQL과 PostgreSQL의 가장 큰 차이점으로 느끼는 것은 auto_increment로 PK 생성할 때의 기본 전략입니다.\nMySQL은 LAST_INSERT_ID(); 로 마지막에 삽입된 레코드 PK를 가져오지만 PostgreSQL 은 sequ",
+    "mainEntityOfPage": "http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.62">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
+    
+    <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
+    <script defer src="../public/cards.min.js%3Fv=22b213e016"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=22b213e016.css">
+    <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+<style>
+body,  
+h1, h2, h3, h4, h5, h6,
+.main-nav a,
+.subscribe-button,
+.page-title,
+.post-meta,
+.read-next-story .post:before,
+.pagination,
+.site-footer,
+.post-full-content,
+.post-card-excerpt,
+.post-full-custom-excerpt,
+[class^="icon-"]:before, [class*=" icon-"]:before
+{
+font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    }
+</style>
+
+<style>  
+.gh-canvas .article-image img {  
+	max-width: 350px;  
+	height: auto;  
+}  
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
+</head>
+
+<body class="post-template is-head-left-logo">
+<div class="gh-site">
+
+    <header id="gh-head" class="gh-head gh-outer">
+        <div class="gh-head-inner gh-inner">
+            <div class="gh-head-brand">
+                <div class="gh-head-brand-wrapper">
+                    
+                    <a class="gh-head-logo" href="../index.html">
+                            <img src="../content/images/2023/09/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                                <img src="../content/images/2023/09/ringed-planet_1fa90.png" alt="new-pow&#x27;s space">
+                    </a>
+                    
+                </div>
+                <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    
+<main class="gh-main">
+        <article class="gh-article post no-image">
+
+            <header class="gh-article-header gh-canvas">
+
+                <h1 class="gh-article-title">PostgreSQL에서 Full text search 사용하고 싶다면 : pg_bigm 모듈 사용하기</h1>
+
+                    <aside class="gh-article-sidebar">
+
+        <div class="gh-author-image-list">
+                <a class="gh-author-image" href="../author/saehim/index.html">
+                        <img src="../content/images/2023/08/IMG_1283-1.JPG" alt="saehim lee">
+                </a>
+        </div>
+
+        <div class="gh-author-name-list">
+                <h4 class="gh-author-name">
+                    <a href="../author/saehim/index.html">saehim lee</a>
+                </h4>
+                
+        </div>
+
+        <div class="gh-article-meta">
+            <div class="gh-article-meta-inner">
+                <time class="gh-article-date" datetime="2023-10-02">Oct 2, 2023</time>
+                    <span class="gh-article-meta-sep"></span>
+                    <span class="gh-article-length">5 min</span>
+            </div>
+        </div>
+
+    </aside>
+
+
+                            </header>
+
+
+            <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
+                <blockquote><strong>연관글<br><a href="https://new-pow.tistory.com/71?ref=localhost" rel="noreferrer">MySQL 검색 기능 개선하기 : Full-text search</a></strong></blockquote>
+<h1 id="%EB%93%A4%EC%96%B4%EA%B0%80%EB%A9%B0">들어가며</h1>
+<p>최근 영상에 데이터 라벨링을 하기 위한 REST API와 WAS를 구축하고 있습니다. 이전에 여러번 진행했던 토이 프로젝트들과는 다르게 서비스를 구축하다보니 기술 스택 설정부터 모호한 서비스 요구사항 등등.. 이런저런 새로운 도전들을 하게되었습니다.</p>
+<p>가장 새로운 도전 중 하나는 그동안 제 2의 고향과 같았던 🥹 MySQL을 떠나 다른 RDB를 사용하게 된 것인데요. 같은 RDB라 크게 달라질 것이 없다고 생각했지만.. 역시 세상에는 거저 지나가는 것들이 없었습니다.</p>
+<div class="kg-card kg-callout-card kg-callout-card-blue"><div class="kg-callout-emoji">💡</div><div class="kg-callout-text">여담으로 제대로 PostgreSQL의 장점을 사용해보지 못한 상태에서, MySQL과 PostgreSQL의 가장 큰 차이점으로 느끼는 것은 auto_increment로 PK 생성할 때의 기본 전략입니다.<br>MySQL은 LAST_INSERT_ID(); 로 마지막에 삽입된 레코드 PK를 가져오지만 PostgreSQL 은 sequence 변수가 존재하여 이를 증가시키며 PK를 정합니다.<br><br>- 관련해서 겪은 에러 : <a href="https://new-pow.tistory.com/66?ref=localhost" rel="noreferrer">Spring data&nbsp;JPA: Hibernate가 Sequence를 못찾아요</a><br>- 참고글 : <a href="https://www.tutorialspoint.com/access-last-inserted-row-in-mysql?ref=localhost" rel="noreferrer">Access last inserted row in MySQL?</a></div></div>
+<p></p>
+<p>이번에는 검색 요구사항에 맞닥뜨리게 되었습니다. 회원 이름으로 회원에게 지급할 금액과 작성한 내역을 검색하는 것이었습니다. 회원이 천명 단위가 되지 않을 소규모 애플리케이션으로 예상되기 때문에 별도의 검색엔진을 구현하는 것보다 간단하게 DB에서 처리해주려고 하였습니다. 간단하게 검색 기능을 구현하는 가장 간단한 방법으로 PostgreSQL에서 Full text Search를 구현해보았습니다.</p>
+<p></p>
+<h1 id="postgresql%EC%9D%98-%EB%AA%A8%EB%93%88-pgbigm">PostgreSQL의 모듈 pg_bigm</h1>
+<p>PostgreSQL은 Full text Search를 지원하는 pg_bigm 모듈이 있습니다. 이 모듈을 사용하면 사용자가 더 빠른 검색을 할 수 있도록 bigram(2gram) 색인을 생성할 수 있습니다.</p>
+<p></p>
+<h2 id="pgtrgm%EA%B3%BC-pgbigm">pg_trgm과 pg_bigm</h2>
+<p>pg_bigm은 pg_trgm을 기반으로 개발된 모듈입니다. 알파벳이 아닌 언어에 대해 지원하고, 구문 일치 범위가 3gram에서 2gram으로 좁아져서 더 작은 단어도 빠르게 검색할 수 있습니다.</p>
+<p>다음은 공식문서에서 참고한 비교표입니다.</p>
+<table style="border: 1px solid rgb(0, 0, 0); border-collapse: collapse; font-family: メイリオ, Meiryo, " ヒラギノ角ゴ pro w3", "hiragino kaku gothic pro", osaka, "ｍｓ ｐゴシック", "lucida grande", verdana, arial, helvetica, sans-serif; letter-spacing: normal; orphans: 2; text-transform: none; widows: word-spacing: 0px; -webkit-text-stroke-width: text-decoration-thickness: initial; text-decoration-style: text-decoration-color: initial;"><thead><tr><th style="border: 1px solid rgb(0, 0, 0); padding: 0.2em; background: rgb(170, 170, 170); text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">기능 및 특징</font></font></th><th style="border: 1px solid rgb(0, 0, 0); padding: 0.2em; background: rgb(170, 170, 170); text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">pg_trgm</font></font></th><th style="border: 1px solid rgb(0, 0, 0); padding: 0.2em; background: rgb(170, 170, 170); text-align: center;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">pg_bigm</font></font></th></tr></thead><tbody><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">구문 일치 방법</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">3그램</font></font></td><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">2그램</font></font></td></tr><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">사용 가능한 인덱스</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">GIN, GiST</font></font></td><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">진만 해당</font></font></td></tr><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">사용 가능한 텍스트 검색 연산자</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LIKE(~~), LIKE(~~*), ~, ~*</font></font></td><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">LIKE only </font></font></td></tr><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">알파벳이 아닌 언어</font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">(한국어, 일본어 등)</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">지원되지 않음(*1)</font></font></td><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">지원됨</font></font></td></tr><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">1~2자 키워드</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">느림(index full scan)</font></font></td><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">빠름</font></font></td></tr><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">유사성 검색</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">지원됨</font></font></td><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">지원됨(버전 1.1 이상)</font></font></td></tr><tr><td style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">최대 인덱스 열 크기</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">238,609,291바이트(~228MB)</font></font></td><td nowrap style="border: 1px solid rgb(0, 0, 0); padding: 0.2em;"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">107,374,180바이트(~102MB)</font></font></td></tr></tbody></table>
+<p></p>
+<h1 id="amazon-rds-for-postgresql%EC%97%90%EC%84%9C-%EA%B5%AC%ED%98%84">Amazon RDS for PostgreSQL에서 구현</h1>
+<h2 id="install-uninstall">install / Uninstall</h2>
+<p>모듈 활성화를 위해 다음의 쿼리를 실행합니다.</p>
+<pre><code class="language-sql">-- 모듈 활성화
+CREATE EXTENSION pg_bigm;
+
+-- 모듈 삭제를 원할 때
+DROP EXTENSION pg_bigm CASCADE;</code></pre>
+<p>모듈활성화 내역을 확인할 수 있습니다.</p>
+<pre><code class="language-sql">SELECT * FROM pg_extension
+
+
+  Name   | Version | Schema |              Description
+---------+---------+--------+---------------------------------------
+ pg_bigm | 1.1     | public | text index searching based on bigrams
+</code></pre>
+<p></p>
+<h2 id="index-%EC%83%9D%EC%84%B1">Index 생성</h2>
+<p>1개의 컬럼만 사용할 때의 쿼리입니다.</p>
+<pre><code class="language-sql">CREATE INDEX 인덱스명 ON pg_tools USING gin (컬럼명 gin_bigm_ops);
+CREATE INDEX pg_tools_idx ON pg_tools USING gin (description gin_bigm_ops);</code></pre>
+<p>만약 여러 개의 컬럼에 대해 인덱스를 생성하고 싶다면 다음과 같이 쿼리를 실행하면 됩니다.</p>
+<pre><code class="language-sql">CREATE INDEX 인덱스명 ON pg_tools USING gin (컬럼1명 gin_bigm_ops, 컬럼2명 gin_bigm_ops) WITH (FASTUPDATE = off);
+CREATE INDEX pg_tools_multi_idx ON pg_tools USING gin (tool gin_bigm_ops, description gin_bigm_ops) WITH (FASTUPDATE = off);</code></pre>
+<p></p>
+<pre><code class="language-sql">-- 생성되는 인덱스를 미리 확인할 수 있는 쿼리
+SELECT show_bigm('안녕하세요');
+
+-- 생성되는 인덱스
+{녕하,세요,안녕,요 ,하세, 안}</code></pre>
+<p>그리고 원래 쿼리대로 검색했을 때 조건(검색어가 2글자 이상)을 만족하면 쿼리 실행에 인덱스를 사용하는 것을 확인할 수 있습니다.</p>
+<pre><code class="language-sql">-- index가 없을 때
++--------------------------------------------------------+
+|QUERY PLAN                                              |
++--------------------------------------------------------+
+|Seq Scan on member  (cost=0.00..10.12 rows=1 width=4152)|
+|  Filter: ((name)::text ~~ '%이름%'::text)                |
++--------------------------------------------------------+</code></pre>
+<p></p>
+<p>그런데 예상치못한 상황이 발생했습니다. 테이블 row가 너무 적어서인지 full scan을 하고 있습니다. 이럴땐 full scan이 더 빠르기 때문일까요? full scan시에는 DB에 random access를 하지 않으니까요? (가설)</p>
+<p></p>
+<ul><li>주의할 점<ul><li>너무 테이블 row가 적어서인지 index가 있어도 사용하지 않습니다.</li></ul></li></ul>
+<figure class="kg-card kg-code-card"><pre><code class="language-sql">
+CREATE INDEX full_index_video ON public.label_video USING gin (title gin_bigm_ops);
+EXPLAIN ANALYZE SELECT * FROM public.label_video WHERE label_video.title LIKE '%LH%';
+
+
++-------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                             |
++-------------------------------------------------------------------------------------------------------+
+|Seq Scan on label_video  (cost=0.00..4.19 rows=95 width=114) (actual time=0.010..0.033 rows=95 loops=1)|
+|  Filter: ((title)::text ~~ '%LH%'::text)                                                              |
+|Planning Time: 0.073 ms                                                                                |
+|Execution Time: 0.055 ms                                                                               |
++-------------------------------------------------------------------------------------------------------+
+
+</code></pre><figcaption><p dir="ltr"><span style="white-space: pre-wrap;">데이터 100건일 때, 인덱스를 사용하지 않습니다.</span></p></figcaption></figure>
+<p></p>
+<h2 id="%EC%84%B1%EB%8A%A5-%EA%B0%9C%EC%84%A0-%ED%99%95%EC%9D%B8">성능 개선 확인</h2>
+<p>데이터를 1만건 랜덤으로 넣고 실행하니 다음과 같이 index가 반영되었음을 알 수 있습니다.</p>
+<ul><li>index생성하지 않았을 때</li></ul>
+<pre><code class="language-sql">+--------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                        |
++--------------------------------------------------------------------------------------------------+
+|Seq Scan on member  (cost=0.00..369.04 rows=1 width=156) (actual time=0.008..1.195 rows=1 loops=1)|
+|  Filter: ((name)::text ~~ '%이름%'::text)                                                          |
+|  Rows Removed by Filter: 10002                                                                   |
+|Planning Time: 0.184 ms                                                                           |
+|Execution Time: 1.211 ms                                                                          |
++--------------------------------------------------------------------------------------------------+
+</code></pre>
+<ul><li>index를 생성한 후</li></ul>
+<pre><code class="language-sql">+---------------------------------------------------------------------------------------------------------------------------+
+|QUERY PLAN                                                                                                                 |
++---------------------------------------------------------------------------------------------------------------------------+
+|Bitmap Heap Scan on member  (cost=12.01..16.02 rows=1 width=156) (actual time=0.013..0.014 rows=1 loops=1)                 |
+|  Recheck Cond: ((name)::text ~~ '%이름%'::text)                                                                             |
+|  Heap Blocks: exact=1                                                                                                     |
+|  -&gt;  Bitmap Index Scan on full_index_work_log  (cost=0.00..12.01 rows=1 width=0) (actual time=0.009..0.010 rows=1 loops=1)|
+|        Index Cond: ((name)::text ~~ '%이름%'::text)                                                                         |
+|Planning Time: 0.164 ms                                                                                                    |
+|Execution Time: 0.039 ms                                                                                                   |
++---------------------------------------------------------------------------------------------------------------------------+
+</code></pre>
+<p></p>
+<p>성능 개선을 확인한 결과 실행시간 1.211ms 에서 0.039ms로 약 95% 개선된 것을 확인할 수 있었습니다.</p>
+<p></p>
+<p></p>
+<hr>
+<h1 id="refs">Refs.</h1>
+<ul><li><a href="https://pgbigm.osdn.jp/pg_bigm_en-1-2.html?ref=localhost" rel="noreferrer">pg_bigm 1.2 Document</a></li><li><a href="https://techblog.woowahan.com/6550/?ref=localhost" rel="noreferrer">Aurora MySQL vs Aurora PostgreSQL</a></li><li><a href="https://jojoldu.tistory.com/590?ref=localhost" rel="noreferrer">Amazon Aurora PostgreSQL&nbsp;에서 pg_bigm 모듈사용하기</a></li></ul>
+
+		<section class="post-full-comments">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/";
+      this.page.identifier = "ghost-651abb0d45a954b700026197"
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + window.disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</section>
+
+            </section>
+
+        </article>
+
+    
+        </main>
+
+
+    <footer class="gh-foot gh-outer">
+        <div class="gh-foot-inner gh-inner">
+
+            <nav class="gh-foot-menu">
+                <ul class="nav">
+    <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
+    <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+    <li class="nav-project-secondhand"><a href="../tag/secondhand/index.html">🗂️ Project: Secondhand</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-copyright">
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/built/main.min.js%3Fv=22b213e016"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
+    });
+</script>
+<script>
+    var disqus_shortname = "new-pow-github-io-1"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tocbot.init({
+        tocSelector: '.toc',
+        /* contentSelector: '.post-content', */
+        contentSelector: '.gh-content',
+        hasInnerContainers: true
+    });
+</script>
+
+<style>
+    .article-image {
+        max-width: 500px;
+        margin: 0 auto !important;
+        float: none !important;
+	}
+</style>
+
+</body>
+
+</html>
