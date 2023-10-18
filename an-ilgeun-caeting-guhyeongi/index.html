@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>안 읽은 채팅 구현기 💥</title>
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=3edcec3d65.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
+
+        .gh-toc > .toc-list {
+            position: relative;
+        }
+
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+            font-size: smaller;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
+    <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="new-pow&#x27;s space">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="안 읽은 채팅 구현기 💥">
+    <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+들어가며
+
+
+Secondhand 프로젝트를 진행할 때 가장 마지막에 구현했던 기능인 ‘아직 안 읽은 채팅’에 대해 백엔드 개발자 2명이 한 고민과 구현 과정을 정리해보았습니다.
+
+
+채팅 시스템은 처음 이 프로젝트를 시작할 당시에 BE는 물론 FE, iOS에게도 굉장히 큰 과제였습니다. 유저간">
+    <meta property="og:url" content="http://localhost:2369/an-ilgeun-caeting-guhyeongi/">
+    <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta property="article:published_time" content="2023-10-16T12:51:45.000Z">
+    <meta property="article:modified_time" content="2023-10-16T13:41:50.000Z">
+    <meta property="article:tag" content="Secondhand">
+    <meta property="article:tag" content="Projects">
+    <meta property="article:tag" content="2023">
+    <meta property="article:tag" content="Posts">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="안 읽은 채팅 구현기 💥">
+    <meta name="twitter:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+들어가며
+
+
+Secondhand 프로젝트를 진행할 때 가장 마지막에 구현했던 기능인 ‘아직 안 읽은 채팅’에 대해 백엔드 개발자 2명이 한 고민과 구현 과정을 정리해보았습니다.
+
+
+채팅 시스템은 처음 이 프로젝트를 시작할 당시에 BE는 물론 FE, iOS에게도 굉장히 큰 과제였습니다. 유저간">
+    <meta name="twitter:url" content="http://localhost:2369/an-ilgeun-caeting-guhyeongi/">
+    <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="saehim lee">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="Secondhand, Projects, 2023, Posts">
+    <meta name="twitter:site" content="@ghost">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1668">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "new-pow&#x27;s space",
+        "url": "http://localhost:2369/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/09/ringed-planet_1fa90-1.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "saehim lee",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/IMG_1283-1.JPG",
+            "width": 1440,
+            "height": 1080
+        },
+        "url": "http://localhost:2369/author/saehim/",
+        "sameAs": []
+    },
+    "headline": "안 읽은 채팅 구현기 💥",
+    "url": "http://localhost:2369/an-ilgeun-caeting-guhyeongi/",
+    "datePublished": "2023-10-16T12:51:45.000Z",
+    "dateModified": "2023-10-16T13:41:50.000Z",
+    "keywords": "Secondhand, Projects, 2023, Posts",
+    "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n\n\n\n\n들어가며\n\n\nSecondhand 프로젝트를 진행할 때 가장 마지막에 구현했던 기능인 ‘아직 안 읽은 채팅’에 대해 백엔드 개발자 2명이 한 고민과 구현 과정을 정리해보았습니다.\n\n\n채팅 시스템은 처음 이 프로젝트를 시작할 당시에 BE는 물론 FE, iOS에게도 굉장히 큰 과제였습니다. 유저간 실시간 채팅을 어떻게 구현할 것이며, 어떻게 DB에 저장할 것인가도 어려운 미션이었는데요. (이것에 대해서는 추후에 따로 글을 적어보기로…) 산넘어 산… “안 읽은 채팅을 어떻게 구현할 것인가”는 다른 의미로 어려웠던 미션이었습니다.\n\n\n전자는 “새로운 기술을 어떻게 도입할 것인가”라는 고민에 가까웠다면 후자는 채팅 도메인에 대한 해석과 구현 방법에 시간을 많이 할애한 것 같습니다. 복잡한 문제를 어떻게 쪼갤지에 대해서는 다양한 방법이 있습니다. 그리고 그 중에서 하나를 매번 선택해야 하",
+    "mainEntityOfPage": "http://localhost:2369/an-ilgeun-caeting-guhyeongi/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.62">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
+    
+    <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
+    <script defer src="../public/cards.min.js%3Fv=3edcec3d65"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=3edcec3d65.css">
+    <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+<style>
+body,  
+h1, h2, h3, h4, h5, h6,
+.main-nav a,
+.subscribe-button,
+.page-title,
+.post-meta,
+.read-next-story .post:before,
+.pagination,
+.site-footer,
+.post-full-content,
+.post-card-excerpt,
+.post-full-custom-excerpt,
+[class^="icon-"]:before, [class*=" icon-"]:before
+{
+font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    }
+</style>
+
+<style>  
+.gh-canvas .article-image img {  
+	max-width: 350px;  
+	height: auto;  
+}  
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
+</head>
+
+<body class="post-template tag-secondhand tag-projects tag-2023 tag-posts is-head-left-logo">
+<div class="gh-site">
+
+    <header id="gh-head" class="gh-head gh-outer">
+        <div class="gh-head-inner gh-inner">
+            <div class="gh-head-brand">
+                <div class="gh-head-brand-wrapper">
+                    
+                    <a class="gh-head-logo" href="../index.html">
+                            <img src="../content/images/2023/09/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                                <img src="../content/images/2023/09/ringed-planet_1fa90.png" alt="new-pow&#x27;s space">
+                    </a>
+                    
+                </div>
+                <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    
+<main class="gh-main">
+        <article class="gh-article post tag-secondhand tag-projects tag-2023 tag-posts no-image">
+
+            <header class="gh-article-header gh-canvas">
+                    <a class="gh-article-tag" href="../tag/secondhand/index.html">Secondhand</a>
+
+                <h1 class="gh-article-title">안 읽은 채팅 구현기 💥</h1>
+
+                    <aside class="gh-article-sidebar">
+
+        <div class="gh-author-image-list">
+                <a class="gh-author-image" href="../author/saehim/index.html">
+                        <img src="../content/images/2023/08/IMG_1283-1.JPG" alt="saehim lee">
+                </a>
+        </div>
+
+        <div class="gh-author-name-list">
+                <h4 class="gh-author-name">
+                    <a href="../author/saehim/index.html">saehim lee</a>
+                </h4>
+                
+        </div>
+
+        <div class="gh-article-meta">
+            <div class="gh-article-meta-inner">
+                <time class="gh-article-date" datetime="2023-10-16">Oct 16, 2023</time>
+                    <span class="gh-article-meta-sep"></span>
+                    <span class="gh-article-length">12 min</span>
+            </div>
+        </div>
+
+    </aside>
+
+
+                            </header>
+
+
+            <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
+                <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트&nbsp;<a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost" rel="noopener noreferrer">Secondhand</a>&nbsp;구현시 이슈 사항을 정리한 글입니다.</blockquote>
+<p></p>
+<h1 id="%EB%93%A4%EC%96%B4%EA%B0%80%EB%A9%B0">들어가며</h1>
+<p>Secondhand 프로젝트를 진행할 때 가장 마지막에 구현했던 기능인 ‘아직 안 읽은 채팅’에 대해 백엔드 개발자 2명이 한 고민과 구현 과정을 정리해보았습니다.</p>
+<p>채팅 시스템은 처음 이 프로젝트를 시작할 당시에 BE는 물론 FE, iOS에게도 굉장히 큰 과제였습니다. 유저간 실시간 채팅을 어떻게 구현할 것이며, 어떻게 DB에 저장할 것인가도 어려운 미션이었는데요. (이것에 대해서는 추후에 따로 글을 적어보기로…) 산넘어 산… <em>“안 읽은 채팅을 어떻게 구현할 것인가”</em>는 다른 의미로 어려웠던 미션이었습니다.</p>
+<p>전자는 “새로운 기술을 어떻게 도입할 것인가”라는 고민에 가까웠다면 후자는 <strong><u>채팅 도메인에 대한 해석과 구현 방법에 시간을 많이 할애</u></strong>한 것 같습니다. 복잡한 문제를 어떻게 쪼갤지에 대해서는 다양한 방법이 있습니다. 그리고 그 중에서 하나를 매번 선택해야 하는 것이죠.</p>
+<p></p>
+<h1 id="%EB%B0%9C%EB%8B%A8-%EC%9A%94%EA%B5%AC%EC%82%AC%ED%95%AD-%ED%8C%8C%EC%95%85">발단 : 요구사항 파악</h1>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://www.notion.so/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F1feb7462-9c33-4bf1-b0bb-7973d34ffaf2%2F95856db7-0b43-4ef9-a8f7-c771de821e87%2FUntitled.png?table=block&amp;id=c184a096-4e43-498d-aeef-d4f0136407ab&amp;spaceId=1feb7462-9c33-4bf1-b0bb-7973d34ffaf2&amp;width=1660&amp;userId=180a704c-6552-4796-9dd2-ab125439ed98&amp;cache=v2" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">이미지 출처 : </span><a href="https://zdnet.co.kr/view/?no=20210528110514&ref=localhost" rel="noopener noreferrer"><span style="white-space: pre-wrap;">https://zdnet.co.kr/view/?no=20210528110514</span></a><span style="white-space: pre-wrap;"> 정확하지는 않지만, 기획안은 코드스쿼드 저작권을 확인하지 못해 첨부는 못하고… 비슷한 웹뷰로 첨부합니다.</span></figcaption></figure>
+<p>채팅 리스트에 보면 채팅방으로 접근할 수 있는 리스트 외에도 해당 회원이 마지막으로 보낸 메시지와 아직 내가 확인하지 않은 ‘안 읽은 메시지 개수’가 카운트됨을 확인할 수 있습니다.</p>
+<p>그리고 정확하지는 않지만 대다수의 채팅 메신저가 그렇듯이 마지막 메시지의 발송 시간에 따라 정렬되고 있습니다.</p>
+<p>이 리스트에서 원하는 채팅방을 클릭하면 채팅 내역을 확인할 수 있는데요. 이 채팅 내역을 확인하면 안 읽은 메시지는 0이 되어야 합니다.</p>
+<p></p>
+<h1 id="%EC%95%88-%EC%9D%BD%EC%9D%80-%EC%B1%84%ED%8C%85%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EB%AF%BC">안 읽은 채팅에 대한 고민</h1>
+<h3 id="%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%8F%99%EC%9E%91%ED%95%B4%EC%95%BC-%ED%95%98%EB%8A%94%EA%B0%80">어떻게 동작해야 하는가?</h3>
+<p>요구사항 분석시에 언급한 동작방식을 정리하면 다음과 같습니다.</p>
+<ul><li>사용자가 상대방에게 메시지를 보냈는데 상대방이 바로 읽지 않으면 ‘안 읽은 메시지’가 됩니다. 카운트가 1 늘어나야 합니다.</li><li>사용자가 채팅방 리스트를 볼 때 안읽은 메시지가 각 채팅방별로 숫자로 표현되어야 합니다.</li><li>사용자가 채팅방에 들어가면 안 읽은 메시지는 0으로 초기화 되어야 합니다.</li></ul>
+<p></p>
+<h3 id="%EC%96%B4%EB%96%BB%EA%B2%8C-%EA%B5%AC%ED%98%84%ED%95%B4%EC%95%BC-%ED%95%98%EB%8A%94%EA%B0%80">어떻게 구현해야 하는가?</h3>
+<p>이쯤 되어서 안 읽은 채팅을 어떻게 구현할 것인가를 선택해야 되었는데요.</p>
+<p>안 읽은 채팅을 팀원과 함께 상의하다가 다양한 방식으로 구현할 수 있고 그것에 대한 장단점을 분석하였습니다.</p>
+<div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-emoji">💡</div><div class="kg-callout-text"><b><strong style="white-space: pre-wrap;">방법 1. 사용자의 마지막 접속 시간과 채팅방 메시지 발송 시각을 비교합니다.</strong></b><br><br>채팅방으로 채팅 메시지를 조회하여 마지막 접속시간 이후에 보내진 메시지를 카운트하여 보내는 방식입니다.<br><br>- 장점 : 데이터 정규화로 불필요한 데이터를 저장하지 않아도 되고, 데이터 정합성이 높습니다.<br>- 단점 : 매 채팅방 리스트를 조회할 때 사용자 채팅방의 모든 로그를 조회해야 합니다. 채팅 메시지가 많다면 시간이 꽤 오래 걸릴 수 있습니다.</div></div>
+<div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-emoji">💡</div><div class="kg-callout-text"><b><strong style="white-space: pre-wrap;">방법 2. 안 읽은 채팅을 저장하는 별도의 컬럼 혹은 테이블로 저장합니다.</strong></b><br><br>별도의 컬럼 혹은 테이블을 DB에 저장하두고 매번 메시지를 수신할 때마다 갱신시켜줍니다. 유저가 접속하면 0으로 초기화합니다.<br><br>- 장점 : 매번 채팅방 로그를 모두 조회하여 비교해야한다는 부담감을 줄일 수 있습니다. 조회에 이점을 갖습니다.<br>- 단점 : 메시지 수신시 매번 UPDATE 가 일어납니다. 같은 트랜잭션에 있을 경우 UPDATE 로직의 실패가 동일 트랜잭션에 영향을 줄 수 있습니다. 데이터 정합성이 지켜지지 않을 수 있습니다.</div></div>
+<div class="kg-card kg-callout-card kg-callout-card-grey"><div class="kg-callout-emoji">💡</div><div class="kg-callout-text"><b><strong style="white-space: pre-wrap;">방법 3. 사용자의 마지막 읽은 채팅 메시지 PK를 저장합니다.</strong></b><br><br>방법1과 방법2의 절충안이었습니다. 그러나 두 방법의 단점을 동시에 가지게 된다는 것이 제일 큰 단점이라는 분석으로 바로 열외시켰습니다.</div></div>
+<p>이 방법들 중 최종적으로 선택한 방법은 <strong>두 번째, 안 읽은 채팅 개수를 저장하는 별도의 테이블을 만드는 것</strong>이었습니다.</p>
+<p>그 이유는 <strong>채팅을 보내는 횟수보다 조회 횟수가 월등히 많다</strong>는 것입니다.</p>
+<p>이 데이터는 채팅방 리스트를 조회할 때마다 일어나야 하고 비효율적으로 구현하는 경우 연쇄 쿼리가 N개에 채팅방에 대해 1개씩 일어날 수 있습니다.</p>
+<p>그리고 이 안 읽은 채팅 매번 채팅방 입장할 때마다 초기화되고 약간 오류가 있어도 치명적인 로직이 아니라는 판단이었습니다.</p>
+<p></p>
+<h1 id="%EA%B3%A0%EB%AF%BC%ED%96%88%EB%8D%98-%EA%B2%83%EA%B3%BC-%EA%B5%AC%ED%98%84-%EB%B0%A9%EC%8B%9D">고민했던 것과 구현 방식</h1>
+<h2 id="%EC%96%B4%EB%96%BB%EA%B2%8C-%EC%A0%80%EC%9E%A5%ED%95%A0%EA%B9%8C">어떻게 저장할까?</h2>
+<p>Secondhand는 현재 RDB로 MySQL을 사용하고 있습니다. 그러나 이 채팅 Metainfo는 <code>MongoDB</code>에 채팅 메시지와 함께 저장했습니다.</p>
+<p>그 이유로는 구현해보지 못한 도메인이라 개발 단계에서는 저장 데이터가 매번 바뀔텐데 MySQL에 저장하면해 중간에 컬럼이 바뀔 때마다 스키마도 매번 수정해주어야 하기 때문에 개발 시간이 오래 소요될 것 같다는 것이 가장 컸습니다.</p>
+<p>MongoDB는 Document 로 저장되기 때문에 중간에 데이터 저장 형식이 바뀌더라도 부담없이 바로 적용시킬 수 있습니다.</p>
+<ul><li>저장한 결과입니다.</li></ul>
+<pre><code class="language-json">{
+  "_id": "6c5879d3-455a-472a-9be6-eef45dcbf51b",
+  "participants": {
+    "info": {
+      "member1": {
+        "memberId": "member1",
+        "isConnected": true, # 현재 접속 여부
+        "messageStock": 0 # 안읽은 메시지 개수
+      },
+      "newpow": {
+        "memberId": "newpow",
+        "isConnected": false,
+        "messageStock": 1
+      }
+    }
+  },
+  "lastMessage": "test message15", # 마지막 메시지
+  "updateAt": {
+    "$date": "2023-09-02T06:57:40.595Z" # 마지막 메시지 갱신 날짜. 이걸로 어플리케이션에서 정렬하여 API를 반환합니다.
+  },
+  "_class": "com.team5.secondhand.chat.chatroom.domain.Chatroom"
+}</code></pre>
+<p></p>
+<h2 id="%EC%B1%84%ED%8C%85-%EA%B5%AC%ED%98%84-%ED%99%98%EA%B2%BD-%EC%A0%90%EA%B2%80">채팅 구현 환경 점검</h2>
+<p>현재 프로젝트 내에서 실시간 채팅은 STOMP와 Redis pub/sub 을 혼합하여 구현하였습니다. STOMP가 클라이언트의 구독과 메시지 발송을 받고 Redis를 통해 pub하면 이를 핸들링하여 클라이언트에게 메시지가 발송되는 형태인데요.</p>
+<p>STOMP 에는 이 메시지를 받고 처리하기 전에 핸들링을 할 수 있는 <em><code>ChannelInterceptor</code></em> 를 제공합니다. 이를 이용하여 채팅방 구독 여부를 확인할 수가 있어 각 메시지 상태에 따라 채팅 metainfo를 갱신해주기로 했습니다.</p>
+<p>그리고 매번 사용자가 메시지를 보낼 때마다 안읽은 메시지도 더해지도록 구현하기 위해 <code>SpringEvent</code> 를 이용하였습니다.</p>
+<pre><code class="language-java">    @Async
+    @EventListener
+    public void chatBubbleArrivedEventHandler(ChatBubbleArrivedEvent event) throws NotChatroomMemberException {
+        ChatBubble chatBubble = event.getChatBubble();
+        Chatroom chatroom = getChatroom(chatBubble.getRoomId());
+        chatroom.updateLastMessage(chatBubble);
+        Chatroom saveChatroom = metaInfoRepository.save(chatroom);
+    }</code></pre>
+<p></p>
+<h2 id="%EA%B5%AC%ED%98%84-%EC%BD%94%EB%93%9C">구현 코드</h2>
+<h3 id="%EC%B1%84%ED%8C%85-metainfo-%EB%8F%84%EB%A9%94%EC%9D%B8-%EA%B5%AC%ED%98%84">채팅 metainfo 도메인 구현</h3>
+<p>이제 채팅 metainfo를 저장하기 위한 도메인을 구현해보았습니다. 이번에는 테이블 구조를 먼저 짜기보다는 로직에 필요한 도메인을 구성하고 이를 MongoDB에 저장하다가 후에 MySQL 에 저장하도록 수정하기로 했습니다.</p>
+<pre><code class="language-java">public class ChatroomMetaInfo implements Serializable {
+    private String chatroomId; // chatroom 테이블 pk 참조, 식별관계
+    private Participants participants = new Participants(new ConcurrentHashMap&lt;&gt;()); // 참가자 정보 저장
+    private String lastMessage; // 채팅 마지막 메시지
+    private Instant updateAt;   // 마지막 업데이트 날짜
+
+    public boolean updateLastMessage (ChatBubble chatBubble) throws NotChatroomMemberException {
+        this.lastMessage = chatBubble.getMessage();
+        this.updateAt = Instant.now();
+        return participants.getMessage(chatBubble.getReceiver());
+    }
+
+		// 사용자가 들어오고 나갈때마다 사용자 정보를 업데이트 합니다.
+    public boolean enter(String memberId) {
+        return participants.enter(memberId);
+    }
+
+    public boolean exit(String memberId) {
+        return participants.exit(memberId);
+    }
+
+		// 생성자 getter 등 생략
+}
+</code></pre>
+<p>사용자 정보는 Map 형태로 만들었고, 이를 관리하기 위한 일급컬렉션으로 구현하였습니다. 사용자 닉네임이나 PK로 바로 조회할 수 있기 때문에 Map 형태로 구현한 것입니다. 안읽은 메세지나 접속 여부를 참가자별로 저장해두어 채팅방에 사람이 더 들어가는 비즈니스 요구가 있을 때 확장 가능하도록 구성하였습니다.</p>
+<pre><code class="language-java">public class Participants implements Serializable {
+
+    private Map&lt;String, ParticipantInfo&gt; info = new ConcurrentHashMap&lt;&gt;();
+
+    public boolean getMessage(Long receiver) {
+        ParticipantInfo member;
+        if((member=info.get(receiver))==null) {
+            return false;
+        }
+        member.plusBubble();
+        return true;
+    }
+
+    public boolean enter(String memberId) {
+        ParticipantInfo participantInfo;
+        if ((participantInfo = info.get(memberId))==null) {
+            return false;
+        }
+
+        participantInfo.connect();
+        info.put(memberId, participantInfo);
+        return true;
+    }
+
+    public boolean exit(String memberId) {
+        ParticipantInfo participantInfo;
+        if ((participantInfo = info.get(memberId))==null) {
+            return false;
+        }
+
+        participantInfo.disconnect();
+        info.put(memberId, participantInfo);
+        return true;
+    }
+
+		// 생성자 getter 생략
+}
+</code></pre>
+<pre><code class="language-java">public class ParticipantInfo implements Serializable {
+    private String memberId;
+    private Instant lastDisconnectedAt;
+    private Boolean isConnected;
+    private Integer messageStock; // 안읽은 메시지 개수
+
+    public void plusBubble() {
+        this.messageStock ++;
+    }
+
+    public void connect() {
+        this.isConnected = true;
+        this.messageStock = 0;
+    }
+
+    public void disconnect() {
+        this.isConnected = false;
+        this.messageStock = 0;
+        this.lastDisconnectedAt = Instant.now();
+    }
+
+		// 생성자 getter 생략
+}
+</code></pre>
+<p></p>
+<h3 id="message-pre-handler-%EA%B5%AC%ED%98%84">Message pre handler 구현</h3>
+<p>사용자의 메시지 header command를 읽고 서비스를 호출합니다.</p>
+<p>command 종류에 대해선 다음 링크를 참조 👉&nbsp;<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/messaging/simp/stomp/StompHeaderAccessor.html?ref=localhost">https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/messaging/simp/stomp/StompHeaderAccessor.html</a></p>
+<pre><code class="language-java">public class StompMessageProcessor implements ChannelInterceptor {
+    private final JwtService jwtService;
+    private final SessionService sessionService;
+    private final ChatroomMetaInfoService chatroomMetaInfoService;
+
+    @Override
+    public Message&lt;?&gt; preSend(Message&lt;?&gt; message, MessageChannel channel) {
+        StompHeaderAccessor headerAccessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
+        handleMessage(headerAccessor);
+        return message;
+    }
+
+    private void handleMessage(StompHeaderAccessor headerAccessor) {
+        if (headerAccessor == null || headerAccessor.getCommand() == null) {
+            throw new MessageDeliveryException(ErrorType.BAD_REQUEST.getMessage());
+        }
+
+        switch (headerAccessor.getCommand()) {
+            case CONNECT:
+                String memberId = getMemberIdByToken(headerAccessor.getFirstNativeHeader("Authorization"));
+                sessionService.saveSession(headerAccessor.getSessionId(), memberId); // 세션에 사용자 접속 여부를 저장합니다.
+                break;
+            case SUBSCRIBE: // 채팅방 구독시
+                enterToChatRoom(headerAccessor);
+                break;
+            case UNSUBSCRIBE: // 채팅방 구독 해지시
+                exitToChatRoom(headerAccessor);
+                break;
+            case DISCONNECT:
+                sessionService.deleteSession(headerAccessor.getSessionId());
+                break;
+						// 그 외는 커맨드는 무시
+        }
+    }
+
+    private String getMemberIdByToken(String authorization) {
+        if (authorization == null) {
+            throw new MessageDeliveryException(ErrorType.UNAUTHORIZED.getMessage());
+        }
+
+        return jwtService.getMemberId(authorization).orElseThrow(() -&gt; new MessageDeliveryException(ErrorType.UNAUTHORIZED.getMessage()));
+    }
+
+    private void enterToChatRoom(StompHeaderAccessor headerAccessor) {
+        String memberId = sessionService.getMemberIdBySessionId(headerAccessor.getSessionId());
+        String roomId = extractRoomId(headerAccessor.getDestination());
+        chatroomMetaInfoService.enterToChatRoom(roomId, memberId); // 서비스 안에서 
+    }
+
+    private void exitToChatRoom(StompHeaderAccessor headerAccessor) {
+        String memberId = sessionService.getMemberIdBySessionId(headerAccessor.getSessionId());
+        String roomId = extractRoomId(headerAccessor.getDestination());
+        chatroomMetaInfoService.exitToChatRoom(roomId, memberId);
+    }
+
+    private String extractRoomId(String destination) {
+        if (destination == null) {
+            throw new MessageDeliveryException(ErrorType.BAD_REQUEST.getMessage());
+        }
+        return destination.replace("/sub/", "");
+    }
+}
+</code></pre>
+<p></p>
+<h3 id="%EC%9D%B4%EB%B2%A4%ED%8A%B8-%EB%A6%AC%EC%8A%A4%EB%84%88-%EA%B5%AC%ED%98%84">이벤트 리스너 구현</h3>
+<pre><code class="language-java">@Service
+@RequiredArgsConstructor
+public class ChatroomMetaEventListener {
+
+    private final ApplicationEventPublisher eventPublisher;
+    private final ChatroomMetaRepository metaInfoRepository;
+
+		// 채팅방 생성시 metainfo 도 함께 생성되도록 합니다.
+    @Async
+    @EventListener
+    public void chatroomCreatedEventHandler(ChatroomCreatedEvent event) { 
+        Chatroom chatroom = Chatroom.init(event.getInfo());
+        metaInfoRepository.save(chatroom);
+    }
+
+		// 채팅메시지 도착시 안읽은 메시지와 마지막 메시지를 업데이트 합니다.
+    @Async
+    @EventListener
+    public void chatBubbleArrivedEventHandler(ChatBubbleArrivedEvent event) throws NotChatroomMemberException {
+        ChatBubble chatBubble = event.getChatBubble();
+        Chatroom chatroom = getChatroom(chatBubble.getRoomId());
+        chatroom.updateLastMessage(chatBubble);
+    }
+
+    public Chatroom getChatroom(String chatroomId) {
+        return metaInfoRepository.findById(chatroomId).orElseThrow();
+    }
+
+}
+</code></pre>
+<p></p>
+<h1 id="%ED%95%9C%EA%B3%84-%EB%B0%8F-%EA%B0%9C%EC%84%A0%ED%95%A0-%EA%B2%83">한계 및 개선할 것</h1>
+<h2 id="%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C">동시성 문제</h2>
+<p>채팅이라는 도메인의 특성상 빠르게 입력과 조회가 이루어져야 합니다. DB에 바로 접근하는 현재의 로직상 동시성 이슈로 lost update가 우려됩니다.</p>
+<p>이를 위해 채팅 metadata를 캐싱하고 주기적으로 DB에 업데이트 하는 로직으로 변경하는 것이 서비스 안정성에 좋을 것 같습니다.</p>
+<h2 id="async-%EC%99%80-eventlistener-%EC%82%AC%EC%9A%A9%EC%9C%BC%EB%A1%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%A0%95%ED%95%A9%EC%84%B1-%EB%AC%B8%EC%A0%9C">@Async 와 @EventListener 사용으로 데이터 정합성 문제</h2>
+<p>별도 트랜잭션이기 때문에 비동기 이벤트 로직 진행중 예외가 발생하였을 때 기존 데이터와 일치하지 않는 데이터 정합성 오류가 있을 수 있습니다. 현재 구현단계에서는 매번 초기화되는 데이터이기 때문에 치명적이지 않다고 판단하였지만, 장기적으로 서비스한다고 하였을 때 이에 대한 예외처리와 롤백을 처리해줘야 합니다.</p>
+<h2 id="channelinterceptor-%EC%9D%98-%EC%97%AD%ED%95%A0%EC%97%90-%EB%8C%80%ED%95%9C-%EB%AC%B8%EC%A0%9C"><strong>ChannelInterceptor 의 역할에 대한 문제</strong></h2>
+<p>구현하다보니 ChannelInterceptor 외에 다른 방법이 없나 고민이 들었습니다. 일부 로직의 구현인데 모든 웹소켓 통신을 pre handle하고 있는 점이 마음에 걸립니다. 특히&nbsp;현재는 채팅방 구독과 구독 해지로 채팅방 입퇴장을 감지하고 있지만, 만약 토픽이 다양해진다면 구독과 해지 로직이 반드시 채팅방에만 쓰이지 않수도 있기 때문입니다. 일단 기능 구현은 했지만 고민이 많이 남습니다.</p>
+<hr>
+<h2 id="refs">Refs.</h2>
+<ul><li><a href="https://dkswnkk.tistory.com/706?ref=localhost"><strong>스프링에서 @Async를 사용할때&nbsp;주의점</strong></a></li><li><a href="https://aws.amazon.com/ko/compare/the-difference-between-mongodb-vs-mysql/?ref=localhost">MongoDB와 MySQL의 차이점은 무엇인가요?</a> </li><li><a href="https://nowonbun.tistory.com/286?ref=localhost" rel="noreferrer">[Java] WebSocket의 Session&nbsp;사용 방법(Broadcast)과 웹 채팅 소스 예제</a></li></ul>
+
+		<section class="post-full-comments">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:2369/an-ilgeun-caeting-guhyeongi/";
+      this.page.identifier = "ghost-652cf177a2607c164223b2ef"
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + window.disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</section>
+
+            </section>
+
+        </article>
+
+                <div class="gh-read-next gh-canvas">
+                <section class="gh-pagehead">
+                    <h4 class="gh-pagehead-title">Read next</h4>
+                </section>
+
+                <div class="gh-topic gh-topic-grid">
+                    <div class="gh-topic-content">
+                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-09-17">Sep 17, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../mysql-full-test-search/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">MySQL 검색 기능 개선하기 : Full-text search</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+발단 : 왜 이것이 필요했나?
+
+
+
+Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들어 이런거요.
+
+
+[이미지 출처 : https://kikimong.com/7179]
+
+
+
+
+먼저 데이터는 이런식으로 들어가 있습니다. 법정동 코드를 pk 로 하였습니다. 행정동 코드보다 법정동 코드를 선택한 이유는 변동이 더</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../spring-eventreul-sayonghayeo-domein-yijonseong-najcugi/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">Spring Event를 사용하여 도메인 의존성 낮추기</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+발단
+
+
+
+Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓 통신을 기반으로 하며 STOMP와 Redis pub/sub 으로 구현하였는데요. 이 채팅에 대한 요구사항 중에 다른 도메인의 서비스를 참조하는 경우가 많아져 Facade가 비대해지고 각 도메인의 서비스 로직이 복잡하게 구성이 되며 의존성이</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-22">Aug 22, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+    <footer class="gh-foot gh-outer">
+        <div class="gh-foot-inner gh-inner">
+
+            <nav class="gh-foot-menu">
+                <ul class="nav">
+    <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
+    <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+    <li class="nav-project-secondhand"><a href="../tag/secondhand/index.html">🗂️ Project: Secondhand</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-copyright">
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/built/main.min.js%3Fv=3edcec3d65"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
+    });
+</script>
+<script>
+    var disqus_shortname = "new-pow-github-io-1"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tocbot.init({
+        tocSelector: '.toc',
+        /* contentSelector: '.post-content', */
+        contentSelector: '.gh-content',
+        hasInnerContainers: true
+    });
+</script>
+
+<style>
+    .article-image {
+        max-width: 500px;
+        margin: 0 auto !important;
+        float: none !important;
+	}
+</style>
+
+</body>
+
+</html>
