@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>🔐 비밀번호 암호화해보자 (Feat: Spring)</title>
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=23c66b5fad.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
+    
+    <style>
+        .gh-content {
+            position: relative;
+        }
+
+        .gh-toc > .toc-list {
+            position: relative;
+        }
+
+        .toc-list {
+            overflow: hidden;
+            list-style: none;
+            font-size: smaller;
+        }
+
+        @media (min-width: 1300px) {
+            .gh-sidebar {
+                position: absolute; 
+                top: 10vmin;
+                bottom: 0;
+                margin-top: 4vmin;
+                grid-column: wide-start / main-start; /* Place the TOC to the left of the content */
+            }
+        
+            .gh-toc {
+                position: sticky; /* On larger screens, TOC will stay in the same spot on the page */
+                top: 4vmin;
+            }
+        }
+
+        .gh-toc .is-active-link::before {
+            background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
+        } 
+    </style>
+    <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
+    <link rel="canonical" href="index.html">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+    <meta property="og:site_name" content="new-pow&#x27;s space">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="🔐 비밀번호 암호화해보자 (Feat: Spring)">
+    <meta property="og:description" content="해당 글에서 구현 언급한 코드는 practice-member-api 에서 확인 가능합니다.
+
+
+
+시작하며
+
+
+초반 연습용 프로젝트에서 회원가입을 구현하며 그냥 일반 텍스트로 회원 비밀번호를 관리해왔습니다.
+
+
+하지만 보안상 비밀번호를 이렇게 평문으로 저장하는 일은 반드시 지양되어야 합니다.
+
+
+마침 회원가입과 Jwt 토큰을 사용하는 인증/인가는 매우 자주 쓰는 로직이라 나만의 라이브러리를 만들고 싶었는데요. 원티드 프리온보딩 백엔드 사전">
+    <meta property="og:url" content="http://localhost:2369/bimilbeonho-amhohwahaeboja-feat-spring/">
+    <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta property="article:published_time" content="2023-10-29T14:22:04.000Z">
+    <meta property="article:modified_time" content="2023-10-29T14:22:04.000Z">
+    <meta property="article:tag" content="2023">
+    <meta property="article:tag" content="Java">
+    <meta property="article:tag" content="Spring">
+    <meta property="article:tag" content="Posts">
+    
+    <meta property="article:publisher" content="https://www.facebook.com/ghost">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="🔐 비밀번호 암호화해보자 (Feat: Spring)">
+    <meta name="twitter:description" content="해당 글에서 구현 언급한 코드는 practice-member-api 에서 확인 가능합니다.
+
+
+
+시작하며
+
+
+초반 연습용 프로젝트에서 회원가입을 구현하며 그냥 일반 텍스트로 회원 비밀번호를 관리해왔습니다.
+
+
+하지만 보안상 비밀번호를 이렇게 평문으로 저장하는 일은 반드시 지양되어야 합니다.
+
+
+마침 회원가입과 Jwt 토큰을 사용하는 인증/인가는 매우 자주 쓰는 로직이라 나만의 라이브러리를 만들고 싶었는데요. 원티드 프리온보딩 백엔드 사전">
+    <meta name="twitter:url" content="http://localhost:2369/bimilbeonho-amhohwahaeboja-feat-spring/">
+    <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="saehim lee">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="2023, Java, Spring, Posts">
+    <meta name="twitter:site" content="@ghost">
+    <meta property="og:image:width" content="2000">
+    <meta property="og:image:height" content="1668">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "new-pow&#x27;s space",
+        "url": "http://localhost:2369/",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/09/ringed-planet_1fa90-1.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "saehim lee",
+        "image": {
+            "@type": "ImageObject",
+            "url": "http://localhost:2369/content/images/2023/08/IMG_1283-1.JPG",
+            "width": 1440,
+            "height": 1080
+        },
+        "url": "http://localhost:2369/author/saehim/",
+        "sameAs": []
+    },
+    "headline": "🔐 비밀번호 암호화해보자 (Feat: Spring)",
+    "url": "http://localhost:2369/bimilbeonho-amhohwahaeboja-feat-spring/",
+    "datePublished": "2023-10-29T14:22:04.000Z",
+    "dateModified": "2023-10-29T14:22:04.000Z",
+    "keywords": "2023, Java, Spring, Posts",
+    "description": "해당 글에서 구현 언급한 코드는 practice-member-api 에서 확인 가능합니다.\n\n\n\n시작하며\n\n\n초반 연습용 프로젝트에서 회원가입을 구현하며 그냥 일반 텍스트로 회원 비밀번호를 관리해왔습니다.\n\n\n하지만 보안상 비밀번호를 이렇게 평문으로 저장하는 일은 반드시 지양되어야 합니다.\n\n\n마침 회원가입과 Jwt 토큰을 사용하는 인증/인가는 매우 자주 쓰는 로직이라 나만의 라이브러리를 만들고 싶었는데요. 원티드 프리온보딩 백엔드 사전 미션이 딱 기본 회원가입 + jwt 토큰 방식의 인증인가 + 게시판 REST API라서 이참에 이 비밀번호 암호화를 구현해보기로 했습니다💪\n\n\nSpring Framework 는 Spring Security 라는 하위 프레임워크에서 이러한 보안 인증인가 를 편리하게 제공해주고 있지만 해당 암호화 기술 대한 이해를 높이기 위해 Spring Security 없이 구현하였습니다. 그리고 이 암호화 하나만을 위해서 의존성을 주입하고, 잘 모르는 프레임 워크",
+    "mainEntityOfPage": "http://localhost:2369/bimilbeonho-amhohwahaeboja-feat-spring/"
+}
+    </script>
+
+    <meta name="generator" content="Ghost 5.62">
+    <link rel="alternate" type="application/rss+xml" title="new-pow&#x27;s space" href="../rss/index.html">
+    
+    <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
+    
+    <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
+    <script defer src="../public/cards.min.js%3Fv=23c66b5fad"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=23c66b5fad.css">
+    <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+<link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
+<style>
+/* 전체 폰트 크기 설정 */
+body,  
+h1, h2, h3, h4, h5, h6,
+.main-nav a,
+.subscribe-button,
+.page-title,
+.post-meta,
+.read-next-story .post:before,
+.pagination,
+.site-footer,
+.post-full-content,
+.post-card-excerpt,
+.post-full-custom-excerpt,
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-size: 16px; /* 여기에 원하는 폰트 크기를 지정하세요. */
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+/* 특정 요소에 대한 폰트 크기 설정 예시 */
+h1 {
+    font-size: 24px; /* h1 태그의 폰트 크기를 24px로 설정 */
+}
+
+.post-card-excerpt {
+    font-size: 14px; /* .post-card-excerpt 클래스의 폰트 크기를 14px로 설정 */
+}
+
+/* Prism 코드 블록 폰트 크기 설정 (예시) */
+/* .token 태그는 Prism 라이브러리가 생성하는 코드 블록 요소를 가리킵니다. */
+.token {
+    font-size: 14px; /* 코드 블록 폰트 크기를 14px로 설정 */
+}
+
+/* Table of Contents (TOC) 폰트 크기 설정 (예시) */
+/* .toc-link 클래스는 TOC 요소를 가리킵니다. */
+.toc-link {
+    font-size: 16px; /* TOC 폰트 크기를 16px로 설정 */
+}
+
+</style>
+
+<style>  
+.gh-canvas .article-image img {  
+	max-width: 350px;  
+	height: auto;  
+}  
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/themes/prism-tomorrow.min.css" integrity="sha512-vswe+cgvic/XBoF1OcM/TeJ2FW0OofqAVdCZiEYkd6dwGXthvkSFWOoGGJgS2CW70VK5dQM5Oh+7ne47s74VTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
+</head>
+
+<body class="post-template tag-2023 tag-java tag-spring tag-posts is-head-left-logo">
+<div class="gh-site">
+
+    <header id="gh-head" class="gh-head gh-outer">
+        <div class="gh-head-inner gh-inner">
+            <div class="gh-head-brand">
+                <div class="gh-head-brand-wrapper">
+                    
+                    <a class="gh-head-logo" href="../index.html">
+                            <img src="../content/images/2023/09/ringed-planet_1fa90-1.png" alt="new-pow&#x27;s space">
+                                <img src="../content/images/2023/09/ringed-planet_1fa90.png" alt="new-pow&#x27;s space">
+                    </a>
+                    
+                </div>
+                <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+                <button class="gh-burger"></button>
+            </div>
+
+            <nav class="gh-head-menu">
+                <ul class="nav">
+    <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-posts"><a href="../tag/posts/index.html">Posts</a></li>
+    <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-head-actions">
+                        <button class="gh-search gh-icon-btn" aria-label="Search this site" data-ghost-search><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" width="20" height="20"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg></button>
+            </div>
+        </div>
+    </header>
+
+    
+<main class="gh-main">
+        <article class="gh-article post tag-2023 tag-java tag-spring tag-posts no-image">
+
+            <header class="gh-article-header gh-canvas">
+                    <a class="gh-article-tag" href="../tag/2023/index.html">2023</a>
+
+                <h1 class="gh-article-title">🔐 비밀번호 암호화해보자 (Feat: Spring)</h1>
+
+                    <aside class="gh-article-sidebar">
+
+        <div class="gh-author-image-list">
+                <a class="gh-author-image" href="../author/saehim/index.html">
+                        <img src="../content/images/2023/08/IMG_1283-1.JPG" alt="saehim lee">
+                </a>
+        </div>
+
+        <div class="gh-author-name-list">
+                <h4 class="gh-author-name">
+                    <a href="../author/saehim/index.html">saehim lee</a>
+                </h4>
+                
+        </div>
+
+        <div class="gh-article-meta">
+            <div class="gh-article-meta-inner">
+                <time class="gh-article-date" datetime="2023-10-29">Oct 29, 2023</time>
+                    <span class="gh-article-meta-sep"></span>
+                    <span class="gh-article-length">13 min</span>
+            </div>
+        </div>
+
+    </aside>
+
+
+                            </header>
+
+
+            <section class="gh-content gh-canvas">
+                <br>
+                <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
+                <blockquote>해당 글에서 구현 언급한 코드는 <a href="https://github.com/new-pow/practice-member-api?ref=localhost">practice-member-api</a> 에서 확인 가능합니다.</blockquote>
+<h1 id="%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B0"><strong>시작하며</strong></h1>
+<p>초반 연습용 프로젝트에서 회원가입을 구현하며 그냥 일반 텍스트로 회원 비밀번호를 관리해왔습니다.</p>
+<p>하지만 보안상 비밀번호를 이렇게 평문으로 저장하는 일은 반드시 지양되어야 합니다.</p>
+<p>마침 회원가입과 Jwt 토큰을 사용하는 인증/인가는 매우 자주 쓰는 로직이라 나만의 라이브러리를 만들고 싶었는데요. 원티드 프리온보딩 백엔드 사전 미션이 딱 기본 회원가입 + jwt 토큰 방식의 인증인가 + 게시판 REST API라서 이참에 이 비밀번호 암호화를 구현해보기로 했습니다💪</p>
+<p><code>Spring Framework</code> 는 <code>Spring Security</code> 라는 하위 프레임워크에서 이러한 보안 인증인가 를 편리하게 제공해주고 있지만 해당 암호화 기술 대한 이해를 높이기 위해 <code>Spring Security</code> 없이 구현하였습니다. 그리고 이 암호화 하나만을 위해서 의존성을 주입하고, 잘 모르는 프레임 워크를 사용하고 싶지 않기도 했고요... 🥲</p>
+<p></p>
+<h1 id="%F0%9F%A4%93-%EB%A8%BC%EC%A0%80-%EA%B3%B5%EB%B6%80%ED%95%A9%EC%8B%9C%EB%8B%A4-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-%EC%95%94%ED%98%B8%ED%99%94"><strong>🤓 먼저 공부합시다, 비밀번호 암호화</strong></h1>
+<h2 id="%EC%95%94%ED%98%B8%ED%99%94-encryption-%EC%99%80-%ED%95%B4%EC%8B%B1-hashing-%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90"><strong>암호화 Encryption 와 해싱 Hashing 의 차이점</strong></h2>
+<p>보안 분야에서는 암호화와 해싱의 개념이 다르다는 것을 먼저 짚고 넘어가야겠습니다.</p>
+<p><strong>암호화</strong>는 데이터가 일반 텍스트로 전달되고 읽을 수 없는 암호화로 바꿀 수 있고, 이를 다시 해독하여 일반 텍스트로 읽을 수 있는 양방향 기능입니다. 암호화는 회원의 예민할 수 있는 정보를 저장합니다. (이름, 주소, 계좌번호 등) <strong>데이터 노출을 최소화 시키기 위한 방법</strong>입니다.</p>
+<p>반면 해싱은 단방향입니다. 한번 암호화하면 다시 이를 평문화 시킬 수 없습니다. 대신 같은 문자열을 같은 해시 함수를 거치면 결과값은 늘 같다는 것을 이용하여 값이 일치하는지 확인할 수 있습니다. 해싱은 비밀번호 등 평문화 할 일이 없는 중요한 정보를 저장하는 데 주로 사용합니다. 암호화의 목적과 다른 점은 <strong>원래 데이터와 비교해 데이터 변조가 없었는지 무결함을 증명하는 것이 목표</strong> 라는 것입니다.</p>
+<p>그래서 우리는 비밀번호를 되찾을 수 없습니다.</p>
+<p>서버에 있는 비밀번호는 암호화된 결과값(이하 다이제스트, 해시라는 용어로 표현하겠습니다.)일 뿐이지 원래 형태는 영영 되찾을 수 없는거죠. 그래서 비밀번호를 리셋해주거나 임시 비밀번호를 만드는 방법으로 비즈니스 로직을 해결합니다.</p>
+<p>((( 만약 비밀번호를 되찾아주는 사이트가 있다면 당장 탈퇴하도록 하세요)))</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/lpvzw/btsznB55fng/2OeMuZl3fpuscQ5Qyc1nVk/img.gif" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">비밀번호는 되찾을&nbsp;수 없는거야... 🪃</span></figcaption></figure>
+<p></p>
+<p>비밀번호를 해싱한다니! 해시테이블을 공부해본 분들이라면 다들 알겠지만 해시충돌(Hash Collision)이라는 것이 있습니다. 해시 테이블의 출력값이 유한할 경우 분명 다른 값을 넣었는데 같은 출력값이 나오는 경우이죠.</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/cLKbzQ/btszjr5eNr4/DZyyx49gT5BBPE483z1ve0/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">(이거 위키에서 다들&nbsp;보셨죠?)</span></figcaption></figure>
+<p></p>
+<p>그래서 비밀번호 암호화 해싱을 하면 충돌이 나지 않을까 잠깐 걱정했지만 그럴 확률은 매우매우 적은 것 같습니다. <a href="https://security.stackexchange.com/questions/91169/potential-collision-with-hash-password?ref=localhost">👉 참고링크 : Potential collision with hash password</a></p>
+<p>여하튼 암호화와 해싱을 가볍게 정리하자면 다음의 표와 같습니다.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>암호화</strong></th>
+<th><strong>해싱</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>복호화 가능성</strong></td>
+<td>가능</td>
+<td>불가능</td>
+</tr>
+<tr>
+<td><strong>(결과값의) 길이</strong></td>
+<td>가변적</td>
+<td>고정 길이</td>
+</tr>
+<tr>
+<td><strong>주요 사용 알고리즘</strong></td>
+<td>AES, RC4, DES, RSA, ECDSA…</td>
+<td>SHA-1, SHA-2, MD5, CRC32…</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<h2 id="%EA%B7%B8%EB%9F%BC-%ED%95%B4%EC%8B%B1%EC%9D%B4-%EC%99%84%EB%B2%BD%ED%95%9C-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-%EC%95%94%ED%98%B8%ED%99%94-%EB%B0%A9%EB%B2%95%EC%9D%BC%EA%B9%8C"><strong>그럼 해싱이 완벽한 비밀번호 암호화 방법일까?</strong></h2>
+<p>물론 모든 암호는 뚫릴 수 있겠지만, 해싱이 가지는 문제점이 두 가지 있습니다. <a href="https://d2.naver.com/helloworld/318732?ref=localhost">👉 참고링크 D2</a></p>
+<p></p>
+<p>첫번째는 느리다는 것입니다.</p>
+<p>해싱은 해싱 알고리즘마다 속도가 다른데요. 일반적으로 강력할 수록 더 느립니다. 예를 들어 자주 쓰였던 SHA-1 알고리즘과 최근 많이 사용되는 PBKDF2를 비교해본다면 후자 쪽이 브루트 포스 공격에 더 강력하지만 속도는 매우 느립니다.</p>
+<p>의도적으로 해싱 횟수를 추측할 수 없게 하기 위해서 느리게 하기도 합니다.</p>
+<p>하지만! 보안을 위해서 몇 초의 기다림은 사용자에게 그닥 문제가 되지 않을 것 같습니다.</p>
+<p></p>
+<p>두번째는 더 심각한 문제인 인식 가능성입니다.</p>
+<p>그러니까 자주 쓰는 비밀번호의 경우에는 그냥 다이제스트(해시 함수를 거쳤을 때 결과 값)를 미리 표로 정리해둘 수 있습니다.</p>
+<p>동일한 메시지에 대해서 늘 동일한 다이제스트를 갖기 때문에, 해커가 다이제스트 결과를 가능한 많이 확보한 다음 이를 탈취한 데이터 베이스 데이터와 비교하여 원본 메시지를 찾아낼 수 있게 되는거죠. 어떤 알고리즘을 사용했는지 안다면요.</p>
+<p>이러한 다이제스트를 모아서 레인보우 테이블이라고 하는데요. 하나의 패스워드에서 시작해 변이된 형태의 여러 패스워드를 생성하여 그 패스워드의 해시를 고리처럼 연결해 일정 수의 패스워드와 해시로 이루어진 테이블입니다. <a href="http://wiki.hash.kr/index.php/%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0_%ED%85%8C%EC%9D%B4%EB%B8%94?ref=localhost">👉&nbsp;참고 링크</a></p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/Kabkp/btszlbfZ6Wx/rxmYEl6USjBeXcF9YMYcyK/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">이미지 출처 :&nbsp;https://www.thesecurityblogger.com/understanding-rainbow-tables/</span></figcaption></figure>
+<p></p>
+<p>이를 이용하면 브루트 포스 공격이 더 쉬워지겠죠.</p>
+<p>아래는 SHA-1을 사용했을 때 레인보우 테이블의 예시입니다.</p>
+<pre><code>86f7e437faa5a7fce15d1ddcb9eaeaea377667b8 a
+e9d71f5ee7c92d6dc9e92ffdad17b8bd49418f98 b
+84a516841ba77a5b4648de2cd0dfcb30ea46dbb4 c
+...
+948291f2d6da8e32b007d5270a0a5d094a455a02 ZZZZZX
+151bfc7ba4995bfa22c723ebe7921b6ddc6961bc ZZZZZY
+18f30f1ba4c62e2b460e693306b39a0de27d747c ZZZZZZ
+
+5baa61e4c9b93f3f0682250b6cf8331b7ee68fd8 password
+e38ad214943daad1d64c102faec29de4afe9da3d password1
+b7a875fc1ea228b9061041b7cec4bd3c52ab3ce3 letmein
+5cec175b165e3d5e62c9e13ce848ef6feac81bff qwerty123
+</code></pre>
+<p></p>
+<h2 id="salt-pepper-key-stretch-%F0%9F%98%B5">Salt, Pepper, Key Stretch 😵</h2>
+<p>위에서 언급한 인식 가능성에 대한 단점을 보완하기 위해 솔트Salt, 페퍼pepper, 스트레치Key Stretch 방법을 사용하는데요. 이것에 대해서도 간단히 다루어 보겠습니다.</p>
+<p>이 세가지가 적영된 해시를 간단하게 수식으로 표현하자면 이렇게 될 것 같습니다.</p>
+<pre><code>pepper = {came from somewhere}
+salt = {generated random}
+hash = H(H(H(H(H(H(H(H(H(H(H(H(H(H(H(...H(password + salt + pepper) + salt + pepper) + salt + pepper) ... )
+</code></pre>
+<p></p>
+<h3 id="salt"><strong>Salt</strong></h3>
+<p>솔트 Salt는 단방향 해싱시 다이제스트를 생성할 때 추가되는 바이트 단위의 임의 문자열입니다. 보통 128비트 이상으로 랜덤 문자열을 생성하여 사용하고 이 생성되는 문자열은 회원마다 각각 다르게 적용한다면 더욱 강력하게 작용합니다.</p>
+<p>솔트의 목적은 해커가 데이터베이스를 탈취하기 전에 레인보우 테이블과 같은 예측가능한 테이블을 생성하지 못하는 데 있습니다. 그래서 솔트는 데이터베이스에 저장하고 이를 얻을 수 있는 유일한 방법을 데이터베이스로 합니다.</p>
+<h3 id="pepper"><strong>Pepper</strong></h3>
+<p>페퍼 Pepper는 모든 비밀번호에 일정하게 적용되지만 ✌️데이터베이스에는 저장하지 않는✌️&nbsp;또다른 소금입니다.</p>
+<p>모두에게 동일하게 적용되기 때문에 이 방법이 유효하지 않다는 의견도 있습니다만, 데이터베이스외에 다른 설정 파일을 통해서 넣어주는 페퍼로 비밀번호에 대한 안전성을 더 높일 수 있을 것입니다.</p>
+<h3 id="key-stretch"><strong>Key Stretch</strong></h3>
+<p>salt와 pepper와 본래 문자열을 여러번 해시 함수를 거쳐 다이제스트를 중접하여 생성하게 합니다. 이렇게 생성된 다이제스트는 브루트 포스 공격시 시간이 더 걸리도록 할 수 있습니다.</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://blog.kakaocdn.net/dn/bEWCvm/btszjAniFYC/4RLDN0HkO0S9Ul8vA0a2n0/img.png" class="kg-image" alt loading="lazy"><figcaption><span style="white-space: pre-wrap;">이미지 출처 : https://d2.naver.com/helloworld/318732</span></figcaption></figure>
+<p></p>
+<p></p>
+<h4 id="%EA%B7%B8%EB%A6%AC%EA%B3%A0-%EB%8D%94-%EC%96%B4%EB%A0%B5%EA%B2%8C"><strong>그리고 더 어렵게!</strong></h4>
+<p>다이제스트를 생성할 때 솔트와 패스워드 외에도 또 다른 값을 추가하여 다이제스트를 추측하기 더 어렵게 강력하게 만들 수 있습니다.</p>
+<p>대표적인 예로 KDF(Key Derivation Function)가 있는데요. 비밀번호나 솔트 등에서 키를 파생시켜 암호화 알고리즘에 사용합니다. <a href="https://en.wikipedia.org/wiki/Key_derivation_function?ref=localhost">👉 참고링크</a></p>
+<pre><code>hash = KDF(password, salt, workFactor)
+</code></pre>
+<p>가장 널리 사용되는 두 가지 KDF는&nbsp;<a href="http://en.wikipedia.org/wiki/PBKDF2?ref=localhost">PBKDF2</a>&nbsp;와&nbsp;<a href="http://en.wikipedia.org/wiki/Bcrypt?ref=localhost">bcrypt</a>&nbsp;입니다. <a href="http://en.wikipedia.org/wiki/HMAC?ref=localhost">PBKDF2는 키가 있는 HMAC</a>&nbsp;(블록 암호를 사용할 수 있음)&nbsp;의 반복을 수행하여 작동하며 bcrypt는&nbsp;<a href="http://en.wikipedia.org/wiki/Blowfish_%28cipher%29?ref=localhost">Blowfish</a> 블록 암호에서 많은 수의 암호문 블록을 계산하고 결합하여 작동합니다.</p>
+<p></p>
+<p></p>
+<h1 id="spring-%EC%97%90%EC%84%9C-%EA%B5%AC%ED%98%84%ED%95%B4%EB%B3%B4%EC%9E%90"><strong>Spring 에서 구현해보자</strong></h1>
+<h2 id="%ED%85%8C%EC%9D%B4%EB%B8%94-%EA%B5%AC%EC%A1%B0"><strong>테이블 구조</strong></h2>
+<p>비밀번호를 DB에 직접적으로 저장하지 않고, 해시와 솔트를 저장하여 비밀번호 검증을 하는 형태로 기획해보았는데요. 특히 회원가입과 로그인 외에는 회원 도메인과 별도로 움직일 수 있다고 생각되어 별도 테이블로 ERD를 짜보았습니다.</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/bmShkj/btszlaVJPCT/NRsvgOmdZYCbV26DPwlEi1/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<ul><li><strong>member_password</strong> 비밀번호를 저장하는 테이블입니다.<ul><li>member 와 식별관계로 설계해도 괜찮았겠지만 member_auth 와 통일감있게 설계하고 싶어 비식별 관계로 설계하였습니다.</li><li>member 와는 1:1 관계입니다. (ERD가 조금 잘못되었습니다 🥲)</li></ul></li></ul>
+<p></p>
+<h2 id="entity-%EA%B5%AC%ED%98%84"><strong>Entity 구현</strong></h2>
+<p>ORM은 Spring Data JPA를 사용했습니다. 특이사항은 없고 테이블 레코드와 매핑이 될 수 있도록 했습니다.</p>
+<pre><code class="language-java">@Entity
+@Table(name = "member")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@SecondaryTable(name = "member_password", pkJoinColumns = @PrimaryKeyJoinColumn(name = "member_id"))
+public class Member extends CreatedEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Email
+    private String email;
+    @Embedded
+    private Password password = new Password();
+    private String username;
+}
+</code></pre>
+<pre><code class="language-java">@Getter
+@Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Password {
+
+    @Column(table = "member_password")
+    private String hash;
+    @Column(columnDefinition = "BINARY(16)", table = "member_password")
+    private byte[] salt;
+
+    public static Password of (String hash, byte[] salt) {
+        return new Password(hash, salt);
+    }
+}
+</code></pre>
+<p></p>
+<h2 id="passwordencoder"><strong>PasswordEncoder</strong></h2>
+<p>인터페이스로 먼저 역할을 규정해준 뒤, 알고리즘마다 하위 구현 클래스를 구현할 수 있도록 하였습니다.</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/bncMvi/btszlbf0viL/OOBukpKmyOpsVkKy0pnG9K/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>단방향 암호화시 많이 쓰이는 PBKDF2 를 이용하는 인코더를 구현했습니다.</p>
+<p>알고리즘 이름인 "PBKDF2WithHmacSHA1", 반복 회수와 키 길이는 외부 변수로 주입받았습니다. 인스턴스 생성자의 파라미터에 따라 변수를 정했고 페퍼는 따로 사용하지 않았습니다.</p>
+<pre><code class="language-java">@Component
+public class Pbkdf2Encoder implements PasswordEncoder {
+    private final String encodeAlgorithm; // 알고리즘 이름
+    private final int iterations; // 반복 횟수
+    private final int keyLength; // 키 길이
+
+    public Pbkdf2Encoder(
+            @Value("${password.encode.algorithm}") String encodeAlgorithm,
+            @Value("${password.encode.iterations}") int iterations,
+            @Value("${password.encode.keyLength}") int keyLength) {
+        this.encodeAlgorithm = encodeAlgorithm;
+        this.iterations = iterations;
+        this.keyLength = keyLength;
+    }
+
+    @Override
+    public Password encrypt(String password) {
+        byte[] saltBytes = generateSalt();
+        return encrypt(password, saltBytes);
+    }
+
+    public Password encrypt(String password, byte[] saltBytes) {
+        byte[] hashBytes;
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), saltBytes, iterations, keyLength);
+        try {
+            SecretKeyFactory factory = SecretKeyFactory.getInstance(encodeAlgorithm);
+            hashBytes = factory.generateSecret(spec).getEncoded();
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException("Password encryption failed.", e);
+        }
+        String hash = new String(Base64.getEncoder().encode(hashBytes));
+        return Password.of(hash, saltBytes);
+    }
+		
+		// 랜덤 salt를 반환합니다.
+    private byte[] getSalt() {
+        SecureRandom random = new SecureRandom();
+        byte[] salt = new byte[16];
+        random.nextBytes(salt);
+        return salt;
+    }
+
+}
+</code></pre>
+<ul><li>테스트 코드</li></ul>
+<pre><code class="language-java">    @Test
+    @DisplayName("비밀번호를 암호화 할 수 있다.")
+    void testPasswordEncoder() throws Exception{
+        //given
+        String password = "password1234";
+        
+        //when
+        Password encrypt = passwordEncoder.encrypt(password);
+        log.info(encrypt.toString());
+    }
+
+    @Test
+    @DisplayName("같은 비밀번호를 같은 salt로 암호화하면 해시가 같아야 한다.")
+    void testPassword() throws Exception{
+        //given
+        String inputPassword1 = "password1234";
+        String inputPassword2 = "password1234";
+
+        //when
+        Password password1 = passwordEncoder.encrypt(inputPassword1);
+        byte[] salt = password1.getSalt();
+        Password password2 = passwordEncoder.encrypt(inputPassword2, salt);
+
+        assertThat(password1.getHash()).isEqualTo(password2.getHash());
+        assertThat(password1).isEqualTo(password2);
+    }​
+</code></pre>
+<p></p>
+<h3 id="passwordvalidator"><strong>PasswordValidator</strong></h3>
+<p>암호를 체크하는 역할의 컴포넌트를 따로 구현하였습니다. 역할이 작기 때문에 <code>PasswordEncoder</code> 에 같이 체크 메서드를 구현해도 무방할 것 같습니다.</p>
+<pre><code class="language-java">@Component
+@RequiredArgsConstructor
+public class PasswordValidator {
+
+    private final PasswordEncoder passwordEncoder;
+
+    public boolean check(Member member, String inputPassword) {
+        return passwordEncoder.encrypt(inputPassword, member.getSalt())
+                .equals(member.getPassword());
+    }
+}
+</code></pre>
+<p></p>
+<ul><li>테스트 코드</li></ul>
+<pre><code class="language-java">    @BeforeEach
+    void init() {
+        Password password = passwordEncoder.encrypt("myPassword");
+
+        testMember = Member.builder()
+                .id(1L)
+                .email("test@gmail.com")
+                .username("회원")
+                .password(password)
+                .build();
+    }
+
+    @Test
+    @DisplayName("회원 비밀번호가 맞는지 확인할 수 있다.")
+    void isCorrectPassword() {
+        byte[] salt = testMember.getSalt();
+        Password otherPassword = passwordEncoder.encrypt("myPassword", salt);
+
+        assertThat(testMember.isCorrectPassword(otherPassword)).isTrue();
+    }
+
+    @Test
+    @DisplayName("회원 비밀번호가 틀린지 확인할 수 있다.")
+    void isIncorrectPassword() {
+        byte[] salt = testMember.getSalt();
+        Password otherPassword = passwordEncoder.encrypt("wrongPassword", salt);
+
+        assertThat(testMember.isCorrectPassword(otherPassword)).isFalse();
+    }
+
+</code></pre>
+<p></p>
+<h2 id="%EB%A7%88%EB%AC%B4%EB%A6%AC%ED%95%98%EB%A9%B0">마무리하며</h2>
+<p>구현 하면서 Spring Security는 어떻게 해시와 솔트를 저장하고 있는지 궁금했는데요.</p>
+<p>자주 쓰이는 BCryptPasswordEncoder의 경우, 내부적으로 임의 솔트를 생성하고 해시 내에 저장하고 있다고 합니다. <a href="https://www.baeldung.com/spring-security-registration-password-encoding-bcrypt?ref=localhost">👉 참고링크</a></p>
+<pre><code>$2a$10$ZLhnHxdpHETcxmtEStgpI./Ri1mksgJ9iDP36FmfMdYyVg9g0b2dq
+</code></pre>
+<p>이상 여기까지 비밀번호 암호화에 대해서 학습하고 구현한 내용이었습니다. 혹시 사실과 다른 부분이 있다면 댓글로 알려주시면 감사하겠습니다 😀</p>
+<hr>
+<h2 id="refs"><strong>Refs.</strong></h2>
+<ul><li><a href="https://www.encryptionconsulting.com/education-center/encryption-vs-hashing/?ref=localhost">What is difference between Encryption and Hashing? Is Hashing more secure than Encryption?</a></li><li><a href="https://youtu.be/TeIVhioUAXs?si=cCYqHvngSC8ygokB&ref=localhost">[보안] 해쉬와 암호화</a></li><li><a href="http://wiki.hash.kr/index.php/%EB%A0%88%EC%9D%B8%EB%B3%B4%EC%9A%B0_%ED%85%8C%EC%9D%B4%EB%B8%94?ref=localhost">레인보우 테이블</a></li><li><a href="https://en.wikipedia.org/wiki/SHA-1?ref=localhost">SHA-1</a></li><li><a href="https://www.thesecurityblogger.com/understanding-rainbow-tables/?ref=localhost">https://www.thesecurityblogger.com/understanding-rainbow-tables/</a></li><li><a href="https://jaykaybaek.tistory.com/28?ref=localhost">https://jaykaybaek.tistory.com/28</a></li></ul>
+
+		<section class="post-full-comments">
+  <div id="disqus_thread"></div>
+  <script>
+    var disqus_config = function () {
+      this.page.url = "http://localhost:2369/bimilbeonho-amhohwahaeboja-feat-spring/";
+      this.page.identifier = "ghost-653e691f38d514638a3772a0"
+    };
+    (function () {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://' + window.disqus_shortname + '.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', +new Date());
+      (d.head || d.body).appendChild(s);
+    })();
+  </script>
+</section>
+
+            </section>
+
+        </article>
+
+                <div class="gh-read-next gh-canvas">
+                <section class="gh-pagehead">
+                    <h4 class="gh-pagehead-title">Read next</h4>
+                </section>
+
+                <div class="gh-topic gh-topic-grid">
+                    <div class="gh-topic-content">
+                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+API 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.
+
+
+ * M1 16GB 메모리 환경에서 테스트되었습니다.
+
+
+
+
+
+
+200만건의 데이터를 넣어보자
+
+
+Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-09-17">Sep 17, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../mysql-full-test-search/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">MySQL 검색 기능 개선하기 : Full-text search</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+발단 : 왜 이것이 필요했나?
+
+
+
+Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들어 이런거요.
+
+
+[이미지 출처 : https://kikimong.com/7179]
+
+
+
+
+먼저 데이터는 이런식으로 들어가 있습니다. 법정동 코드를 pk 로 하였습니다. 행정동 코드보다 법정동 코드를 선택한 이유는 변동이 더</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-08-20">Aug 20, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
+    <a class="gh-card-link" href="../an-ilgeun-caeting-guhyeongi/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">안 읽은 채팅 구현기 💥</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
+
+
+
+
+
+
+들어가며
+
+
+Secondhand 프로젝트를 진행할 때 가장 마지막에 구현했던 기능인 ‘아직 안 읽은 채팅’에 대해 백엔드 개발자 2명이 한 고민과 구현 과정을 정리해보았습니다.
+
+
+채팅 시스템은 처음 이 프로젝트를 시작할 당시에 BE는 물론 FE, iOS에게도 굉장히 큰 과제였습니다. 유저간</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-10-16">Oct 16, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                    </div>
+                </div>
+            </div>
+
+        </main>
+
+
+    <footer class="gh-foot gh-outer">
+        <div class="gh-foot-inner gh-inner">
+
+            <nav class="gh-foot-menu">
+                <ul class="nav">
+    <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
+    <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
+    <li class="nav-project-secondhand"><a href="../tag/secondhand/index.html">🗂️ Project: Secondhand</a></li>
+</ul>
+
+            </nav>
+
+            <div class="gh-copyright">
+                    new-pow&#x27;s space © 2023. Powered by <a href="https://ghost.org/" target="_blank" rel="noopener">Ghost</a>
+            </div>
+        </div>
+    </footer>
+
+</div>
+
+    <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="pswp__bg"></div>
+
+    <div class="pswp__scroll-wrap">
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <div class="pswp__ui pswp__ui--hidden">
+            <div class="pswp__top-bar">
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--share" title="Share"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                        <div class="pswp__preloader__cut">
+                            <div class="pswp__preloader__donut"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div>
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/built/main.min.js%3Fv=23c66b5fad"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+<script>
+    tocbot.init({
+        // Where to render the table of contents.
+        tocSelector: '.gh-toc',
+        // Where to grab the headings to build the table of contents.
+        contentSelector: '.gh-content',
+        // Which headings to grab inside of the contentSelector element.
+        headingSelector: 'h1, h2, h3, h4',
+        // Ensure correct positioning
+        hasInnerContainers: true,
+    });
+</script>
+<script>
+    var disqus_shortname = "new-pow-github-io-1"
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/components/prism-core.min.js" integrity="sha512-9khQRAUBYEJDCDVP2yw3LRUQvjJ0Pjx0EShmaQjcHa6AXiOv6qHQu9lCAIR8O+/D8FtaCoJ2c0Tf9Xo7hYH01Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.28.0/plugins/autoloader/prism-autoloader.min.js" integrity="sha512-fTl/qcO1VgvKtOMApX2PdZzkziyr2stM65GYPLGuYMnuMm1z2JLJG6XVU7C/mR+E7xBUqCivykuhlzfqxXBXbg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    tocbot.init({
+        tocSelector: '.toc',
+        /* contentSelector: '.post-content', */
+        contentSelector: '.gh-content',
+        hasInnerContainers: true
+    });
+</script>
+
+<style>
+    .article-image {
+        max-width: 500px;
+        margin: 0 auto !important;
+        float: none !important;
+	}
+</style>
+
+</body>
+
+</html>

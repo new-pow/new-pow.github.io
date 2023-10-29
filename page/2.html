@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>new-pow&#x27;s space (Page 2)</title>
-    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=3edcec3d65.css">
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=23c66b5fad.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
@@ -54,11 +54,12 @@
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
     <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
-    <script defer src="../public/cards.min.js%3Fv=3edcec3d65"></script>
-    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=3edcec3d65.css">
+    <script defer src="../public/cards.min.js%3Fv=23c66b5fad"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=23c66b5fad.css">
     <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
 <link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <style>
+/* 전체 폰트 크기 설정 */
 body,  
 h1, h2, h3, h4, h5, h6,
 .main-nav a,
@@ -71,10 +72,33 @@ h1, h2, h3, h4, h5, h6,
 .post-full-content,
 .post-card-excerpt,
 .post-full-custom-excerpt,
-[class^="icon-"]:before, [class*=" icon-"]:before
-{
-font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
-    }
+[class^="icon-"]:before,
+[class*=" icon-"]:before {
+    font-size: 16px; /* 여기에 원하는 폰트 크기를 지정하세요. */
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+}
+
+/* 특정 요소에 대한 폰트 크기 설정 예시 */
+h1 {
+    font-size: 24px; /* h1 태그의 폰트 크기를 24px로 설정 */
+}
+
+.post-card-excerpt {
+    font-size: 14px; /* .post-card-excerpt 클래스의 폰트 크기를 14px로 설정 */
+}
+
+/* Prism 코드 블록 폰트 크기 설정 (예시) */
+/* .token 태그는 Prism 라이브러리가 생성하는 코드 블록 요소를 가리킵니다. */
+.token {
+    font-size: 14px; /* 코드 블록 폰트 크기를 14px로 설정 */
+}
+
+/* Table of Contents (TOC) 폰트 크기 설정 (예시) */
+/* .toc-link 클래스는 TOC 요소를 가리킵니다. */
+.toc-link {
+    font-size: 16px; /* TOC 폰트 크기를 16px로 설정 */
+}
+
 </style>
 
 <style>  
@@ -111,6 +135,7 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
             <nav class="gh-head-menu">
                 <ul class="nav">
     <li class="nav-about"><a href="../about/index.html">About</a></li>
+    <li class="nav-posts"><a href="../tag/posts/index.html">Posts</a></li>
     <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
 </ul>
 
@@ -133,6 +158,35 @@ font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFon
         <div class="gh-topic gh-topic-grid">
             <div class="gh-topic-content gh-feed">
                             <article class="gh-card post no-image large">
+    <a class="gh-card-link" href="../bimilbeonho-amhohwahaeboja-feat-spring/index.html">
+
+        <div class="gh-card-wrapper">
+            <header class="gh-card-header">
+                <h3 class="gh-card-title">🔐 비밀번호 암호화해보자 (Feat: Spring)</h3>
+            </header>
+
+                    <div class="gh-card-excerpt">해당 글에서 구현 언급한 코드는 practice-member-api 에서 확인 가능합니다.
+
+
+
+시작하며
+
+
+초반 연습용 프로젝트에서 회원가입을 구현하며 그냥 일반 텍스트로 회원 비밀번호를 관리해왔습니다.
+
+
+하지만 보안상 비밀번호를 이렇게 평문으로 저장하는 일은 반드시 지양되어야 합니다.
+
+
+마침 회원가입과 Jwt 토큰을 사용하는 인증/인가는 매우 자주 쓰는 로직이라 나만의 라이브러리를 만들고 싶었는데요. 원티드 프리온보딩 백엔드 사전</div>
+
+            <footer class="gh-card-footer">
+                <span class="gh-card-author">saehim lee</span>
+                <time class="gh-card-date" datetime="2023-10-29">Oct 29, 2023</time>
+            </footer>
+        </div>
+    </a>
+</article>                            <article class="gh-card post no-image">
     <a class="gh-card-link" href="../an-ilgeun-caeting-guhyeongi/index.html">
 
         <div class="gh-card-wrapper">
@@ -312,7 +366,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
             </footer>
         </div>
     </a>
-</article>                            <article class="gh-card post no-image">
+</article>                    <article class="gh-card post tag-2022 tag-log tag-posts no-image">
     <a class="gh-card-link" href="../2022-log-3/index.html">
 
         <div class="gh-card-wrapper">
@@ -435,7 +489,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
 </div>
 
 
-<script src="../assets/built/main.min.js%3Fv=3edcec3d65"></script>
+<script src="../assets/built/main.min.js%3Fv=23c66b5fad"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
