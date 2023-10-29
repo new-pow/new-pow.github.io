@@ -159,18 +159,18 @@ h1, h2, h3, h4, h5, h6,
 .post-card-excerpt,
 .post-full-custom-excerpt,
 [class^="icon-"]:before,
-[class*=" icon-"]:before {
-    font-size: 16px; /* 여기에 원하는 폰트 크기를 지정하세요. */
+[class*=" icon-"]:before { /* 여기에 원하는 폰트 크기를 지정하세요. */
     font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
 }
-
-/* 특정 요소에 대한 폰트 크기 설정 예시 */
-h1 {
-    font-size: 24px; /* h1 태그의 폰트 크기를 24px로 설정 */
-}
-
-.post-card-excerpt {
-    font-size: 14px; /* .post-card-excerpt 클래스의 폰트 크기를 14px로 설정 */
+    
+@media (min-width: 1300px)
+.gh-sidebar {
+    position: absolute;
+    top: 2vmin;
+    bottom: 0;
+    margin-top: 4vmin;
+    margin-right: 4vmin;
+    grid-column: wide-start / main-start;
 }
 
 /* Prism 코드 블록 폰트 크기 설정 (예시) */
