@@ -71,13 +71,14 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-17T02:16:04.000Z">
-    <meta property="article:modified_time" content="2023-09-18T09:06:33.000Z">
+    <meta property="article:modified_time" content="2023-10-29T15:03:14.000Z">
     <meta property="article:tag" content="Projects">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Java">
     <meta property="article:tag" content="SpringDataJpa">
     <meta property="article:tag" content="Refactoring">
     <meta property="article:tag" content="Database">
+    <meta property="article:tag" content="Posts">
     
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
@@ -104,7 +105,7 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     <meta name="twitter:label1" content="Written by">
     <meta name="twitter:data1" content="saehim lee">
     <meta name="twitter:label2" content="Filed under">
-    <meta name="twitter:data2" content="Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database">
+    <meta name="twitter:data2" content="Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database, Posts">
     <meta name="twitter:site" content="@ghost">
     <meta property="og:image:width" content="2000">
     <meta property="og:image:height" content="1668">
@@ -139,8 +140,8 @@ Dummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테
     "headline": "API 성능개선 : 페이지네이션 cursor 방식으로 개선해보자",
     "url": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/",
     "datePublished": "2023-09-17T02:16:04.000Z",
-    "dateModified": "2023-09-18T09:06:33.000Z",
-    "keywords": "Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database",
+    "dateModified": "2023-10-29T15:03:14.000Z",
+    "keywords": "Projects, Secondhand, Java, SpringDataJpa, Refactoring, Database, Posts",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\nAPI 기본 기능을 모두 구현하고 본격적으로 쿼리 튜닝과 성능 개선을 하기 위해 쿼리를 분석하고 개선해보도록 하겠습니다.\n\n\n * M1 16GB 메모리 환경에서 테스트되었습니다.\n\n\n\n\n\n\n200만건의 데이터를 넣어보자\n\n\nDummy data를 넣는 다양한 방식이 있습니다. 하지만 저는 item 테이블을 vertical partitioning 한 상태여서 테이블 3개에 동시에 데이터를 넣어야 했기 때문에 프로시저를 통해 랜덤한 데이터를 넣어주고자 했습니다.\n\n\n더미 데이터를 넣는 가장 빠른 방법은 csv로 데이터를 만든 후 dump insert하는 것이 가장 빠르겠지만, 랜덤하게 변수를 설정하는 부분이 다른 문서 편집기를 사용하는 것보다 MySQL 프로시저를 이용하는 편이 더 편했기 때문에 아래와 같이 프로시저를 만들고 실행시켰습니다. 200만건이 들어가는데에는 15분정도가 소요되었",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-200mangeonyi-deiteo-peiji/"
 }
@@ -212,7 +213,7 @@ h1 {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.js" integrity="sha512-Pb1ryJBQ8yanWB5d4BaW6AyQsPNkB3m9dVNLpwYeyQA3jxM/NJtLXsB0DU4VOD0EBbJBXm8LOnwsVnQCdClwgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><style>:root {--ghost-accent-color: #ff7070;}</style>
 </head>
 
-<body class="post-template tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database is-head-left-logo">
+<body class="post-template tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database tag-posts is-head-left-logo">
 <div class="gh-site">
 
     <header id="gh-head" class="gh-head gh-outer">
@@ -247,7 +248,7 @@ h1 {
 
     
 <main class="gh-main">
-        <article class="gh-article post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database no-image">
+        <article class="gh-article post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database tag-posts no-image">
 
             <header class="gh-article-header gh-canvas">
                     <a class="gh-article-tag" href="../tag/projects/index.html">Projects</a>
@@ -649,6 +650,7 @@ Secondhand 프로젝트를 진행할 때 가장 마지막에 구현했던 기능
 
             <nav class="gh-foot-menu">
                 <ul class="nav">
+    <li class="nav-resume"><a href="../resume/index.html">👩🏻‍💻 Resume</a></li>
     <li class="nav-posts"><a href="../tag/posts/index.html">👩🏻‍💻 Posts</a></li>
     <li class="nav-logs"><a href="../tag/log/index.html">🚀 Logs</a></li>
     <li class="nav-project-secondhand"><a href="../tag/secondhand/index.html">🗂️ Project: Secondhand</a></li>
