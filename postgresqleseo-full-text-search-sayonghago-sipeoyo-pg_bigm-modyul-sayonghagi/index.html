@@ -67,7 +67,6 @@ MySQL 검색 기능 개선하기 : Full-text search
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-10-02T14:34:58.000Z">
     <meta property="article:modified_time" content="2023-10-29T15:03:02.000Z">
-    <meta property="article:tag" content="2023">
     <meta property="article:tag" content="Posts">
     <meta property="article:tag" content="Database">
     
@@ -91,7 +90,7 @@ MySQL 검색 기능 개선하기 : Full-text search
     <meta name="twitter:label1" content="Written by">
     <meta name="twitter:data1" content="saehim lee">
     <meta name="twitter:label2" content="Filed under">
-    <meta name="twitter:data2" content="2023, Posts, Database">
+    <meta name="twitter:data2" content="Posts, Database">
     <meta name="twitter:site" content="@ghost">
     <meta property="og:image:width" content="2000">
     <meta property="og:image:height" content="1668">
@@ -127,7 +126,7 @@ MySQL 검색 기능 개선하기 : Full-text search
     "url": "http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/",
     "datePublished": "2023-10-02T14:34:58.000Z",
     "dateModified": "2023-10-29T15:03:02.000Z",
-    "keywords": "2023, Posts, Database",
+    "keywords": "Posts, Database",
     "description": "연관글\nMySQL 검색 기능 개선하기 : Full-text search\n\n\n\n들어가며\n\n\n최근 영상에 데이터 라벨링을 하기 위한 REST API와 WAS를 구축하고 있습니다. 이전에 여러번 진행했던 토이 프로젝트들과는 다르게 서비스를 구축하다보니 기술 스택 설정부터 모호한 서비스 요구사항 등등.. 이런저런 새로운 도전들을 하게되었습니다.\n\n\n가장 새로운 도전 중 하나는 그동안 제 2의 고향과 같았던 🥹 MySQL을 떠나 다른 RDB를 사용하게 된 것인데요. 같은 RDB라 크게 달라질 것이 없다고 생각했지만.. 역시 세상에는 거저 지나가는 것들이 없었습니다.\n\n\n💡여담으로 제대로 PostgreSQL의 장점을 사용해보지 못한 상태에서, MySQL과 PostgreSQL의 가장 큰 차이점으로 느끼는 것은 auto_increment로 PK 생성할 때의 기본 전략입니다.\nMySQL은 LAST_INSERT_ID(); 로 마지막에 삽입된 레코드 PK를 가져오지만 PostgreSQL 은 sequ",
     "mainEntityOfPage": "http://localhost:2369/postgresqleseo-full-text-search-sayonghago-sipeoyo-pg_bigm-modyul-sayonghagi/"
 }
@@ -221,6 +220,7 @@ h1, h2, h3, h4, h5, h6,
                 <ul class="nav">
     <li class="nav-about"><a href="../about/index.html">About</a></li>
     <li class="nav-posts"><a href="../tag/posts/index.html">Posts</a></li>
+    <li class="nav-tags"><a href="http://localhost:2369/tags/">Tags</a></li>
     <li class="nav-to-blog"><a href="https://new-pow.tistory.com/">to Blog</a></li>
 </ul>
 
@@ -237,7 +237,6 @@ h1, h2, h3, h4, h5, h6,
         <article class="gh-article post tag-2023 tag-posts tag-database no-image">
 
             <header class="gh-article-header gh-canvas">
-                    <a class="gh-article-tag" href="../tag/2023/index.html">2023</a>
 
                 <h1 class="gh-article-title">PostgreSQL에서 Full text search 사용하고 싶다면 : pg_bigm 모듈 사용하기</h1>
 
