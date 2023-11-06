@@ -1,4 +1,386 @@
-<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title><![CDATA[new-pow's space]]></title><description><![CDATA[new-pow's space]]></description><link>http://localhost:2369/</link><image><url>http://localhost:2369/favicon.png</url><title>new-pow&apos;s space</title><link>http://localhost:2369/</link></image><generator>Ghost 5.62</generator><lastBuildDate>Sun, 05 Nov 2023 10:17:38 GMT</lastBuildDate><atom:link href="http://localhost:2369/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[🔐 비밀번호 암호화해보자 (Feat: Spring)]]></title><description><![CDATA[<blockquote>&#xD574;&#xB2F9; &#xAE00;&#xC5D0;&#xC11C; &#xAD6C;&#xD604; &#xC5B8;&#xAE09;&#xD55C; &#xCF54;&#xB4DC;&#xB294; <a href="https://github.com/new-pow/practice-member-api?ref=localhost">practice-member-api</a> &#xC5D0;&#xC11C; &#xD655;&#xC778; &#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</blockquote>
+<?xml version="1.0" encoding="UTF-8"?><rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/"><channel><title><![CDATA[new-pow's space]]></title><description><![CDATA[new-pow's space]]></description><link>http://localhost:2369/</link><image><url>http://localhost:2369/favicon.png</url><title>new-pow&apos;s space</title><link>http://localhost:2369/</link></image><generator>Ghost 5.62</generator><lastBuildDate>Mon, 06 Nov 2023 12:49:01 GMT</lastBuildDate><atom:link href="http://localhost:2369/rss/" rel="self" type="application/rss+xml"/><ttl>60</ttl><item><title><![CDATA[S3 업로드 비동기 처리✊ : 반환이 있는 @Async를 사용할 때 주의할 것들....]]></title><description><![CDATA[<blockquote>&#xC774; &#xAE00;&#xC740; Secondhand &#xD504;&#xB85C;&#xC81D;&#xD2B8;&#xB97C; &#xD558;&#xBA70; &#xD2B8;&#xB7EC;&#xBE14; &#xC288;&#xD305;&#xD558;&#xACE0; &#xD559;&#xC2B5;&#xD55C; &#xB0B4;&#xC6A9;&#xC744; &#xC815;&#xB9AC;&#xD55C; &#xAE00;&#xC785;&#xB2C8;&#xB2E4;.</blockquote>
+<h2 id="%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B0"><strong>&#xC2DC;&#xC791;&#xD558;&#xBA70;</strong></h2>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/9Bn0A/btszM1J35HI/kIvAYxXFL7W24k1IIB7SOK/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>Secondhand&#xC5D0; &#xAE00;&#xC744; &#xC791;&#xC131;&#xD560; &#xB54C;&#xB294; &#xCD5C;&#xB300; 10&#xC7A5;&#xC758; &#xC774;</p>]]></description><link>http://localhost:2369/s3-eobrodeu-bidonggi-ceori-banhwani-issneun-asyncreul-sayonghal-ddae-juyihal-geosdeul/</link><guid isPermaLink="false">6548df72ba758b43a5c0397f</guid><category><![CDATA[Posts]]></category><category><![CDATA[Projects]]></category><category><![CDATA[Secondhand]]></category><category><![CDATA[Spring]]></category><dc:creator><![CDATA[saehim lee]]></dc:creator><pubDate>Mon, 06 Nov 2023 12:48:28 GMT</pubDate><content:encoded><![CDATA[<blockquote>&#xC774; &#xAE00;&#xC740; Secondhand &#xD504;&#xB85C;&#xC81D;&#xD2B8;&#xB97C; &#xD558;&#xBA70; &#xD2B8;&#xB7EC;&#xBE14; &#xC288;&#xD305;&#xD558;&#xACE0; &#xD559;&#xC2B5;&#xD55C; &#xB0B4;&#xC6A9;&#xC744; &#xC815;&#xB9AC;&#xD55C; &#xAE00;&#xC785;&#xB2C8;&#xB2E4;.</blockquote>
+<h2 id="%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B0"><strong>&#xC2DC;&#xC791;&#xD558;&#xBA70;</strong></h2>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/9Bn0A/btszM1J35HI/kIvAYxXFL7W24k1IIB7SOK/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>Secondhand&#xC5D0; &#xAE00;&#xC744; &#xC791;&#xC131;&#xD560; &#xB54C;&#xB294; &#xCD5C;&#xB300; 10&#xC7A5;&#xC758; &#xC774;&#xBBF8;&#xC9C0;&#xB97C; &#xC5C5;&#xB85C;&#xB4DC;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<p>&#xC774; &#xAE30;&#xB2A5;&#xC744; &#xAD6C;&#xD604;&#xD558;&#xACE0; &#xB098;&#xC11C; &#xAC00;&#xC7A5; &#xB9C8;&#xC74C;&#xC5D0; &#xAC78;&#xB838;&#xB358; &#xBD80;&#xBD84;&#xC774; &#xC788;&#xB294;&#xB370;&#xC694;, &#xBC14;&#xB85C; &#xC774; 10&#xC7A5;&#xC758; &#xC774;&#xBBF8;&#xC9C0;&#xAC00; &#xD558;&#xB098;&#xC758; &#xC2A4;&#xB808;&#xB4DC;&#xC5D0;&#xC11C; &#xB3D9;&#xAE30;&#xC801;&#xC73C;&#xB85C; &#xCC98;&#xB9AC;&#xB41C;&#xB2E4;&#xB294; &#xAC83;&#xC785;&#xB2C8;&#xB2E4;. &#xAF64; &#xACE0;&#xD654;&#xC9C8;&#xC778; &#xC774;&#xBBF8;&#xC9C0;&#xB97C; 10&#xC7A5; &#xD55C;&#xBC88;&#xC5D0; &#xCC98;&#xB9AC;&#xB97C; &#xD558;&#xBA74; 3&#xCD08;&#xC815;&#xB3C4; &#xC18C;&#xC694;&#xB418;&#xAE30;&#xB3C4; &#xD569;&#xB2C8;&#xB2E4; &#x1F440;....</p>
+<p>&#xACC4;&#xC18D; &#xB9C8;&#xC74C;&#xC5D0; &#xAC78;&#xB838;&#xB358; &#xCF54;&#xB4DC;&#xB77C; &#xC774;&#xCC38;&#xC5D0; &#xB9AC;&#xD329;&#xD1A0;&#xB9C1;&#xC744; &#xD574;&#xBCF4;&#xAE30;&#xB85C; &#xD588;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/dr7TFP/btszLpLkQhR/087vNuKRMFQEkyFqFZbeR1/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<h2 id="%EA%B0%9C%EC%84%A0-%ED%95%B4%EB%B3%B4%EC%9E%90"><strong>&#xAC1C;&#xC120; &#xD574;&#xBCF4;&#xC790;</strong></h2>
+<h3 id="%EA%B8%B0%EC%A1%B4-%EB%A1%9C%EC%A7%81-%EB%B0%8F-%EB%AC%B8%EC%A0%9C%EC%A0%90-%EB%B6%84%EC%84%9D"><strong>&#xAE30;&#xC874; &#xB85C;&#xC9C1; &#xBC0F; &#xBB38;&#xC81C;&#xC810; &#xBD84;&#xC11D;</strong></h3>
+<p>&#xC6D0;&#xB798; &#xCF54;&#xB4DC;&#xC640; &#xC2DC;&#xD000;&#xC2A4; &#xB2E4;&#xC774;&#xC5B4;&#xADF8;&#xB7A8;&#xC744; &#xBA3C;&#xC800; &#xACF5;&#xC720;&#xD558;&#xC790;&#xBA74; &#xB2E4;&#xC74C;&#xACFC; &#xAC19;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<pre><code class="language-java">    @Override
+    public List&lt;ItemDetailImage&gt; uploadItemDetailImages(List&lt;MultipartFile&gt; request) throws ImageHostException {
+        checkFilesSize(request);
+
+        List&lt;ItemDetailImage&gt; images = new ArrayList&lt;&gt;();
+
+        for (MultipartFile multipartFile : request) {
+            ImageInfo imageInfo = uploadItemDetailImage(multipartFile);
+            images.add(ItemDetailImage.create(imageInfo.getImageUrl()));
+        }
+
+        return images;
+    }
+    
+    @Override
+    public ImageInfo uploadItemDetailImage(MultipartFile file) throws ImageHostException {
+        String imageUrl = &quot;&quot;;
+
+        try {
+            imageUrl = upload(file, Directory.ITEM_DETAIL);
+        } catch (IOException e) {
+            throw new ImageHostException(&quot;&#xBB3C;&#xD488; &#xC0AC;&#xC9C4; &#xC5C5;&#xB85C;&#xB4DC;&#xC5D0; &#xC2E4;&#xD328;&#xD558;&#xC600;&#xC2B5;&#xB2C8;&#xB2E4;.&quot;);
+        }
+
+        return ImageInfo.create(imageUrl);
+    }
+    
+    public String upload(MultipartFile file, Directory directory) throws IOException, TooLargeImageException, NotValidImageTypeException {
+        checkFileSize(file);
+        checkFileType(file);
+
+        String newFileKey = generateKey(file.getOriginalFilename(), directory.getPrefix());
+        amazonS3.putObject(new PutObjectRequest(properties.getBucket(), newFileKey, file.getInputStream(), getMetadata(file)));
+        return amazonS3.getUrl(properties.getBucket(), newFileKey).toString();
+    }
+</code></pre>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/mmFTF/btszQDB2AqO/8QN1vwqPWrHbYHXSUzxQqk/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>&#xC2A4;&#xB808;&#xB4DC; &#xD558;&#xB098;&#xC5D0;&#xC11C; &#xCD5C;&#xB300; 10&#xAC1C;&#xC758; &#xC774;&#xBBF8;&#xC9C0;&#xB97C; &#xAC1C;&#xBBF8;&#xCC98;&#xB7FC; &#xCC9C;&#xCC9C;&#xD788; &#xD558;&#xB098;&#xC529; &#xCC98;&#xB9AC;&#xD558;&#xACE0; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. &#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;&#x1F41C;...</p>
+<p>&#xB204;&#xAC00; &#xC774;&#xB807;&#xAC8C; &#xBE44;&#xD6A8;&#xC728;&#xC801;&#xC73C;&#xB85C; &#xC9F0;&#xB098;? &#xBC14;&#xB85C; &#xC811;&#xB2C8;&#xB2E4; &#xD5C8;&#xD5C8;&#xD5C8;&#xD5C8;....</p>
+<p>&#xADF8;&#xB9AC;&#xACE0; &#xC774;&#xAC83;&#xC744; &#xBAA8;&#xB450; &#xB2E4; &#xCC98;&#xB9AC;&#xD55C; &#xB4A4;&#xC5D0; &#xC12C;&#xB124;&#xC77C;&#xC744; &#xCC98;&#xB9AC;&#xD558;&#xBBC0;&#xB85C; S3 &#xC5C5;&#xB85C;&#xB4DC;&#xB85C; &#xD2B8;&#xB9AC;&#xAC70; &#xBC1C;&#xC0DD;&#xD558;&#xB294; &#xC12C;&#xB124;&#xC77C;&#xC6A9; &#xB78C;&#xB2E4;&#xB294; &#xB354; &#xB290;&#xB9AC;&#xAC8C; &#xC791;&#xC5C5;&#xB420; &#xC218; &#xBC16;&#xC5D0; &#xC5C6;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<p>&#xD14C;&#xC2A4;&#xD2B8;&#xB85C; &#xB85C;&#xCEEC;&#xC5D0;&#xC11C; &#xC2A4;&#xB808;&#xB4DC; &#xB85C;&#xADF8;&#xB3C4; &#xCC0D;&#xC5B4;&#xBCF4;&#xC558;&#xB294;&#xB370;&#xC694;. &#xC5ED;&#xC2DC;&#xB098; &#xD55C;&#xAC1C;&#xC758; &#xC2A4;&#xB808;&#xB4DC;&#xB85C; &#xC9C1;&#xB82C; &#xCC98;&#xB9AC;&#xD558;&#xACE0; &#xC788;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;. &#xAE54;&#xB054;&#xD55C; &#xC774; &#xB85C;&#xC9C1;..</p>
+<pre><code class="language-java">DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: 115064144.jpeg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 115064144.jpeg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: 232, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+DEBUG 9717 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+</code></pre>
+<p></p>
+<p></p>
+<h3 id="%EB%A7%88%EB%B2%95%EC%9D%98-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98-async%EC%9D%84-%EB%B6%99%EC%9D%B4%EB%A9%B4-%EC%96%B4%EB%96%BB%EA%B2%8C-%EB%90%A0%EA%B9%8C"><strong>&#xB9C8;&#xBC95;&#xC758; &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158; @Async&#xC744; &#xBD99;&#xC774;&#xBA74; &#xC5B4;&#xB5BB;&#xAC8C; &#xB420;&#xAE4C;?</strong></h3>
+<p>&#xD754;&#xD788;&#xB4E4; &#xB3D9;&#xAE30; &#xC791;&#xC5C5;&#xC744; &#xD558;&#xAE30; &#xC704;&#xD574;&#xC11C;&#xB294; &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158; @Async&#xB97C; &#xBD99;&#xC5EC;&#xC8FC;&#xACE4; &#xD569;&#xB2C8;&#xB2E4;. &#xADF8;&#xB7FC; &#xD574;&#xACB0; &#xB420;&#xAE4C;&#xC694;?</p>
+<p>&#xC704; &#xCF54;&#xB4DC;&#xC5D0;&#xC11C; `upload()`&#xC5D0; @Async &#xB97C; &#xBD99;&#xC774;&#xACE0; AsyncConfig &#xB97C; &#xB9CC;&#xB4E4;&#xC5B4;&#xC90D;&#xB2C8;&#xB2E4;. &#xADF8;&#xB9AC;&#xACE0; &#xAE30;&#xB300;&#xD558;&#xBA70; &#xB2E4;&#xC2DC; &#xD14C;&#xC2A4;&#xD2B8;&#xB97C; &#xD574;&#xBCF4;&#xC558;&#xC9C0;&#xB9CC;...</p>
+<p>&#xC5EC;&#xC804;&#xD788; &#xB3D9;&#xC77C;&#xD55C; &#xC2A4;&#xB808;&#xB4DC;&#xC5D0;&#xC11C; &#xB3D9;&#xAE30;&#xB85C; &#xC2E4;&#xD589;&#xB429;&#xB2C8;&#xB2E4;. &#xC2EC;&#xC9C0;&#xC5B4; &#xC2A4;&#xB808;&#xB4DC; &#xADF8;&#xB8F9;&#xC744; &#xC9C0;&#xC815;&#xD574;&#xC8FC;&#xC5C8;&#xC74C;&#xC5D0;&#xB3C4; &#xD574;&#xB2F9; &#xADF8;&#xB8F9;&#xC5D0;&#xC11C; &#xC2A4;&#xB808;&#xB4DC;&#xB97C; &#xAC00;&#xC838;&#xC624;&#xC9C0;&#xB3C4; &#xC54A;&#xACE0; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<pre><code class="language-java">2023-11-05 22:18:39.177 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:18:41.300 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:18:41.364 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:18:41.443 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:18:41.448 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+2023-11-05 22:18:42.105 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+2023-11-05 22:18:42.113 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+2023-11-05 22:18:42.169 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+2023-11-05 22:18:42.170 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: 115064144.jpeg
+2023-11-05 22:18:42.270 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: 115064144.jpeg
+2023-11-05 22:18:42.273 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+2023-11-05 22:18:42.360 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+2023-11-05 22:18:42.365 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread upload work start: main 232, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+2023-11-05 22:18:42.569 DEBUG 10387 --- [nio-8080-exec-2] c.t.s.a.image.service.ImageHostService   : Thread work end: 232, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+</code></pre>
+<p>(&#xCC38;&#xACE0;&#xC6A9;&#xC73C;&#xB85C; &#xC218;&#xC815;&#xD55C; &#xCF54;&#xB4DC;&#xB97C; &#xCD94;&#xAC00;&#xD569;&#xB2C8;&#xB2E4;)</p>
+<pre><code class="language-java">@EnableAsync
+@Configuration
+public class AsyncConfig {
+
+    @Bean(name = &quot;imageUploadExecutor&quot;)
+    public Executor imageUploadExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadGroupName(&quot;imageUploadExecutor&quot;);
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(50);
+        executor.initialize();
+        return executor;
+    }
+}
+</code></pre>
+<pre><code class="language-java">    @Async(&quot;imageUploadExecutor&quot;)
+    public String upload(MultipartFile file, Directory directory) throws IOException, TooLargeImageException, NotValidImageTypeException {
+        checkFileSize(file);
+        checkFileType(file);
+
+        String newFileKey = generateKey(file.getOriginalFilename(), directory.getPrefix());
+        amazonS3.putObject(new PutObjectRequest(properties.getBucket(), newFileKey, file.getInputStream(), getMetadata(file)));
+        return amazonS3.getUrl(properties.getBucket(), newFileKey).toString();
+    }
+</code></pre>
+<h3 id="%E2%AD%90%EF%B8%8F-async-%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%A0-%EB%95%8C-%EC%A3%BC%EC%9D%98%ED%95%A0-%EC%A0%90"><strong>&#x2B50;&#xFE0F; @Async &#xB97C; &#xC0AC;&#xC6A9;&#xD560; &#xB54C; &#xC8FC;&#xC758;&#xD560; &#xC810;</strong></h3>
+<p>&#xBB38;&#xC81C;&#xC810;&#xC740; &#xC81C;&#xAC00; &#xADF8;&#xB3D9;&#xC548; Async &#xC5D0; &#xB300;&#xD574; &#xC798;&#xBABB; &#xC0AC;&#xC6A9;&#xD558;&#xACE0; &#xC788;&#xC5C8;&#xB2E4;&#xB294; &#xAC83;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<p>@Async&#xB294; &#xC5B4;&#xB5BB;&#xAC8C; &#xB3D9;&#xC791;&#xD560;&#xAE4C;&#xC694;?</p>
+<p>&#xC774; &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC740;&#xC740; Spring&#xC758; &#xD070; &#xD2B9;&#xC9D5;&#xC778; AOP &#xC758; &#xAE30;&#xB2A5;&#xC73C;&#xB85C; &#xAD6C;&#xD604;&#xB429;&#xB2C8;&#xB2E4;.</p>
+<p>&#xBA54;&#xC11C;&#xB4DC;&#xC5D0; @Async &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC744; &#xBD99;&#xC774;&#xBA74; proxyTargetClass &#xB97C; &#xAE30;&#xBC18;&#xC73C;&#xB85C; &#xD574;&#xB2F9; &#xAC1D;&#xCCB4;&#xC758; &#xD504;&#xB85D;&#xC2DC;&#xAC00; &#xB9CC;&#xB4E4;&#xC5B4;&#xC9D1;&#xB2C8;&#xB2E4;. &#xADF8; &#xD6C4; Spring&#xC740; context&#xC5D0; &#xC5F0;&#xACB0;&#xB41C; &#xC2A4;&#xB808;&#xB4DC; &#xD480;&#xC744; &#xCC3E;&#xC544; &#xD574;&#xB2F9; &#xBA54;&#xC11C;&#xB4DC;&#xC758; &#xB85C;&#xC9C1;&#xC744; &#xBCC4;&#xB3C4; &#xC2A4;&#xB808;&#xB4DC;&#xB85C; &#xC2E4;&#xD589;&#xD558;&#xB824;&#xACE0; &#xD569;&#xB2C8;&#xB2E4;. &#xB9CC;&#xC57D; &#xBA85;&#xBA85;&#xB41C; &#xBE48;&#xC744; &#xCC3E;&#xC744; &#xC218; &#xC5C6;&#xC73C;&#xBA74; &#xAE30;&#xBCF8; SimpleAsyncTaskExecutor&#xB97C; &#xC0AC;&#xC6A9;&#xD569;&#xB2C8;&#xB2E4;. (<a href="https://dzone.com/articles/effective-advice-on-spring-async-part-1?ref=localhost">&#x1F449; &#xCC38;&#xACE0; &#xB9C1;&#xD06C;</a>)</p>
+<p>Proxy&#xB780; Target&#xC744; &#xAC10;&#xC2F8; Target&#xC758; &#xC694;&#xCCAD;&#xC744; &#xB300;&#xC2E0; &#xBC1B;&#xC544;&#xC8FC;&#xB294; Wrapping Object&#xC778;&#xB370;&#xC694;. &#xD638;&#xCD9C;&#xC790;&#xC5D0;&#xC11C; &#xD0C0;&#xAC9F;&#xC744; &#xD638;&#xCD9C;&#xD558;&#xAC8C;&#xB418;&#xBA74; &#xD0C0;&#xAC9F;&#xC774; &#xC544;&#xB2CC; &#xD504;&#xB85D;&#xC2DC;&#xAC00; &#xD638;&#xCD9C;&#xB418;&#xC5B4;, &#xD0C0;&#xAC9F; &#xBA54;&#xC18C;&#xB4DC; &#xC2E4;&#xD589;&#xC804; &#xC120;&#xCC98;&#xB9AC;&#x2192;&#xD0C0;&#xAC9F; &#xBA54;&#xC18C;&#xB4DC;&#x2192;&#xD6C4;&#xCC98;&#xB9AC;&#xB97C; &#xC2E4;&#xD589;&#xD569;&#xB2C8;&#xB2E4;. (&#x1F449; <a href="https://dahye-jeong.gitbook.io/spring/spring/2020-04-09-aop?ref=localhost">&#xCC38;&#xACE0; &#xB9C1;&#xD06C;</a>)</p>
+<p>&#xC774;&#xB7EC;&#xD55C; &#xB3D9;&#xC791; &#xBC29;&#xC2DD; &#xB54C;&#xBB38;&#xC5D0; &#xAD6C;&#xD604;&#xC2DC; &#xC8FC;&#xC758;&#xD560; &#xC810;&#xC774; &#xC788;&#xB294;&#xB370;&#xC694;. &#xC8FC;&#xC758;&#xC0AC;&#xD56D;&#xC744; &#xC9C0;&#xD0A4;&#xC9C0; &#xC54A;&#xC73C;&#xBA74; &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC774; &#xBB34;&#xC2DC;&#xB418;&#xACE0; &#xB3D9;&#xAE30; &#xBC29;&#xC2DD;&#xC73C;&#xB85C; &#xB3D9;&#xC791;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<h4 id="enableasync-%EC%96%B4%EB%85%B8%ED%85%8C%EC%9D%B4%EC%85%98"><strong>@EnableAsync &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;</strong></h4>
+<p>&#xC560;&#xD50C;&#xB9AC;&#xCF00;&#xC774;&#xC158;&#xC758; &#xBA54;&#xC778; &#xC124;&#xC815; &#xD074;&#xB798;&#xC2A4;&#xB098; configuration &#xD30C;&#xC77C;&#xC5D0;&#xC11C; &#xD574;&#xB2F9; &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC744; &#xC0AC;&#xC6A9;&#xD574;&#xC8FC;&#xC5B4;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;. &#xC774; &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC73C;&#xB85C; &#xC2A4;&#xD504;&#xB9C1;&#xC758; @Async &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xACFC; EJB 3.1 javax.ejb.Asynchronous &#xB97C; &#xAC10;&#xC9C0;&#xD569;&#xB2C8;&#xB2E4;. (<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/annotation/EnableAsync.html?ref=localhost">&#x1F449; &#xCC38;&#xACE0; &#xB9C1;&#xD06C;</a>)</p>
+<h4 id="bean%EC%9C%BC%EB%A1%9C-%EA%B4%80%EB%A6%AC%EB%90%98%EA%B3%A0-%EC%9E%88%EC%96%B4%EC%95%BC-%ED%95%A9%EB%8B%88%EB%8B%A4"><strong>Bean&#xC73C;&#xB85C; &#xAD00;&#xB9AC;&#xB418;&#xACE0; &#xC788;&#xC5B4;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;.</strong></h4>
+<p>@ComponentScan &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC5D0; &#xC758;&#xD574; &#xC2A4;&#xCE94;&#xB418;&#xAC70;&#xB098; @Configuration &#xD074;&#xB798;&#xC2A4; &#xB0B4;&#xBD80;&#xC5D0; &#xBE48;&#xC73C;&#xB85C; &#xC815;&#xC758;&#xB418;&#xC5B4;&#xC57C; &#xD569;&#xB2C8;&#xB2E4;. Spring &#xC5D0;&#xC11C; &#xD504;&#xB85D;&#xC2DC;&#xB97C; &#xC0DD;&#xC131;&#xD558;&#xAE30; &#xC704;&#xD574;&#xC11C;&#xB294; Spring IoC &#xCEE8;&#xD14C;&#xC774;&#xB108;&#xC5D0; &#xC758;&#xD574; &#xAD00;&#xB9AC;&#xB418;&#xB294; Bean&#xC774;&#xC5B4;&#xC57C; &#xD558;&#xAE30; &#xB54C;&#xBB38;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<h4 id="private-%EB%A9%94%EC%84%9C%EB%93%9C%EC%97%90%EB%8A%94-%EB%8F%99%EC%9E%91%ED%95%98%EC%A7%80-%EC%95%8A%EC%8A%B5%EB%8B%88%EB%8B%A4"><strong>Private &#xBA54;&#xC11C;&#xB4DC;&#xC5D0;&#xB294; &#xB3D9;&#xC791;&#xD558;&#xC9C0; &#xC54A;&#xC2B5;&#xB2C8;&#xB2E4;.</strong></h4>
+<p>&#xB7F0;&#xD0C0;&#xC784;&#xC5D0; &#xD504;&#xB85D;&#xC2DC;&#xB97C; &#xC0DD;&#xC131;&#xD560; &#xC218; &#xC5C6;&#xC73C;&#xBBC0;&#xB85C; &#xB3D9;&#xC791;&#xD558;&#xC9C0; &#xC54A;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<h4 id="%ED%98%B8%EC%B6%9C%ED%95%98%EB%8A%94-%EB%A9%94%EC%84%9C%EB%93%9C%EC%99%80-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%A9%94%EC%84%9C%EB%93%9C%EA%B0%80-%EA%B0%99%EC%9D%80-%ED%81%B4%EB%9E%98%EC%8A%A4%EC%97%90-%EC%9E%88%EC%9C%BC%EB%A9%B4%EC%A6%89-self-invocation-%EC%9D%B4%EB%A9%B4-%EC%95%88%EB%90%A9%EB%8B%88%EB%8B%A4"><strong>&#xD638;&#xCD9C;&#xD558;&#xB294; &#xBA54;&#xC11C;&#xB4DC;&#xC640; &#xBE44;&#xB3D9;&#xAE30; &#xBA54;&#xC11C;&#xB4DC;&#xAC00; &#xAC19;&#xC740; &#xD074;&#xB798;&#xC2A4;&#xC5D0; &#xC788;&#xC73C;&#xBA74;(&#xC989;, Self-invocation &#xC774;&#xBA74;) &#xC548;&#xB429;&#xB2C8;&#xB2E4;</strong></h4>
+<blockquote>The default is&#xA0;AdviceMode.PROXY.&#xA0;Please note that proxy mode allows for interception of calls through the proxy only. <strong>Local calls within the same class cannot get intercepted that way</strong>; an&#xA0;Async&#xA0;annotation on such a method within a local call will be ignored since Spring&apos;s interceptor does not even kick in for such a runtime scenario. For a more advanced mode of interception, consider switching this to&#xA0;AdviceMode.ASPECTJ.<br><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/annotation/EnableAsync.html?ref=localhost" rel="noreferrer">&#xCD9C;&#xCC98;</a></blockquote>
+<p>&#xD504;&#xB85D;&#xC2DC;&#xAC00; &#xC0DD;&#xC131;&#xB418;&#xB354;&#xB77C;&#xB3C4; &#xAC19;&#xC740; &#xD074;&#xB798;&#xC2A4; &#xC548;&#xC5D0;&#xC11C; &#xD638;&#xCD9C;&#xD558;&#xAE30; &#xB54C;&#xBB38;&#xC5D0; &#xD504;&#xB85D;&#xC2DC;&#xAC00; &#xC18C;&#xC6A9;&#xC774; &#xC5C6;&#xAC8C;&#xB429;&#xB2C8;&#xB2E4;. &#xB2F9;&#xC5F0;&#xD788; &#xD504;&#xB85D;&#xC2DC;&#xC758; &#xC120;&#xCC98;&#xB9AC;, &#xD6C4;&#xCC98;&#xB9AC; &#xAE30;&#xB2A5;&#xC774; &#xB2F9;&#xC5F0;&#xD788; &#xB3D9;&#xC791;&#xD558;&#xC9C0; &#xC54A;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<p>&#xC774;&#xB807;&#xAC8C; &#xBA54;&#xC11C;&#xB4DC;&#xB97C; &#xD638;&#xCD9C;&#xD558;&#xB294; &#xACBD;&#xC6B0; &#xC2A4;&#xD504;&#xB9C1;&#xC758; &#xC778;&#xD130;&#xC149;&#xD130;&#xAC00; &#xC791;&#xB3D9;&#xD558;&#xC9C0; &#xC54A;&#xAE30; &#xB54C;&#xBB38;&#xC785;&#xB2C8;&#xB2E4;. &#xD504;&#xB85D;&#xC2DC;&#xB97C; &#xC6B0;&#xD68C;&#xD558;&#xACE0; &#xBA54;&#xC11C;&#xB4DC;&#xB97C; &#xC9C1;&#xC811; &#xD638;&#xCD9C;&#xD558;&#xAC8C; &#xB418;&#xC5B4; &#xBCC4;&#xB3C4; Thread&#xC5D0;&#xC11C; &#xB3D9;&#xC791;&#xD558;&#xC9C0; &#xC54A;&#xC544; Async &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC740; &#xBB34;&#xC2DC;&#xB429;&#xB2C8;&#xB2E4;.</p>
+<p><a href="https://dzone.com/articles/effective-advice-on-spring-async-part-1?ref=localhost">(&#xC774;&#xBBF8;&#xCE58; &#xCD9C;&#xCC98;)</a></p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/T72Hg/btszKyoTfYB/dttaK3bBasf7JLw2evqZPk/img.jpg" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p></p>
+<h3 id="%ED%95%99%EC%8A%B5%ED%95%9C-%EB%82%B4%EC%9A%A9%EC%9D%84-%EC%A0%81%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%95%98%EC%8A%B5%EB%8B%88%EB%8B%A4"><strong>&#xD559;&#xC2B5;&#xD55C; &#xB0B4;&#xC6A9;&#xC744; &#xC801;&#xC6A9;&#xD574;&#xBCF4;&#xC558;&#xC2B5;&#xB2C8;&#xB2E4;.</strong></h3>
+<p>&#xC54C;&#xACE0;&#xBCF4;&#xB2C8; @Async &#xC5B4;&#xB178;&#xD14C;&#xC774;&#xC158;&#xC774; &#xBD99;&#xC740; &#xBA54;&#xC11C;&#xB4DC;&#xB97C; &#xB0B4;&#xBD80; &#xD568;&#xC218;&#xC5D0;&#xC11C; &#xD638;&#xCD9C;&#xD574;&#xC8FC;&#xC5C8;&#xAE30; &#xB54C;&#xBB38;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<p>&#xD074;&#xB798;&#xC2A4;&#xB97C; &#xBD84;&#xB9AC;&#xD574;&#xC8FC;&#xACE0;, AsyncConfig&#xB3C4; &#xB2E4;&#xC2DC; &#xC810;&#xAC80;&#xD558;&#xC5EC; &#xC218;&#xC815;&#xD574;&#xC8FC;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<p>&#xC544;&#xB798;&#xB294; &#xB530;&#xB85C; &#xAD6C;&#xD604;&#xD55C; `ImageUploader` &#xD074;&#xB798;&#xC2A4;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<pre><code>@Service
+@RequiredArgsConstructor
+public class ImageUploader {
+
+    private final AwsProperties properties;
+    private final AmazonS3 amazonS3;
+
+    @Async(&quot;imageUploadExecutor&quot;)
+    public String upload(MultipartFile file, Directory directory) throws IOException {
+        log.debug(&quot;Thread upload work start: {}, image: {}&quot;, Thread.currentThread().getId(), file.getOriginalFilename());
+
+        String newFileKey = generateKey(file.getOriginalFilename(), directory.getPrefix());
+        amazonS3.putObject(new PutObjectRequest(properties.getBucket(), newFileKey, file.getInputStream(), getMetadata(file)));
+        log.debug(&quot;Thread work end: {}, image: {}&quot;, Thread.currentThread().getId(), file.getOriginalFilename());
+        return amazonS3.getUrl(properties.getBucket(), newFileKey).toString();
+    }
+
+    private String generateKey(String originFileKey, String prefix) {
+        return String.format(&quot;%s%s-%s&quot;, prefix, UUID.randomUUID(), originFileKey);
+    }
+
+    private ObjectMetadata getMetadata(MultipartFile file) {
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(file.getSize());
+        objectMetadata.setContentType(file.getContentType());
+        return objectMetadata;
+    }
+}
+</code></pre>
+<p>&#xC774;&#xC81C; &#xC2E4;&#xD589;&#xD574;&#xBCF4;&#xB2C8; &#xC758;&#xB3C4;&#xB300;&#xB85C; &#xC2A4;&#xB808;&#xB4DC;&#xB85C; &#xC798; &#xCABC;&#xAC1C;&#xC838;&#xC11C; &#xBB38;&#xC81C;&#xB97C; &#xCC98;&#xB9AC;&#xD558;&#xACE0; &#xC788;&#xB294;&#xB370;&#xC694;. &#xC18D;&#xB3C4;&#xB3C4; &#xB9E4;&#xC6B0; &#xBE68;&#xB77C;&#xC84C;&#xACE0;&#xC694;.</p>
+<pre><code>2023-11-05 22:39:33.688 DEBUG 11379 --- [ploadExecutor-3] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 249, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+2023-11-05 22:39:33.688 DEBUG 11379 --- [ploadExecutor-2] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 248, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:39:33.689 DEBUG 11379 --- [ploadExecutor-4] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 250, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+2023-11-05 22:39:33.688 DEBUG 11379 --- [ploadExecutor-1] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 247, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:39:33.688 DEBUG 11379 --- [ploadExecutor-7] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 253, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+2023-11-05 22:39:33.688 DEBUG 11379 --- [ploadExecutor-6] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 252, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+2023-11-05 22:39:33.688 DEBUG 11379 --- [ploadExecutor-5] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 251, image: 115064144.jpeg
+Hibernate: 
+    insert 
+    into
+        item_contents
+        (contents, detail_image_url, is_deleted) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        item_counts
+        (chat_counts, hits, is_deleted, like_counts) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        item
+        (created_at, updated_at, category, item_contents_id, item_counts_id, is_deleted, price, region_id, seller_id, status, thumbnail_url, title) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2023-11-05 22:39:34.986 DEBUG 11379 --- [ploadExecutor-1] c.t.s.api.image.service.ImageUploader    : Thread work end: 247, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:39:34.986 DEBUG 11379 --- [ploadExecutor-5] c.t.s.api.image.service.ImageUploader    : Thread work end: 251, image: 115064144.jpeg
+2023-11-05 22:39:34.986 DEBUG 11379 --- [ploadExecutor-6] c.t.s.api.image.service.ImageUploader    : Thread work end: 252, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+2023-11-05 22:39:34.986 DEBUG 11379 --- [ploadExecutor-4] c.t.s.api.image.service.ImageUploader    : Thread work end: 250, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+2023-11-05 22:39:34.986 DEBUG 11379 --- [ploadExecutor-2] c.t.s.api.image.service.ImageUploader    : Thread work end: 248, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 22:39:35.006 DEBUG 11379 --- [ploadExecutor-7] c.t.s.api.image.service.ImageUploader    : Thread work end: 253, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+2023-11-05 22:39:35.117 DEBUG 11379 --- [ploadExecutor-3] c.t.s.api.image.service.ImageUploader    : Thread work end: 249, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+</code></pre>
+<p>[##<em>Image|kage@MgNIp/btszI2qqUHB/hmicWcJMK3Izw1aCDOLcjK/img.png|CDM|1.3|{&quot;originWidth&quot;:1290,&quot;originHeight&quot;:510,&quot;style&quot;:&quot;alignCenter&quot;,&quot;width&quot;:500,&quot;height&quot;:198}</em>##]</p>
+<p>&#xADFC;&#xB370; &#xC384;&#xD568;&#xC774; &#xB290;&#xAEF4;&#xC9D1;&#xB2C8;&#xB2E4;...&#x1F628;..</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/bhzmG6/btszKAfWTec/ZOOeiO7uLmuKGCii99MV00/img.jpg" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p></p>
+<p>&#xCFFC;&#xB9AC;&#xAC00; &#xC65C; &#xC911;&#xAC04;&#xC5D0; &#xB098;&#xC624;&#xB294;&#xAC70;&#xC57C;? &#xADF8;&#xB9AC;&#xACE0; &#xC65C; &#xC774;&#xB807;&#xAC8C; &#xBE60;&#xB978;&#xAC70;&#xC57C;?? I/O&#xC791;&#xC5C5;&#xC778;&#xB370; 200ms &#xB300;&#xAC00; &#xAC00;&#xB2A5;&#xD55C;&#xAC70;&#xC57C;? &#xC815;&#xB9D0;&#xB85C;...?</p>
+<h3 id="%EC%83%88%EB%A1%9C%EC%9A%B4-%EB%AC%B8%EC%A0%9C%EC%9D%98-%EB%93%B1%EC%9E%A5-%EB%B0%98%ED%99%98%EA%B0%92%EC%9D%B4-%EC%9E%88%EB%8A%94-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%A9%94%EC%84%9C%EB%93%9C-%EC%B2%98%EB%A6%AC"><strong>&#xC0C8;&#xB85C;&#xC6B4; &#xBB38;&#xC81C;&#xC758; &#xB4F1;&#xC7A5;: &#xBC18;&#xD658;&#xAC12;&#xC774; &#xC788;&#xB294; &#xBE44;&#xB3D9;&#xAE30; &#xBA54;&#xC11C;&#xB4DC; &#xCC98;&#xB9AC;</strong></h3>
+<p>&#xC5ED;&#xC2DC;&#xB098;.. &#xCFFC;&#xB9AC;&#xAC00; &#xC911;&#xAC04;&#xC5D0; &#xB098;&#xC624;&#xB294;&#xAC8C; &#xC774;&#xC0C1;&#xD574;&#xC11C; DB&#xB97C; &#xD655;&#xC778;&#xD574;&#xBCF4;&#xB2C8; &#xC5ED;&#xC2DC;&#xB098; null &#xD30C;&#xD2F0;&#xAC00; &#xB0AC;&#xB354;&#xB77C;&#xACE0;&#xC694;. null null &#xD55C; &#xC774;&#xBBF8;&#xC9C0; url&#xB4E4;...</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/pOU4Y/btszLpLmOfs/bnhg3I6kfJf0QP5EW3c2KK/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>&#xC65C;? &#xBE44;&#xB3D9;&#xAE30;&#xB85C; &#xCC98;&#xB9AC;&#xD558;&#xB2E4;&#xBCF4;&#xB2C8; `upload()` &#xC758; &#xBC18;&#xD658;&#xAC12;&#xC778; url&#xC744; &#xAE30;&#xB2E4;&#xB9AC;&#xC9C0; &#xC54A;&#xACE0; &#xD6C4;&#xB2E4;&#xB2E5; &#xB2E4;&#xC74C; &#xB85C;&#xC9C1;&#xC744; &#xCC98;&#xB9AC;&#xD574;&#xBC84;&#xB9B0; &#xD0D3;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<p>(&#xBD80;&#xC871;&#xD558;&#xC9C0;&#xB9CC; &#xC774;&#xD574;&#xB97C; &#xB3D5;&#xAE30;&#xC704;&#xD55C; &#xC2DC;&#xD000;&#xC2A4; &#xB2E4;&#xC774;&#xC5B4;&#xADF8;&#xB7A8;..)</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/cNak8p/btszLjrL8lP/FT2cO9kFKJoPh2HwKWEck0/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>&#xC774;&#xB7F4; &#xB54C;&#xB294; &#xBE44;&#xB3D9;&#xAE30; &#xCC98;&#xB9AC;&#xC758; &#xBC18;&#xD658;&#xAC12;&#xC744; &#xAE30;&#xB2E4;&#xB838;&#xB2E4;&#xAC00; &#xCC98;&#xB9AC;&#xD560; &#xC218; &#xC788;&#xB3C4;&#xB85D; &#xD574;&#xC8FC;&#xC5B4;&#xC57C; &#xD558;&#xB294;&#xB370;&#xC694;.</p>
+<p>&#xAE30;&#xC5B5; &#xC800;&#xD3B8;&#xC5D0; &#xC788;&#xB358; &#xB3D9;&#xAE30;-&#xBE44;&#xB3D9;&#xAE30;, &#xBE14;&#xB77D;&#xD0B9;-&#xB10C;&#xBE14;&#xB77D;&#xD0B9;&#xC744; &#xAEBC;&#xB0B4;&#xC640; &#xD0A4;&#xC6CC;&#xB4DC;&#xB97C; &#xCC3E;&#xAE30; &#xC2DC;&#xC791;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. &#xD574;&#xB2F9; &#xAC1C;&#xB150;&#xC740; &#xC9C0;&#xAE08; &#xC5EC;&#xAE30;&#xC11C; &#xB2E4;&#xB8E8;&#xC9C0; &#xC54A;&#xC73C;&#xBBC0;&#xB85C; <a href="https://inpa.tistory.com/entry/%F0%9F%91%A9%E2%80%8D%F0%9F%92%BB-%EB%8F%99%EA%B8%B0%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%B8%94%EB%A1%9C%ED%82%B9%EB%85%BC%EB%B8%94%EB%A1%9C%ED%82%B9-%EA%B0%9C%EB%85%90-%EC%A0%95%EB%A6%AC?ref=localhost">&#xC774; &#xB9C1;&#xD06C;</a>&#xB97C; &#xCC38;&#xACE0;&#xD574; &#xC8FC;&#xC138;&#xC694;.</p>
+<h3 id="%EB%B0%98%ED%99%98%EA%B0%92%EC%9D%B4-%EC%9E%88%EB%8A%94-%EB%B9%84%EB%8F%99%EA%B8%B0-%EB%A9%94%EC%84%9C%EB%93%9C"><strong>&#xBC18;&#xD658;&#xAC12;&#xC774; &#xC788;&#xB294; &#xBE44;&#xB3D9;&#xAE30; &#xBA54;&#xC11C;&#xB4DC;</strong></h3>
+<p>void &#xBC18;&#xD658; &#xC720;&#xD615;&#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xBA54;&#xC11C;&#xB4DC;&#xC758; &#xACBD;&#xC6B0;, &#xAC04;&#xB2E8;&#xD558;&#xAC8C; &#xBA54;&#xC11C;&#xB4DC;&#xB97C; &#xBE44;&#xB3D9;&#xAE30;&#xC801;&#xC73C;&#xB85C; &#xC2E4;&#xD589;&#xD558;&#xB3C4;&#xB85D; &#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;. &#xD558;&#xC9C0;&#xB9CC; &#xBC18;&#xD658;&#xAC12;&#xC774; &#xC788;&#xB294; &#xACBD;&#xC6B0;&#xAC00; &#xBB38;&#xC81C;&#xC600;&#xB294;&#xB370;&#xC694;. &#xC77C;&#xBC18;&#xC801;&#xC73C;&#xB85C; &#xBC18;&#xD658;&#xD558;&#xBA74; &#xC800;&#xC758; &#xACBD;&#xD5D8;&#xCC98;&#xB7FC; &#xC2A4;&#xD0DD; &#xBA54;&#xBAA8;&#xB9AC;&#xC5D0;&#xC11C; pop&#xB418;&#xBA70; &#xACF5;&#xC911;&#xC73C;&#xB85C; &#xD769;&#xB0A0;&#xB9AC;&#xAC8C; &#xB418;&#xACA0;&#xC8E0;... &#x1F972;</p>
+<p>&#xBC18;&#xD658; &#xC720;&#xD615;&#xC758; &#xACBD;&#xC6B0; &#xC544;&#xB798;&#xC640;&#xAC19;&#xC740; &#xC120;&#xD0DD;&#xC9C0;&#xAC00; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/mqMix/btszNQBFHo2/rG5CRUtkKhyNrI5JC8wYNK/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<h4 id="future"><strong>Future</strong></h4>
+<p>Future &#xB97C; &#xC0AC;&#xC6A9;&#xD558;&#xC5EC; &#xBE44;&#xB3D9;&#xAE30; &#xD504;&#xB85C;&#xC138;&#xC2A4;&#xC758; &#xACB0;&#xACFC;&#xB97C; &#xBC1B;&#xC544; &#xD638;&#xCD9C;&#xD588;&#xB358; &#xC2A4;&#xB808;&#xB4DC;&#xC5D0;&#xC11C; &#xC0AC;&#xC6A9;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<p>`get()` &#xC744; &#xC0AC;&#xC6A9;&#xD558;&#xBA74; &#xACB0;&#xACFC;&#xAC12;&#xC774; &#xBC18;&#xD658;&#xB420; &#xB54C;&#xAE4C;&#xC9C0; &#xBE14;&#xB85C;&#xD0B9;&#xD558;&#xACE0; &#xAE30;&#xB2E4;&#xB9BD;&#xB2C8;&#xB2E4;. &#xC8FC;&#xC758;&#xD560; &#xC810;&#xC740; get() &#xBA54;&#xC11C;&#xB4DC;&#xC758; &#xD30C;&#xB77C;&#xBBF8;&#xD130;&#xB85C; time out &#xC2DC;&#xAC04;&#xC744; &#xC815;&#xD574;&#xC8FC;&#xC9C0; &#xC54A;&#xC73C;&#xBA74; &#xBB34;&#xD55C;&#xC815; &#xB300;&#xAE30;&#xD558;&#xAC8C; &#xB41C;&#xB2E4;&#xB294; &#xAC83;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<pre><code>public class FutureExample {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
+        ExecutorService executorService = Executors.newFixedThreadPool(1);
+        Future&lt;Integer&gt; future = executorService.submit(() -&gt; {
+            Thread.sleep(1000);
+            return 42;
+        });
+
+        Integer result = future.get();
+        System.out.println(&quot;Result: &quot; + result);
+
+        executorService.shutdown();
+    }
+}
+</code></pre>
+<p>Future &#xB0B4;&#xBD80;&#xC801;&#xC73C;&#xB85C; &#xC2A4;&#xB808;&#xB4DC; &#xC138;&#xC774;&#xD504;&#xD558;&#xAC8C; &#xAD6C;&#xD604;&#xB418;&#xC5B4; &#xC788;&#xC5B4;&#xC11C; &#xB530;&#xB85C; syncronized&#xB97C; &#xC791;&#xC131;&#xD574;&#xC8FC;&#xC9C0; &#xC54A;&#xC544;&#xB3C4; &#xB429;&#xB2C8;&#xB2E4;.</p>
+<h4 id="completablefuture"><strong>CompletableFuture</strong></h4>
+<p>Java8&#xBD80;&#xD130; &#xB3C4;&#xC785;&#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;. Future &#xC778;&#xD130;&#xD398;&#xC774;&#xC2A4;&#xC640; &#xD568;&#xAED8; CompletionStage &#xC778;&#xD130;&#xD398;&#xC774;&#xC2A4;&#xB97C; &#xAD6C;&#xD604;&#xD558;&#xC600;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<p>&#xB2E8;&#xC21C;&#xD788; &#xC644;&#xB8CC;&#xB97C; &#xAE30;&#xB2E4;&#xB9AC;&#xB294; Future&#xC640;&#xB294; &#xB2EC;&#xB9AC;, &#xCF5C;&#xBC31;&#xC744; &#xCD94;&#xAC00;&#xD558;&#xAC70;&#xB098; &#xC791;&#xC5C5;&#xC744; &#xC870;&#xD569;&#xD558;&#xC5EC; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xBE44;&#xB3D9;&#xAE30; &#xD30C;&#xC774;&#xD504;&#xB77C;&#xC778;&#xC744; &#xB9CC;&#xB4E4;&#xAC70;&#xB098; &#xC5EC;&#xB7EC; CompletableFuture &#xB4E4;&#xC744; &#xBAA8;&#xC544; &#xBAA8;&#xB450; &#xC644;&#xB8CC;&#xB418;&#xBA74; &#xB2E4;&#xC74C; &#xC791;&#xC5C5;&#xC744; &#xD558;&#xAC70;&#xB098; &#xC608;&#xC678;&#xB97C; &#xBC1C;&#xC0DD;&#xC2DC;&#xD0A4;&#xB294; &#xC644;&#xB8CC;&#xB97C; &#xD560; &#xB54C;, &#xC0AC;&#xC6A9;&#xD560; &#xC218; &#xC788;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<ul><li>&#xB2E8;&#xC21C;&#xD55C; Future&#xB85C; &#xC0AC;&#xC6A9;&#xD558;&#xB294; &#xBC29;&#xBC95; get())</li><li>&#xBE44;&#xB3D9;&#xAE30; &#xACC4;&#xC0B0; &#xACB0;&#xACFC; &#xCC98;&#xB9AC; (thenApply(), thenAccept(), thenRun())</li><li>&#xC791;&#xC5C5;&#xC744; &#xACB0;&#xD569;&#xD574;&#xC11C; &#xC0AC;&#xC6A9;&#xD558;&#xAE30; (thenCompose())</li><li>&#xC5EC;&#xB7EC; Future &#xBCD1;&#xB82C;&#xB85C; &#xC2E4;&#xD589; (allOf())</li><li>&#xC624;&#xB958;&#xC5D0; &#xB300;&#xD55C; &#xCC98;&#xB9AC; (completeExceptionally(), CompleteOnTimeout())</li></ul>
+<p>&#xC790;&#xC138;&#xD55C; &#xBA54;&#xC11C;&#xB4DC;&#xB294; &#xC5EC;&#xAE30;&#xB97C; &#xCC38;&#xACE0;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?ref=localhost">&#x1F449; &#xCC38;&#xACE0; &#xB9C1;&#xD06C;</a></p>
+<p>&#xAC01; &#xBA54;&#xC11C;&#xB4DC;&#xC5D0; &#xB300;&#xD55C; &#xC608;&#xC2DC;&#xB294; &#xC5EC;&#xAE30;&#xB97C; &#xCC38;&#xACE0;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. <a href="https://www.baeldung.com/java-completablefuture?ref=localhost">&#x1F449; &#xCC38;&#xACE0; &#xB9C1;&#xD06C;</a></p>
+<h4 id="listenablefuture"><strong>ListenableFuture</strong></h4>
+<p>&#xD638;&#xCD9C; &#xBA54;&#xC11C;&#xB4DC;&#xC5D0;&#xC11C; &#xC131;&#xACF5;, &#xC2E4;&#xD328;&#xC2DC; &#xCF5C;&#xBC31;&#xD560; &#xD568;&#xC218;&#xB97C; `addCallback()`&#xC73C;&#xB85C; &#xCD94;&#xAC00;&#xD558;&#xC5EC; &#xC0AC;&#xC6A9;&#xD569;&#xB2C8;&#xB2E4;.</p>
+<pre><code>public class ListenableFutureExample {
+    public static void main(String[] args) {
+        SettableListenableFuture&lt;Integer&gt; future = new SettableListenableFuture&lt;&gt;();
+        future.addCallback(new ListenableFutureCallback&lt;Integer&gt;() {
+            @Override
+            public void onSuccess(Integer result) {
+                System.out.println(&quot;Result: &quot; + result);
+            }
+
+            @Override
+            public void onFailure(Throwable ex) {
+                System.err.println(&quot;Error: &quot; + ex.getMessage());
+            }
+        });
+
+        // &#xBE44;&#xB3D9;&#xAE30; &#xC791;&#xC5C5; &#xC644;&#xB8CC; &#xD6C4; &#xACB0;&#xACFC; &#xC124;&#xC815;
+        new Thread(() -&gt; {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            future.set(42);
+        }).start();
+
+        // &#xBE44;&#xB3D9;&#xAE30; &#xC791;&#xC5C5;&#xC774; &#xC644;&#xB8CC;&#xB420; &#xB54C;&#xAE4C;&#xC9C0; &#xB300;&#xAE30;&#xD558;&#xC9C0; &#xC54A;&#xACE0; &#xACC4;&#xC18D; &#xC9C4;&#xD589;
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
+</code></pre>
+<p>Spring framework 6.0&#xBD80;&#xD130; deprecate &#xB418;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;. (<a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/util/concurrent/ListenableFuture.html?ref=localhost">&#x1F449; &#xCC38;&#xACE0; &#xB9C1;&#xD06C;</a>)</p>
+<p>deprecate&#xB41C; &#xC815;&#xD655;&#xD55C; &#xC6D0;&#xC778;&#xC740; &#xCC3E;&#xC9C0; &#xBABB;&#xD588;&#xB294;&#xB370;&#xC694;. &#xAD00;&#xB828;&#xD574;&#xC11C; &#xC54C;&#xACE0;&#xACC4;&#xC2DC;&#xB2E4;&#xBA74; &#xB313;&#xAE00; &#xBD80;&#xD0C1;&#xB4DC;&#xB9BD;&#xB2C8;&#xB2E4;.</p>
+<h3 id="%EB%B0%98%ED%99%98%EA%B0%92%EC%9D%84-%EB%B0%9B%EC%95%84-%EC%82%AC%EC%9A%A9%ED%95%A0-%EC%88%98-%EC%9E%88%EB%8F%84%EB%A1%9D-%EC%88%98%EC%A0%95"><strong>&#xBC18;&#xD658;&#xAC12;&#xC744; &#xBC1B;&#xC544; &#xC0AC;&#xC6A9;&#xD560; &#xC218; &#xC788;&#xB3C4;&#xB85D; &#xC218;&#xC815;</strong></h3>
+<p>&#xC704; &#xC120;&#xD0DD;&#xC9C0; &#xC911; &#xBC18;&#xD658;&#xAC12;&#xC744; CompletableFurure&#xB85C; &#xC815;&#xD588;&#xC2B5;&#xB2C8;&#xB2E4;. Future&#xBCF4;&#xB2E4; &#xC608;&#xC678;&#xCC98;&#xB9AC;&#xB098; &#xBC18;&#xBCF5; &#xC791;&#xC5C5;&#xC744; &#xBAA8;&#xB450; &#xBAA8;&#xC544;&#xC11C; &#xCC98;&#xB9AC;&#xD560; &#xC218; &#xC788;&#xAE30; &#xB54C;&#xBB38;&#xC785;&#xB2C8;&#xB2E4;.</p>
+<p>&#xBE44;&#xB3D9;&#xAE30;&#xCC98;&#xB9AC;&#xD560; &#xBA54;&#xC11C;&#xB4DC;&#xC758; &#xBC18;&#xD658;&#xAC12;&#xC744; CompletableFurure&#xB85C; &#xBC14;&#xAFB8;&#xC5B4; &#xC8FC;&#xACE0; &#xD638;&#xCD9C; &#xBA54;&#xC11C;&#xB4DC;&#xC5D0;&#xC11C; &#xC774;&#xB97C; &#xCC98;&#xB9AC;&#xD560; &#xC218; &#xC788;&#xB3C4;&#xB85D; &#xC218;&#xC815;&#xD574;&#xC8FC;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<pre><code>    @Async(&quot;imageUploadExecutor&quot;)
+    public CompletableFuture&lt;String&gt; upload(MultipartFile file, Directory directory) throws IOException, TooLargeImageException, NotValidImageTypeException {
+        log.debug(&quot;Thread upload work start: {}, image: {}&quot;, Thread.currentThread().getThreadGroup().getName()+ &quot; &quot; + Thread.currentThread().getId(), file.getOriginalFilename());
+        CompletableFuture&lt;String&gt; future = new CompletableFuture&lt;&gt;();
+
+        String newFileKey = generateKey(file.getOriginalFilename(), directory.getPrefix());
+        amazonS3.putObject(new PutObjectRequest(properties.getBucket(), newFileKey, file.getInputStream(), getMetadata(file)));
+        log.debug(&quot;Thread work end: {}, image: {}&quot;, Thread.currentThread().getId(), file.getOriginalFilename());
+        future.complete(amazonS3.getUrl(properties.getBucket(), newFileKey).toString());
+        return future;
+    }
+</code></pre>
+<pre><code>    @Override
+    public List&lt;ItemDetailImage&gt; uploadItemDetailImages(List&lt;MultipartFile&gt; request) throws ImageHostException {
+        checkFilesCount(request);
+
+        List&lt;ItemDetailImage&gt; images = new ArrayList&lt;&gt;();
+        List&lt;CompletableFuture&lt;String&gt;&gt; uploadFutures = new ArrayList&lt;&gt;(); // &#xACB0;&#xACFC; future
+
+        for (MultipartFile multipartFile : request) {
+            CompletableFuture&lt;String&gt; upload = null;
+            try {
+                upload = imageUploader.upload(multipartFile, Directory.ITEM_DETAIL);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            uploadFutures.add(upload);
+        }
+		
+        uploadFutures.forEach(upload -&gt; images.add(ItemDetailImage.create(
+                upload.exceptionally(e -&gt; {
+                            log.error(&quot;&#xC774;&#xBBF8;&#xC9C0; &#xC5C5;&#xB85C;&#xB4DC;&#xC5D0; &#xC2E4;&#xD328;&#xD558;&#xC600;&#xC2B5;&#xB2C8;&#xB2E4;.&quot;, e);
+                            throw new CompletionException(e);
+                        })
+                        .join()))); // &#xC644;&#xB8CC;&#xB41C; &#xBC18;&#xD658;&#xAC12;
+
+        return images;
+    }
+</code></pre>
+<p>[##<em>Image|kage@ctS9oj/btszSHSvQAj/4K8OmXfOu4D2gGKKStQGm1/img.png|CDM|1.3|{&quot;originWidth&quot;:2388,&quot;originHeight&quot;:1668,&quot;style&quot;:&quot;alignCenter&quot;}</em>##]</p>
+<p>&#xADF8;&#xB9AC;&#xACE0; &#xC2E4;&#xD589; &#xACB0;&#xACFC;&#xB294; &#xC758;&#xB3C4;&#xD588;&#xB358; &#xB300;&#xB85C; &#xBE44;&#xB3D9;&#xAE30;&#xB85C; &#xC9C4;&#xD589;&#xB418;&#xACE0; &#xC788;&#xC74C;&#xC744; &#xD655;&#xC778;&#xD560; &#xC218; &#xC788;&#xC5C8;&#xC2B5;&#xB2C8;&#xB2E4;.</p>
+<pre><code>2023-11-05 23:27:52.294 DEBUG 13264 --- [ploadExecutor-6] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 282, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 23:27:52.341 DEBUG 13264 --- [ploadExecutor-6] c.t.s.api.image.service.ImageUploader    : Thread work end: 282, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 23:27:52.342 DEBUG 13264 --- [ploadExecutor-5] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 281, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 23:27:52.342 DEBUG 13264 --- [loadExecutor-10] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 286, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+2023-11-05 23:27:52.342 DEBUG 13264 --- [ploadExecutor-3] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 279, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+2023-11-05 23:27:52.342 DEBUG 13264 --- [ploadExecutor-8] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 284, image: 115064144.jpeg
+2023-11-05 23:27:52.342 DEBUG 13264 --- [ploadExecutor-4] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 280, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+2023-11-05 23:27:52.344 DEBUG 13264 --- [ploadExecutor-2] c.t.s.api.image.service.ImageUploader    : Thread upload work start: imageUploadExecutor 278, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+2023-11-05 23:27:52.414 DEBUG 13264 --- [ploadExecutor-4] c.t.s.api.image.service.ImageUploader    : Thread work end: 280, image: a9b9f3e6-2fa0-4737-9d42-25dc31a82a2c-image0.jpeg
+2023-11-05 23:27:52.419 DEBUG 13264 --- [ploadExecutor-8] c.t.s.api.image.service.ImageUploader    : Thread work end: 284, image: 115064144.jpeg
+2023-11-05 23:27:52.440 DEBUG 13264 --- [ploadExecutor-3] c.t.s.api.image.service.ImageUploader    : Thread work end: 279, image: 68f27e6f-a951-441e-99fc-03cfe37d89c2-2023-05-11-bunny.jpg
+2023-11-05 23:27:52.451 DEBUG 13264 --- [ploadExecutor-5] c.t.s.api.image.service.ImageUploader    : Thread work end: 281, image: 7cdd2eb2-6aa9-42cd-88a9-eb9dbc8e9811-IMG_7857.jpg
+2023-11-05 23:27:52.515 DEBUG 13264 --- [ploadExecutor-2] c.t.s.api.image.service.ImageUploader    : Thread work end: 278, image: maxim-abramov-s7vgZ1Prn2M-unsplash.jpg
+2023-11-05 23:27:52.815 DEBUG 13264 --- [loadExecutor-10] c.t.s.api.image.service.ImageUploader    : Thread work end: 286, image: 8ec282b9-a2c6-46ab-8fe1-ed6499fd6f37-image0.jpeg
+Hibernate: 
+    insert 
+    into
+        item_contents
+        (contents, detail_image_url, is_deleted) 
+    values
+        (?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        item_counts
+        (chat_counts, hits, is_deleted, like_counts) 
+    values
+        (?, ?, ?, ?)
+Hibernate: 
+    insert 
+    into
+        item
+        (created_at, updated_at, category, item_contents_id, item_counts_id, is_deleted, price, region_id, seller_id, status, thumbnail_url, title) 
+    values
+        (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+</code></pre>
+<figure class="kg-card kg-image-card"><img src="https://blog.kakaocdn.net/dn/s8uN9/btszNRtPya5/5mpTKnEdkSavaoFBUDVkR1/img.png" class="kg-image" alt loading="lazy"></figure>
+<p></p>
+<p>&#xC774; &#xBE14;&#xB85C;&#xADF8;&#xC5D0;&#xC11C; &#xC5B8;&#xAE09;&#xD55C; &#xCF54;&#xB4DC;&#xB294; <a href="https://github.com/masters2023-2nd-project-05/second-hand-BE?ref=localhost">Secondhand &#xB808;&#xD3EC;&#xC9C0;&#xD1A0;&#xB9AC;</a>&#xC5D0;&#xC11C; &#xD655;&#xC778; &#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</p>
+<p>&#xAE00;&#xC5D0; &#xB300;&#xD574; &#xC798;&#xBABB;&#xB41C; &#xBD80;&#xBD84;&#xC774; &#xC788;&#xB2E4;&#xBA74; &#xB313;&#xAE00;&#xB85C; &#xC54C;&#xB824;&#xC8FC;&#xC2DC;&#xBA74; &#xAC10;&#xC0AC;&#xD558;&#xACA0;&#xC2B5;&#xB2C8;&#xB2E4; &#x1F600;</p>
+<hr>
+<p><strong>&#xCC38;&#xACE0;&#xB9C1;&#xD06C;</strong></p>
+<ul><li><a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html?ref=localhost">https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html</a></li><li><a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/annotation/EnableAsync.html?ref=localhost">https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/annotation/EnableAsync.html</a></li><li><a href="https://www.baeldung.com/spring-async?ref=localhost">https://www.baeldung.com/spring-async</a></li><li><a href="https://dzone.com/articles/effective-advice-on-spring-async-part-1?ref=localhost">Effective&#xA0;Advice&#xA0;on&#xA0;Spring&#xA0;Async:&#xA0;Part&#xA0;1</a></li><li><a href="https://mangkyu.tistory.com/175?ref=localhost">https://mangkyu.tistory.com/175</a></li><li><a href="https://dahye-jeong.gitbook.io/spring/spring/2020-04-09-aop?ref=localhost">https://dahye-jeong.gitbook.io/spring/spring/2020-04-09-aop</a></li></ul>]]></content:encoded></item><item><title><![CDATA[🔐 비밀번호 암호화해보자 (Feat: Spring)]]></title><description><![CDATA[<blockquote>&#xD574;&#xB2F9; &#xAE00;&#xC5D0;&#xC11C; &#xAD6C;&#xD604; &#xC5B8;&#xAE09;&#xD55C; &#xCF54;&#xB4DC;&#xB294; <a href="https://github.com/new-pow/practice-member-api?ref=localhost">practice-member-api</a> &#xC5D0;&#xC11C; &#xD655;&#xC778; &#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</blockquote>
 <h1 id="%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B0"><strong>&#xC2DC;&#xC791;&#xD558;&#xBA70;</strong></h1>
 <p>&#xCD08;&#xBC18; &#xC5F0;&#xC2B5;&#xC6A9; &#xD504;&#xB85C;&#xC81D;&#xD2B8;&#xC5D0;&#xC11C; &#xD68C;&#xC6D0;&#xAC00;&#xC785;&#xC744; &#xAD6C;&#xD604;&#xD558;&#xBA70; &#xADF8;&#xB0E5; &#xC77C;</p>]]></description><link>http://localhost:2369/bimilbeonho-amhohwahaeboja-feat-spring/</link><guid isPermaLink="false">653e691f38d514638a3772a0</guid><category><![CDATA[Java]]></category><category><![CDATA[Spring]]></category><category><![CDATA[Posts]]></category><dc:creator><![CDATA[saehim lee]]></dc:creator><pubDate>Sun, 29 Oct 2023 14:22:04 GMT</pubDate><content:encoded><![CDATA[<blockquote>&#xD574;&#xB2F9; &#xAE00;&#xC5D0;&#xC11C; &#xAD6C;&#xD604; &#xC5B8;&#xAE09;&#xD55C; &#xCF54;&#xB4DC;&#xB294; <a href="https://github.com/new-pow/practice-member-api?ref=localhost">practice-member-api</a> &#xC5D0;&#xC11C; &#xD655;&#xC778; &#xAC00;&#xB2A5;&#xD569;&#xB2C8;&#xB2E4;.</blockquote>
 <h1 id="%EC%8B%9C%EC%9E%91%ED%95%98%EB%A9%B0"><strong>&#xC2DC;&#xC791;&#xD558;&#xBA70;</strong></h1>
