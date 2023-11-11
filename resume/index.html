@@ -71,7 +71,7 @@ About me
     <meta property="og:url" content="http://localhost:2369/resume/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-08-19T20:44:17.000Z">
-    <meta property="article:modified_time" content="2023-11-05T08:37:44.000Z">
+    <meta property="article:modified_time" content="2023-11-11T14:40:26.000Z">
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="이새힘 Saehim Lee">
@@ -130,7 +130,7 @@ About me
     "headline": "이새힘 Saehim Lee",
     "url": "http://localhost:2369/resume/",
     "datePublished": "2023-08-19T20:44:17.000Z",
-    "dateModified": "2023-11-05T08:37:44.000Z",
+    "dateModified": "2023-11-11T14:40:26.000Z",
     "description": "\n\n\n\nGithub : @new-pow\nBlog : new-pow.tistory.com\nEmail : i.newpow@gmail.com\n\n\n\n\n\n\nAbout me\n\n\n🙌함께 성장하는 것을 즐거워하는 이새힘입니다.\n\n * 기능을 구현하고 조금씩 개선시키는 것을 진정으로 좋아합니다. 새로운 기술을 배우는 것을 즐기고 작은 영역부터 적용합니다.\n * 주어진 업무에 국한되는 것이 아니라 문제에 몰입하고 한 걸음 더 고민하는 것에 집중력을 발휘합니다.\n * 꾸준히 성실하게 학습하고 기록을 자주 합니다. Today I Learned\n   혼자로 힘든 주제는 동료들과 꾸준히 함께 공부합니다. 스터디\n * 개발자를 꿈꾸기 이전에는 커뮤니티/교육 기획자로서 일하며 다양한 영역에 대해 관심을 가지고 학습한 결과를 업무에 녹여냈습니다. 이 기간동안 여러 분야의 전문가들과 협업 경험을 쌓을 수 있었습니다.\n * 함께 일하고 싶은 사람이 되고 싶습니다. 동료로서 솔직하게 소통하고, 서로의 성장의 버팀목이",
     "mainEntityOfPage": "http://localhost:2369/resume/"
 }
@@ -267,8 +267,18 @@ h1, h2, h3, h4, h5, h6,
 <p></p>
 <h1 id="work-experiences">Work Experiences</h1>
 <hr>
-<h2 id="project">Project.</h2>
-<ul><li>바이오리서치AI&amp;알밤, 재활 동작 영상 데이터 라벨링 위한 REST API (<strong>2023.09.~ 2023.10</strong>)</li></ul>
+<h2 id="dev%08">Dev.</h2>
+<h3 id="freelancer">Freelancer.</h3>
+<p><strong>Labeling tool REST API 개발</strong></p>
+<blockquote></blockquote>
+<p>바이오리서치AI&amp;알밤, 재활 동작 영상 데이터 라벨링 위한 REST API 프로젝트. 프리랜서 백엔드 개발자로서 참여한 프로젝트입니다.</p>
+<ul><li>(<strong>2023.09.~ 2023.10</strong>)</li></ul>
+<p></p>
+<p></p>
+<p></p>
+<ul><li>2023. 09. ~ 10 | BE 1명, FE 2명</li><li>주요 기술<br>Java, Springboot, ORM(Spring data JPA), PostgreSql,<br>Nginx, Docker compose, Docker,<br>AWS EC2, RDS, S3, ECR</li></ul>
+<div class="kg-card kg-callout-card kg-callout-card-blue"><div class="kg-callout-text">프리랜서 백엔드 개발자로서 참여한 프로젝트입니다.<br>동작 인식 AI 데이터 학습을 위한 라벨링 작업시 사용할 REST API를 개발하였습니다.<br>여러 타입의 사용자 응답을 하나의 엔드포인트로 받아 동적으로 바인딩하여 작업 로그를 하나의 테이블에 저장하도록 하였습니다.</div></div>
+<p></p>
 <h2 id="others">Others.</h2>
 <ul><li><strong>2019.01.~2021.12. <a href="https://www.instagram.com/youthzone.sb/?ref=localhost">무중력지대 성북</a></strong>, 커뮤니티 기획자</li></ul>
 <p></p>
@@ -290,21 +300,11 @@ h1, h2, h3, h4, h5, h6,
 <ul><li>Nginx로 클라이언트의 요청을 로드밸런싱하여 WAS의 안정성을 향상시켰습니다. (<em>nGrinder 초당 300개 요청 테스트 시 WAS 중지 문제를 리버스프록시를 도입함으로써 해결)</em></li><li>상품 목록 페이지 렌더링 지연 문제에 대처하기 위해, <code>AWS Lambda</code>를 활용하여 이미지 리사이징 작업을 서버리스로 처리하여 서버 부하를 감소시키고, 페이지 로딩을 1개당 평균 44ms → 16ms 최적화했습니다.</li></ul>
 <h4 id="%EC%BF%BC%EB%A6%AC-%EA%B0%9C%EC%84%A0">쿼리 개선</h4>
 <ul><li>nGrinder 성능 테스트 분석 결과를 기반으로 페이징 방식을 cursor 방식으로 변경하여, 실행 시간을 10배 개선했습니다. <em>(200만 건의 데이터 중 40,000번째 페이지 조회 시, 응답 속도 약 1300ms → 약 130ms 개선)</em></li></ul>
-<div class="kg-card kg-button-card kg-align-center"><a href="https://new-pow.github.io/tag/secondhand/index.html?ref=localhost" class="kg-btn kg-btn-accent">Related Posts</a></div>
-<h2 id></h2>
+<p></p>
+<p></p>
+<p></p>
 <h2 id="%08others">Others.</h2>
 <blockquote>2023 ~</blockquote>
-<div class="kg-card kg-toggle-card" data-kg-toggle-state="close">
-            <div class="kg-toggle-heading">
-                <h4 class="kg-toggle-heading-text"><span style="white-space: pre-wrap;">👉 Labeling tool REST API 개발</span></h4>
-                <button class="kg-toggle-card-icon">
-                    <svg id="Regular" xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
-                        <path class="cls-1" d="M23.25,7.311,12.53,18.03a.749.749,0,0,1-1.06,0L.75,7.311"/>
-                    </svg>
-                </button>
-            </div>
-            <div class="kg-toggle-content"><p><span style="white-space: pre-wrap;">프리랜서 백엔드 개발자로서 참여한 프로젝트입니다.</span></p><p><span style="white-space: pre-wrap;">동작 인식 AI 데이터 학습을 위한 라벨링 작업시 사용할 REST API를 개발하였습니다.</span></p><p><span style="white-space: pre-wrap;">여러 타입의 사용자 응답을 하나의 엔드포인트로 받아 동적으로 바인딩하여 작업 로그를 하나의 테이블에 저장하도록 하였습니다.</span></p><ul><li value="1"><span style="white-space: pre-wrap;">2023. 09. ~ 10 | BE 1명, FE 2명</span></li><li value="2"><span style="white-space: pre-wrap;">주요 기술</span><br><span style="white-space: pre-wrap;">Java, Springboot, ORM(Spring data JPA), PostgreSql,</span><br><span style="white-space: pre-wrap;">Nginx, Docker compose, Docker,</span><br><span style="white-space: pre-wrap;">AWS EC2, RDS, S3, ECR</span></li></ul></div>
-        </div>
 <div class="kg-card kg-toggle-card" data-kg-toggle-state="close">
             <div class="kg-toggle-heading">
                 <h4 class="kg-toggle-heading-text"><span style="white-space: pre-wrap;">👉 Issue Tracker</span></h4>
