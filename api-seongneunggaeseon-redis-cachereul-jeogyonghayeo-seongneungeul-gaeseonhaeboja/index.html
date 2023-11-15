@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</title>
-    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=aee19b215e.css">
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=3de860f2cd.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
@@ -57,11 +57,11 @@
 사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.
 
 
-그런데 학습을 하다보니 레디스가 주로 쓰이는 용도인 Cache에 대해서 구현 욕심이 스멀스멀 올라오더라고요�">
+그런데 학습을 하다보니 레디스 Cache를 읽기 API에서도 사용해보고 싶더라고요🔥 API 성능을 개선해본 뒤">
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-18T09:05:30.000Z">
-    <meta property="article:modified_time" content="2023-11-11T14:41:06.000Z">
+    <meta property="article:modified_time" content="2023-11-12T14:53:16.000Z">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Cache">
     <meta property="article:tag" content="Projects">
@@ -76,7 +76,7 @@
 사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.
 
 
-그런데 학습을 하다보니 레디스가 주로 쓰이는 용도인 Cache에 대해서 구현 욕심이 스멀스멀 올라오더라고요�">
+그런데 학습을 하다보니 레디스 Cache를 읽기 API에서도 사용해보고 싶더라고요🔥 API 성능을 개선해본 뒤">
     <meta name="twitter:url" content="http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/">
     <meta name="twitter:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta name="twitter:label1" content="Written by">
@@ -117,9 +117,9 @@
     "headline": "API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자",
     "url": "http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/",
     "datePublished": "2023-09-18T09:05:30.000Z",
-    "dateModified": "2023-11-11T14:41:06.000Z",
+    "dateModified": "2023-11-12T14:53:16.000Z",
     "keywords": "Secondhand, Cache, Projects, Posts",
-    "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.\n\n\n그런데 학습을 하다보니 레디스가 주로 쓰이는 용도인 Cache에 대해서 구현 욕심이 스멀스멀 올라오더라고요🔥 API 성능을 개선해본 뒤 차근차근 조회수도 개선해보도록 하겠습니다.\n\n\n\n\n\n\nCache에 대하여\n\n\n캐시 Cache는 자주 사용하는 연산에 대하여 속도가 빠른 임시 공간에 저장해두어 애플리케이션 연산 속도를 높일 수 있습니다.\n\n\nCache는 나중에 요청을 위해 결과를 미리 저장해두었다가 빠르게 서비스 해주는 것을 의미합니다.\n- 우아한레디스 (강대명)\n\n\n\n\n\n애플리케이션이 Database(Disk)에 접속하여 데이터를 읽어오는 것보다는 자주 읽는 데이터를 애플리케이션이",
+    "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.\n\n\n그런데 학습을 하다보니 레디스 Cache를 읽기 API에서도 사용해보고 싶더라고요🔥 API 성능을 개선해본 뒤 차근차근 조회수도 개선해보도록 하겠습니다.\n\n\n\n\n\n\nCache에 대하여\n\n\n캐시 Cache는 자주 사용하는 연산에 대하여 속도가 빠른 임시 공간에 저장해두어 애플리케이션 연산 속도를 높일 수 있습니다.\n\n\nCache는 나중에 요청을 위해 결과를 미리 저장해두었다가 빠르게 서비스 해주는 것을 의미합니다.\n- 우아한레디스 (강대명)\n\n\n\n\n\n애플리케이션이 Database(Disk)에 접속하여 데이터를 읽어오는 것보다는 자주 읽는 데이터를 애플리케이션이 빠르게 접근할 수 있는 ",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/"
 }
     </script>
@@ -130,8 +130,8 @@
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
     <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
-    <script defer src="../public/cards.min.js%3Fv=aee19b215e"></script>
-    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=aee19b215e.css">
+    <script defer src="../public/cards.min.js%3Fv=3de860f2cd"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=3de860f2cd.css">
     <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
 <link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <style>
@@ -251,7 +251,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="gh-article-meta-inner">
                 <time class="gh-article-date" datetime="2023-09-18">Sep 18, 2023</time>
                     <span class="gh-article-meta-sep"></span>
-                    <span class="gh-article-length">3 min</span>
+                    <span class="gh-article-length">8 min</span>
             </div>
         </div>
 
@@ -267,7 +267,7 @@ h1, h2, h3, h4, h5, h6,
 
                 <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트&nbsp;<a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a>&nbsp;구현시 이슈 사항을 정리한 글입니다.</blockquote>
 <p>사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다.  <a href="https://webisfree.com/2017-11-13/redis%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%9C-view-count-%EB%B0%A9%EB%AC%B8%EC%9E%90-%EC%88%98-%EA%B4%80%EB%A6%AC%ED%95%98%EB%8A%94-%ED%9A%A8%EA%B3%BC%EC%A0%81%EC%9D%B8-%EB%B0%A9%EB%B2%95%EC%9D%80?ref=localhost" rel="noreferrer">[조회수 관련해서 참고한 블로그 글]</a> 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.</p>
-<p>그런데 학습을 하다보니 레디스가 주로 쓰이는 용도인 Cache에 대해서 구현 욕심이 스멀스멀 올라오더라고요🔥 API 성능을 개선해본 뒤 차근차근 조회수도 개선해보도록 하겠습니다.</p>
+<p>그런데 학습을 하다보니 레디스 Cache를 읽기 API에서도 사용해보고 싶더라고요🔥  API 성능을 개선해본 뒤 차근차근 조회수도 개선해보도록 하겠습니다.</p>
 <p></p>
 <h1 id="cache%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC">Cache에 대하여</h1>
 <p>캐시 Cache는 자주 사용하는 연산에 대하여 속도가 빠른 임시 공간에 저장해두어 애플리케이션 연산 속도를 높일 수 있습니다.</p>
@@ -279,17 +279,55 @@ h1, h2, h3, h4, h5, h6,
 <p></p>
 <p>이 글에서는 Redis를 이용해서 cache를 구현합니다. 하지만 캐시 구현에 가장 손쉬운 방법은 ConcurrentHashMap 과 같은 자료구조를 이용해 로컬 인메모리로 구현하는 것일 수 있습니다.</p>
 <p></p>
-<h2 id="cache-%EC%99%80-buffer%EC%9D%98-%EC%B0%A8%EC%9D%B4%EC%A0%90%EC%97%90-%EB%8C%80%ED%95%B4">Cache 와 Buffer의 차이점에 대해</h2>
-<p>대부분 두 용어의 차이점을 정확하게 알지 못하기 때문에 종종 이 용어를 횬용해서 쓰기도 하는데요. (제 얘기)</p>
+<h2 id="cache-%EC%99%80-buffer%08-%EB%AD%90%EA%B0%80-%EB%8B%A4%EB%A5%B4%EC%A7%80">Cache 와 Buffer 뭐가 다르지?</h2>
+<p>대부분 두 용어의 차이점을 정확하게 알지 못하기 때문에 종종 이 용어를 횬용해서 쓰기도 해서 간단하게 짚고 넘어가겠습니다. (제 얘기)</p>
 <p>사실 엄밀히 말하자면 다른 의미를 갖고 있습니다.</p>
-<p></p>
+<h3 id="%EA%B3%B5%ED%86%B5%EC%A0%90">공통점</h3>
+<p>캐시와 버퍼는 둘 다 데이터를 임시로 저장하는 데 사용됩니다.</p>
+<h3 id="%EC%B0%A8%EC%9D%B4%EC%A0%90">차이점</h3>
 <p><code>Buffer</code>는 전통적으로 빠른 속도의 장치와 느린 속도의 장치 사이에서 데이터를 일시적으로 보관하는 데 사용합니다. 빠른 속도의 장치에서 느린 속도의 장치로 데이터를 보낼 때 데이터의 유실, 손실 상황을 막기 위함입니다. 느린 속도의 장치가 이 버퍼 데이터를 받을 때는 한번에 받도록 하여 이 속도 차이를 완화시킵니다. 그러다보니 데이터는 버퍼에서 한 번만 쓰거나 읽을 수 있습니다.</p>
+<p>예를 들어 컴퓨터에서 입력장치인 키보드의 데이터를 CPU가 받는다고 할 때, 키보드 버퍼에 데이터를 잠시 저장하거나 네트워킹에서 다른 장치로 데이터가 이동할 때 잠시 저장해두는 용도로 사용할 수 있습니다.</p>
 <p></p>
+<p><code>Cache</code> 의 경우, 성능 향상에 목적이 있습니다. 캐시는 자주 사용하는 정보, 데이터(값비싼 연산결과나 자주 참조되는 데이터)를 메모리에 올려두고 사용할 수 있는 저장소입니다.</p>
+<p>디스크 I/O보다 캐시 메모리에 올라간 데이터를 읽는 것이 훨씬 빠르기 때문입니다.</p>
+<p>버퍼와 달리 데이터가 한번 읽고 쓰는 것으로 끝나지 않고, 일정 시간동안 계속 있으면서 반복적인 작업에 사용됩니다.</p>
+<p>마치 책상 위에 자주 쓰는 필기구와 노트를 가져다 놓는 것처럼요. 서랍에 있으면 매번 꺼내쓰는 데 번거롭겠죠?</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="https://images.unsplash.com/photo-1542435503-956c469947f6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fGRlc2t8ZW58MHx8fHwxNjk5NzcxMjc4fDA&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=2000" class="kg-image" alt="pen near black lined paper and eyeglasses" loading="lazy" width="4518" height="3388" srcset="https://images.unsplash.com/photo-1542435503-956c469947f6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fGRlc2t8ZW58MHx8fHwxNjk5NzcxMjc4fDA&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=600 600w, https://images.unsplash.com/photo-1542435503-956c469947f6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fGRlc2t8ZW58MHx8fHwxNjk5NzcxMjc4fDA&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1000 1000w, https://images.unsplash.com/photo-1542435503-956c469947f6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fGRlc2t8ZW58MHx8fHwxNjk5NzcxMjc4fDA&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=1600 1600w, https://images.unsplash.com/photo-1542435503-956c469947f6?crop=entropy&amp;cs=tinysrgb&amp;fit=max&amp;fm=jpg&amp;ixid=M3wxMTc3M3wwfDF8c2VhcmNofDJ8fGRlc2t8ZW58MHx8fHwxNjk5NzcxMjc4fDA&amp;ixlib=rb-4.0.3&amp;q=80&amp;w=2400 2400w" sizes="(min-width: 720px) 720px"><figcaption><span style="white-space: pre-wrap;">Photo by </span><a href="https://unsplash.com/@jessbaileydesigns?ref=localhost"><span style="white-space: pre-wrap;">Jess Bailey</span></a><span style="white-space: pre-wrap;"> / </span><a href="https://unsplash.com/?utm_source=ghost&utm_medium=referral&utm_campaign=api-credit"><span style="white-space: pre-wrap;">Unsplash</span></a></figcaption></figure>
 <p></p>
 <h2 id="%EC%96%B8%EC%A0%9C-%EC%82%AC%EC%9A%A9%ED%95%B4%EC%95%BC-%EC%A2%8B%EC%9D%84%EA%B9%8C%EC%9A%94">언제 사용해야 좋을까요?</h2>
 <p>캐시는 애플리케이션 전반에서 사용할 수 있습니다. </p>
-<figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2023/09/image-15.png" class="kg-image" alt loading="lazy" width="1024" height="768" srcset="../content/images/size/w600/2023/09/image-15.png 600w, ../content/images/size/w1000/2023/09/image-15.png 1000w, ../content/images/2023/09/image-15.png 1024w" sizes="(min-width: 720px) 720px"><figcaption><span style="white-space: pre-wrap;">아무것도 모를 때 채팅을 캐싱해보겠다며 팀 메이트와 그려본 플로우 차트 👀</span></figcaption></figure>
+<p>만약 캐시가 없는 애플리케이션 서버가 동일한 API 요청을 N번 받으면 매번 DB 조회 후에 모든 로직을 거쳐 반환하는 과정을 겪어야 겠지요.</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2023/11/image.png" class="kg-image" alt loading="lazy" width="2000" height="1397" srcset="../content/images/size/w600/2023/11/image.png 600w, ../content/images/size/w1000/2023/11/image.png 1000w, ../content/images/size/w1600/2023/11/image.png 1600w, ../content/images/2023/11/image.png 2388w" sizes="(min-width: 720px) 720px"><figcaption><span style="white-space: pre-wrap;">대표적인 사용 예시</span></figcaption></figure>
+<p>캐시의 장점은 데이터베이스에 직접 조회하는 것보다 빠른 것뿐만 아니라 데이터베이스의 부하를 줄일 수 있다는 점도 있습니다. 같은 API로직을 10번 요청받았을 때, 최초 1회만 DB에 접근하​면 되니까요.</p>
 <p></p>
+<h3 id="%EC%BA%90%EC%8B%9C%EC%97%90-%EC%9C%A0%EB%A6%AC%ED%95%9C-%EB%8D%B0%EC%9D%B4%ED%84%B0">캐시에 유리한 데이터</h3>
+<p>캐시에 들어갈 데이터는 자주 사용되지만 변경은 자주 일어나지 않는 것이 유리합니다.</p>
+<p>예를 들어 채팅로그와 같은 데이터는 자주 바뀌기 때문에 사실 캐싱하기에는 별로 좋지 않은 데이터이지요. 물론 어떻게 구현하느냐, 어떤 로직이 필요하느냐에 따라 선택의 결과는 다를 수 있습니다.</p>
+<figure class="kg-card kg-image-card kg-card-hascaption"><img src="../content/images/2023/09/image-15.png" class="kg-image" alt loading="lazy" width="1024" height="768" srcset="../content/images/size/w600/2023/09/image-15.png 600w, ../content/images/size/w1000/2023/09/image-15.png 1000w, ../content/images/2023/09/image-15.png 1024w" sizes="(min-width: 720px) 720px"><figcaption><span style="white-space: pre-wrap;">아무것도 모를 때 채팅을 캐싱해보겠다며 팀 메이트와 그려본 플로우 차트 👀</span></figcaption></figure>
+<p>다만 조회는 잦으면서 변함이 별로 없는 캐시라면 TTL을 길게해서 메모리에 올려두면 더 좋겠죠?</p>
+<p></p>
+<h1 id="%EC%BA%90%EC%8B%9C%EB%A5%BC-%EC%82%AC%EC%9A%A9%ED%95%98%EA%B8%B0-%EC%A0%84%EC%97%90-%EC%84%A0%ED%83%9D%ED%95%A0-%EA%B2%83%EB%93%A4">캐시를 사용하기 전에 선택할 것들</h1>
+<p>이처럼 캐시를 이용하여 DB 커넥션을 줄이고 서비스 로직 실행도 생략할 수가 있어서 DB와 애플리케이션 성능에 크게 도움이 되는데요. 캐시를 도입하기 전에 선택해야 하는 문제들이 몇가지 있습니다.</p>
+<p></p>
+<h2 id="local-cache%EC%99%80-global-cache">Local cache와 Global Cache</h2>
+<p>캐시를 WAS(Web Application Server) 에 저장하는 방식인 Local cache와 별도 캐시 서버를 구축하는 Global Cache 방식 두가지가 있는데요. <a href="https://medium.com/uplusdevu/%EB%A1%9C%EC%BB%AC-%EC%BA%90%EC%8B%9C-%EC%84%A0%ED%83%9D%ED%95%98%EA%B8%B0-e394202d5c87?ref=localhost" rel="noreferrer">👉 Local cache 참고링크</a></p>
+<p>이번 프로젝트의 경우에는 Scale out 가능성이 있다는 가정을 하고 있으며, 이미 Redis pub/sub으로 채팅 서비스를 구현한 상태이기 때문에 자연스럽게 Redis cache를 이용하여 Global Cache 를 사용하기로 하였습니다.</p>
+<p>Local cache의 경우, WAS 인스턴스 메모리에 데이터를 저장하므로 속도가 매우 빠르고 별도 인프라를 구축할 필요가 없어서 선택하는 경우도 있습니다.</p>
+<p></p>
+<h2 id="%EC%BA%90%EC%8B%9C-%EC%9D%BD%EA%B8%B0%EC%93%B0%EA%B8%B0-%EC%A0%84%EB%9E%B5%EA%B3%BC-ttl">캐시 읽기/쓰기 전략과 TTL</h2>
+<p>캐시 읽기 전략과 쓰기 전략에는 여러가지 종류가 있었는데요. 데이터베이스와 캐시에서 어떻게 데이터를 가져올지에 대한 전략입니다.</p>
+<p>캐싱할 API의 성격과 환경에 따라 선택해야 했습니다. 해당 전략에 대해서는 이 <a href="https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_rtwtwbra.htm?ref=localhost#COHDG200" rel="noreferrer">링크</a>를 참고하였습니다.</p>
+<figure class="kg-card kg-image-card"><img src="../content/images/2023/11/image-1.png" class="kg-image" alt loading="lazy" width="2000" height="1397" srcset="../content/images/size/w600/2023/11/image-1.png 600w, ../content/images/size/w1000/2023/11/image-1.png 1000w, ../content/images/size/w1600/2023/11/image-1.png 1600w, ../content/images/2023/11/image-1.png 2388w" sizes="(min-width: 720px) 720px"></figure>
+<p>먼저 캐싱 할 API로는 다음의 두가지를 염두에 두고 있었는데요.</p>
+<ol><li>상품판매 목록 조회<ol><li>첫 페이지이므로 조회 빈도가 높은 편</li><li>여러 데이터를 조회해야하므로 쿼리가 복잡한 편</li><li>다만 수정도 잦은 편</li></ol></li><li>카테고리 조회<ol><li></li></ol></li></ol>
+<p></p>
+<p></p>
+<h1 id="%EC%9D%BD%EA%B8%B0-api%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90">읽기 API에 적용해보자</h1>
+<p></p>
+<p></p>
+<hr>
+<h1 id="refs">Refs.</h1>
+<ul><li>로컬 캐시 사용 사례 참고링크<ul><li><a href="https://dev.gmarket.com/16?ref=localhost">https://dev.gmarket.com/16</a> </li><li><a href="https://medium.com/uplusdevu/%EB%A1%9C%EC%BB%AC-%EC%BA%90%EC%8B%9C-%EC%84%A0%ED%83%9D%ED%95%98%EA%B8%B0-e394202d5c87?ref=localhost#0083" rel="noreferrer">로컬 캐시 선택하기</a></li></ul></li><li>캐시 전략에 대한 참고링크<ul><li><a href="https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_rtwtwbra.htm?ref=localhost#COHDG199" rel="noreferrer">Selecting a Cache Strategy</a></li><li></li></ul></li></ul>
 <p></p>
 
 		<section class="post-full-comments">
@@ -485,7 +523,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
         </div>
     </div>
 </div>
-<script src="../assets/built/main.min.js%3Fv=aee19b215e"></script>
+<script src="../assets/built/main.min.js%3Fv=3de860f2cd"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
