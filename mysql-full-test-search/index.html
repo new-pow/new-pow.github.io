@@ -17,12 +17,22 @@
 
         .gh-toc > .toc-list {
             position: relative;
+            padding-right: 20px;
         }
 
         .toc-list {
             overflow: hidden;
             list-style: none;
-            font-size: smaller;
+            font-size: medium;
+        }
+
+        .toc-list  {
+            overflow: hidden;
+            list-style: none;
+            font-size: medium;
+        }
+        .toc-list-item > ol > .toc-list-item {
+            list-style: none;
         }
 
         @media (min-width: 1300px) {
@@ -44,6 +54,7 @@
             background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
         } 
     </style>
+
     <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -290,6 +301,7 @@ h1, h2, h3, h4, h5, h6,
 
             <section class="gh-content gh-canvas">
                 <br>
+                
                 <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
 
                 <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트 <a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a> 구현시 이슈 사항을 정리한 글입니다.</blockquote>
@@ -676,7 +688,6 @@ Secondhand에 글을 작성할 때는 최대 10장의 이미지를 업로드할 
     </div>
 </div>
 <script src="../assets/built/main.min.js%3Fv=3de860f2cd"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
         // Where to render the table of contents.
@@ -684,11 +695,13 @@ Secondhand에 글을 작성할 때는 최대 10장의 이미지를 업로드할 
         // Where to grab the headings to build the table of contents.
         contentSelector: '.gh-content',
         // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3, h4',
+        headingSelector: 'h1, h2, h3',
         // Ensure correct positioning
         hasInnerContainers: true,
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>

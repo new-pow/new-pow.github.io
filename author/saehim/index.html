@@ -17,12 +17,22 @@
 
         .gh-toc > .toc-list {
             position: relative;
+            padding-right: 20px;
         }
 
         .toc-list {
             overflow: hidden;
             list-style: none;
-            font-size: smaller;
+            font-size: medium;
+        }
+
+        .toc-list  {
+            overflow: hidden;
+            list-style: none;
+            font-size: medium;
+        }
+        .toc-list-item > ol > .toc-list-item {
+            list-style: none;
         }
 
         @media (min-width: 1300px) {
@@ -44,6 +54,7 @@
             background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
         } 
     </style>
+
     <meta name="description" content="사람과 경험으로부터 배우고 있습니다.">
     <link rel="icon" href="../../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
@@ -320,7 +331,7 @@ MySQL 검색 기능 개선하기 : Full-text search
 
         <div class="gh-card-wrapper">
             <header class="gh-card-header">
-                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</h3>
+                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자</h3>
             </header>
 
                     <div class="gh-card-excerpt">이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
@@ -424,7 +435,6 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
 
 
 <script src="../../assets/built/main.min.js%3Fv=3de860f2cd"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
         // Where to render the table of contents.
@@ -432,11 +442,13 @@ Secondhand 에는 실시간 채팅 어플리케이션이 있습니다. 웹소켓
         // Where to grab the headings to build the table of contents.
         contentSelector: '.gh-content',
         // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3, h4',
+        headingSelector: 'h1, h2, h3',
         // Ensure correct positioning
         hasInnerContainers: true,
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>

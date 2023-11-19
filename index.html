@@ -17,12 +17,22 @@
 
         .gh-toc > .toc-list {
             position: relative;
+            padding-right: 20px;
         }
 
         .toc-list {
             overflow: hidden;
             list-style: none;
-            font-size: smaller;
+            font-size: medium;
+        }
+
+        .toc-list  {
+            overflow: hidden;
+            list-style: none;
+            font-size: medium;
+        }
+        .toc-list-item > ol > .toc-list-item {
+            list-style: none;
         }
 
         @media (min-width: 1300px) {
@@ -44,6 +54,7 @@
             background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
         } 
     </style>
+
     <meta name="description" content="백엔드 개발자 이새힘입니다.
 Backend developer Saehim Lee.">
     <link rel="icon" href="content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
@@ -284,7 +295,7 @@ Secondhand에 글을 작성할 때는 최대 10장의 이미지를 업로드할 
 
         <div class="gh-card-wrapper">
             <header class="gh-card-header">
-                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</h3>
+                <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자</h3>
             </header>
 
 
@@ -352,7 +363,7 @@ Secondhand에 글을 작성할 때는 최대 10장의 이미지를 업로드할 
     </a>
 </article>                <article class="gh-card post tag-secondhand tag-cache tag-projects tag-posts no-image">
     <a class="gh-card-link" href="api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/index.html">
-        <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</h3>
+        <h3 class="gh-card-title">API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자</h3>
     </a>
 </article>                <article class="gh-card post tag-projects tag-secondhand tag-java tag-springdatajpa tag-refactoring tag-database tag-posts no-image">
     <a class="gh-card-link" href="api-seongneunggaeseon-200mangeonyi-deiteo-peiji/index.html">
@@ -412,7 +423,6 @@ Secondhand에 글을 작성할 때는 최대 10장의 이미지를 업로드할 
 
 
 <script src="assets/built/main.min.js%3Fv=3de860f2cd"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
         // Where to render the table of contents.
@@ -420,11 +430,13 @@ Secondhand에 글을 작성할 때는 최대 10장의 이미지를 업로드할 
         // Where to grab the headings to build the table of contents.
         contentSelector: '.gh-content',
         // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3, h4',
+        headingSelector: 'h1, h2, h3',
         // Ensure correct positioning
         hasInnerContainers: true,
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>

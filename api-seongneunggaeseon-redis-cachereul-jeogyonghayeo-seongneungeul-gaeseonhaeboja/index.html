@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</title>
+    <title>API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자</title>
     <link rel="stylesheet" href="../assets/built/screen.css%3Fv=3de860f2cd.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
@@ -17,12 +17,22 @@
 
         .gh-toc > .toc-list {
             position: relative;
+            padding-right: 20px;
         }
 
         .toc-list {
             overflow: hidden;
             list-style: none;
-            font-size: smaller;
+            font-size: medium;
+        }
+
+        .toc-list  {
+            overflow: hidden;
+            list-style: none;
+            font-size: medium;
+        }
+        .toc-list-item > ol > .toc-list-item {
+            list-style: none;
         }
 
         @media (min-width: 1300px) {
@@ -44,13 +54,14 @@
             background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
         } 
     </style>
+
     <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
     
     <meta property="og:site_name" content="new-pow&#x27;s space">
     <meta property="og:type" content="article">
-    <meta property="og:title" content="API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자">
+    <meta property="og:title" content="API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자">
     <meta property="og:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
 
 
@@ -61,7 +72,7 @@
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-18T09:05:30.000Z">
-    <meta property="article:modified_time" content="2023-11-12T14:53:16.000Z">
+    <meta property="article:modified_time" content="2023-11-17T18:13:24.000Z">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Cache">
     <meta property="article:tag" content="Projects">
@@ -69,7 +80,7 @@
     
     <meta property="article:publisher" content="https://www.facebook.com/ghost">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자">
+    <meta name="twitter:title" content="API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자">
     <meta name="twitter:description" content="이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.
 
 
@@ -114,10 +125,10 @@
         "url": "http://localhost:2369/author/saehim/",
         "sameAs": []
     },
-    "headline": "API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자",
+    "headline": "API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자",
     "url": "http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/",
     "datePublished": "2023-09-18T09:05:30.000Z",
-    "dateModified": "2023-11-12T14:53:16.000Z",
+    "dateModified": "2023-11-17T18:13:24.000Z",
     "keywords": "Secondhand, Cache, Projects, Posts",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.\n\n\n그런데 학습을 하다보니 레디스 Cache를 읽기 API에서도 사용해보고 싶더라고요🔥 API 성능을 개선해본 뒤 차근차근 조회수도 개선해보도록 하겠습니다.\n\n\n\n\n\n\nCache에 대하여\n\n\n캐시 Cache는 자주 사용하는 연산에 대하여 속도가 빠른 임시 공간에 저장해두어 애플리케이션 연산 속도를 높일 수 있습니다.\n\n\nCache는 나중에 요청을 위해 결과를 미리 저장해두었다가 빠르게 서비스 해주는 것을 의미합니다.\n- 우아한레디스 (강대명)\n\n\n\n\n\n애플리케이션이 Database(Disk)에 접속하여 데이터를 읽어오는 것보다는 자주 읽는 데이터를 애플리케이션이 빠르게 접근할 수 있는 ",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/"
@@ -230,7 +241,7 @@ h1, h2, h3, h4, h5, h6,
             <header class="gh-article-header gh-canvas">
                     <a class="gh-article-tag" href="../tag/secondhand/index.html">Secondhand</a>
 
-                <h1 class="gh-article-title">API 성능개선 : Redis Cache를 적용하여 Read 기능을 개선해보자</h1>
+                <h1 class="gh-article-title">API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자</h1>
 
                     <aside class="gh-article-sidebar">
 
@@ -263,6 +274,7 @@ h1, h2, h3, h4, h5, h6,
 
             <section class="gh-content gh-canvas">
                 <br>
+                
                 <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
 
                 <blockquote>이 글은 당근마켓을 모티브로 한 프로젝트&nbsp;<a href="https://github.com/masters2023-2nd-project-05/second-hand?ref=localhost">Secondhand</a>&nbsp;구현시 이슈 사항을 정리한 글입니다.</blockquote>
@@ -318,11 +330,11 @@ h1, h2, h3, h4, h5, h6,
 <p>캐시 읽기 전략과 쓰기 전략에는 여러가지 종류가 있었는데요. 데이터베이스와 캐시에서 어떻게 데이터를 가져올지에 대한 전략입니다.</p>
 <p>캐싱할 API의 성격과 환경에 따라 선택해야 했습니다. 해당 전략에 대해서는 이 <a href="https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_rtwtwbra.htm?ref=localhost#COHDG200" rel="noreferrer">링크</a>를 참고하였습니다.</p>
 <figure class="kg-card kg-image-card"><img src="../content/images/2023/11/image-1.png" class="kg-image" alt loading="lazy" width="2000" height="1397" srcset="../content/images/size/w600/2023/11/image-1.png 600w, ../content/images/size/w1000/2023/11/image-1.png 1000w, ../content/images/size/w1600/2023/11/image-1.png 1600w, ../content/images/2023/11/image-1.png 2388w" sizes="(min-width: 720px) 720px"></figure>
-<p>먼저 캐싱 할 API로는 다음의 두가지를 염두에 두고 있었는데요.</p>
-<ol><li>상품판매 목록 조회<ol><li>첫 페이지이므로 조회 빈도가 높은 편</li><li>여러 데이터를 조회해야하므로 쿼리가 복잡한 편</li><li>다만 수정도 잦은 편</li></ol></li><li>카테고리 조회<ol><li></li></ol></li></ol>
-<p></p>
+<p>우선적으로 캐싱 할 API로는 다음의 세가지를 염두에 두고 있었는데요.</p>
+<ol><li>상품판매 목록 조회<ol><li>첫 페이지이므로 조회 빈도가 높은 편</li><li>여러 데이터를 조회해야하므로 쿼리가 복잡한 편</li><li>다만 데이터의 수정이 잦은 편이기 때문에 TTL을 짧게 해두는 것이 좋을 것 같음</li></ol></li><li>지역 목록 조회<ol><li>키워드 검색 결과 (key를 키워드를 붙여서 적용)</li><li>데이터가 변함이 없는 편</li><li>TTL을 조금 길게 해두어도 좋을 것 같음</li></ol></li></ol>
 <p></p>
 <h1 id="%EC%9D%BD%EA%B8%B0-api%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90">읽기 API에 적용해보자</h1>
+<p>놀랍게도 Spring에서는 이 캐싱을 손쉽게 어노테이션을 기반으로 구현할 수 있었습니다. (<a href="https://www.baeldung.com/spring-cache-tutorial?ref=localhost" rel="noreferrer">👉 참고링크 : A Guide To Caching in Spring</a>)</p>
 <p></p>
 <p></p>
 <hr>
@@ -524,7 +536,6 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
     </div>
 </div>
 <script src="../assets/built/main.min.js%3Fv=3de860f2cd"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
         // Where to render the table of contents.
@@ -532,11 +543,13 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
         // Where to grab the headings to build the table of contents.
         contentSelector: '.gh-content',
         // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3, h4',
+        headingSelector: 'h1, h2, h3',
         // Ensure correct positioning
         hasInnerContainers: true,
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>

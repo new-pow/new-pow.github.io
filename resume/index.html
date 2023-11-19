@@ -17,12 +17,22 @@
 
         .gh-toc > .toc-list {
             position: relative;
+            padding-right: 20px;
         }
 
         .toc-list {
             overflow: hidden;
             list-style: none;
-            font-size: smaller;
+            font-size: medium;
+        }
+
+        .toc-list  {
+            overflow: hidden;
+            list-style: none;
+            font-size: medium;
+        }
+        .toc-list-item > ol > .toc-list-item {
+            list-style: none;
         }
 
         @media (min-width: 1300px) {
@@ -44,6 +54,7 @@
             background-color: var(--ghost-accent-color); /* Defines TOC   accent color based on Accent color set in Ghost Admin */
         } 
     </style>
+
     <link rel="icon" href="../content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" type="image/png">
     <link rel="canonical" href="index.html">
     <meta name="referrer" content="no-referrer-when-downgrade">
@@ -247,6 +258,8 @@ h1, h2, h3, h4, h5, h6,
                             </header>
 
         <section class="gh-content gh-canvas">
+            <aside class="gh-sidebar"><div class="gh-toc"></div></aside> 
+
             <p></p>
 <figure class="kg-card kg-image-card"><img src="../content/images/2023/09/IMG_1283----------modified-350.png" class="kg-image" alt loading="lazy" width="350" height="350"></figure>
 <blockquote>Github : <a href="https://github.com/new-pow?ref=localhost">@new-pow</a><br>Blog : <a href="https://new-pow.tistory.com/?ref=localhost" rel="noopener noreferrer">new-pow.tistory.com</a><br>Email : <a href="mailto:i.newpow@gmail.com">i.newpow@gmail.com</a></blockquote>
@@ -384,7 +397,6 @@ h1, h2, h3, h4, h5, h6,
     </div>
 </div>
 <script src="../assets/built/main.min.js%3Fv=3de860f2cd"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
 <script>
     tocbot.init({
         // Where to render the table of contents.
@@ -392,11 +404,13 @@ h1, h2, h3, h4, h5, h6,
         // Where to grab the headings to build the table of contents.
         contentSelector: '.gh-content',
         // Which headings to grab inside of the contentSelector element.
-        headingSelector: 'h1, h2, h3, h4',
+        headingSelector: 'h1, h2, h3',
         // Ensure correct positioning
         hasInnerContainers: true,
     });
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.min.js"></script>
+
 <script>
     var disqus_shortname = "new-pow-github-io-1"
 </script>
