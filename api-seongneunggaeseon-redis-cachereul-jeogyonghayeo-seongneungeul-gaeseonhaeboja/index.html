@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자</title>
-    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=3de860f2cd.css">
+    <link rel="stylesheet" href="../assets/built/screen.css%3Fv=4f37bf95cc.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.13.5/tocbot.min.css" integrity="sha512-SFw7k74K3983tyOlJIHa8atr9Ppef3Kix5cmifwzU7ZdtU2E0FRuOVRtd3ENpMJ8sNCie5hlb/0j23efcdQJXA==" 	crossorigin="anonymous" referrerpolicy="no-referrer" />
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.3/tocbot.css">
@@ -72,7 +72,7 @@
     <meta property="og:url" content="http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/">
     <meta property="og:image" content="http://localhost:2369/content/images/2023/08/Carina_Dwarf_Galaxy.jpeg">
     <meta property="article:published_time" content="2023-09-18T09:05:30.000Z">
-    <meta property="article:modified_time" content="2023-11-17T18:13:24.000Z">
+    <meta property="article:modified_time" content="2023-11-24T23:52:01.000Z">
     <meta property="article:tag" content="Secondhand">
     <meta property="article:tag" content="Cache">
     <meta property="article:tag" content="Projects">
@@ -128,7 +128,7 @@
     "headline": "API 성능개선 : Redis Cache를 적용하여 Read API 기능을 개선해보자",
     "url": "http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/",
     "datePublished": "2023-09-18T09:05:30.000Z",
-    "dateModified": "2023-11-17T18:13:24.000Z",
+    "dateModified": "2023-11-24T23:52:01.000Z",
     "keywords": "Secondhand, Cache, Projects, Posts",
     "description": "이 글은 당근마켓을 모티브로 한 프로젝트 Secondhand 구현시 이슈 사항을 정리한 글입니다.\n\n\n사실 처음 시작은 조회수 구현을 어떻게 효율적으로 할 수 있을까에서 출발하였습니다. [조회수 관련해서 참고한 블로그 글] 세션별로 중복되지 않게 일정 시간동안 1회씩 카운팅하고 싶은 욕심이었습니다.\n\n\n그런데 학습을 하다보니 레디스 Cache를 읽기 API에서도 사용해보고 싶더라고요🔥 API 성능을 개선해본 뒤 차근차근 조회수도 개선해보도록 하겠습니다.\n\n\n\n\n\n\nCache에 대하여\n\n\n캐시 Cache는 자주 사용하는 연산에 대하여 속도가 빠른 임시 공간에 저장해두어 애플리케이션 연산 속도를 높일 수 있습니다.\n\n\nCache는 나중에 요청을 위해 결과를 미리 저장해두었다가 빠르게 서비스 해주는 것을 의미합니다.\n- 우아한레디스 (강대명)\n\n\n\n\n\n애플리케이션이 Database(Disk)에 접속하여 데이터를 읽어오는 것보다는 자주 읽는 데이터를 애플리케이션이 빠르게 접근할 수 있는 ",
     "mainEntityOfPage": "http://localhost:2369/api-seongneunggaeseon-redis-cachereul-jeogyonghayeo-seongneungeul-gaeseonhaeboja/"
@@ -141,8 +141,8 @@
     <script defer src="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/sodo-search.min.js" data-key="d57bf7b304bcc3e0002dfc2775" data-styles="https://cdn.jsdelivr.net/ghost/sodo-search@~1.1/umd/main.css" data-sodo-search="http://localhost:2369/" crossorigin="anonymous"></script>
     
     <link href="http://localhost:2369/webmentions/receive/" rel="webmention">
-    <script defer src="../public/cards.min.js%3Fv=3de860f2cd"></script>
-    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=3de860f2cd.css">
+    <script defer src="../public/cards.min.js%3Fv=4f37bf95cc"></script>
+    <link rel="stylesheet" type="text/css" href="../public/cards.min.css%3Fv=4f37bf95cc.css">
     <link href='https://rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
 <link href='https://spoqa.github.io/spoqa-han-sans/css/SpoqaHanSans-kr.css' rel='stylesheet' type='text/css'>
 <style>
@@ -262,7 +262,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="gh-article-meta-inner">
                 <time class="gh-article-date" datetime="2023-09-18">Sep 18, 2023</time>
                     <span class="gh-article-meta-sep"></span>
-                    <span class="gh-article-length">8 min</span>
+                    <span class="gh-article-length">10 min</span>
             </div>
         </div>
 
@@ -334,12 +334,20 @@ h1, h2, h3, h4, h5, h6,
 <ol><li>상품판매 목록 조회<ol><li>첫 페이지이므로 조회 빈도가 높은 편</li><li>여러 데이터를 조회해야하므로 쿼리가 복잡한 편</li><li>다만 데이터의 수정이 잦은 편이기 때문에 TTL을 짧게 해두는 것이 좋을 것 같음</li></ol></li><li>지역 목록 조회<ol><li>키워드 검색 결과 (key를 키워드를 붙여서 적용)</li><li>데이터가 변함이 없는 편</li><li>TTL을 조금 길게 해두어도 좋을 것 같음</li></ol></li></ol>
 <p></p>
 <h1 id="%EC%9D%BD%EA%B8%B0-api%EC%97%90-%EC%A0%81%EC%9A%A9%ED%95%B4%EB%B3%B4%EC%9E%90">읽기 API에 적용해보자</h1>
-<p>놀랍게도 Spring에서는 이 캐싱을 손쉽게 어노테이션을 기반으로 구현할 수 있었습니다. (<a href="https://www.baeldung.com/spring-cache-tutorial?ref=localhost" rel="noreferrer">👉 참고링크 : A Guide To Caching in Spring</a>)</p>
+<p>우선적으로 캐싱 할 API로는 다음을 염두에 두고 있었는데요. 이유는 아래와 같습니다.</p>
 <p></p>
-<p></p>
+<p>1. 상품판매 목록 조회</p>
+<ul><ul><li>첫 페이지이므로 조회 빈도가 높은 편</li><li>여러 데이터를 조회해야하므로 쿼리가 복잡한 편</li><li>다만 데이터의 수정이 잦은 편이기 때문에 TTL을 짧게 해두는 것이 좋을 것 같음</li></ul></ul>
+<p>2. 지역 목록 조회</p>
+<ul><ul><li>키워드 검색 결과 (key를 키워드를 붙여서 적용)</li><li>데이터가 변함이 없는 편</li><li>TTL을 조금 길게 해두어도 좋을 것 같음</li></ul></ul>
+<p>3. 채팅 로그와 채팅방 메타 데이터</p>
+<ul><ul><li>속도가 중요한 도메인</li><li>채팅 로그의 경우, 데이터가 계속 생성되어 쌓이는 특징을 가지고 있으므로 수정, 삭제를 신경쓰지 않아도됨</li><li>쓰기 버퍼의 역할도 할 수 있을 것 같음.</li></ul></ul>
+<p> </p>
+<p>막상 적용하려고 자료를 찾아보니 Spring Framework는 캐시 추상화가 되어있기 때문에 어노테이션을 기반으로 손쉽게 구현할 수 있었습니다. 이에 대한 내용은 다음 글을 통해 작성해보도록 하겠습니다.</p>
+<h2 id></h2>
 <hr>
 <h1 id="refs">Refs.</h1>
-<ul><li>로컬 캐시 사용 사례 참고링크<ul><li><a href="https://dev.gmarket.com/16?ref=localhost">https://dev.gmarket.com/16</a> </li><li><a href="https://medium.com/uplusdevu/%EB%A1%9C%EC%BB%AC-%EC%BA%90%EC%8B%9C-%EC%84%A0%ED%83%9D%ED%95%98%EA%B8%B0-e394202d5c87?ref=localhost#0083" rel="noreferrer">로컬 캐시 선택하기</a></li></ul></li><li>캐시 전략에 대한 참고링크<ul><li><a href="https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_rtwtwbra.htm?ref=localhost#COHDG199" rel="noreferrer">Selecting a Cache Strategy</a></li><li></li></ul></li></ul>
+<ul><li>로컬 캐시 사용 사례 참고링크<ul><li><a href="https://dev.gmarket.com/16?ref=localhost">https://dev.gmarket.com/16</a> </li><li><a href="https://medium.com/uplusdevu/%EB%A1%9C%EC%BB%AC-%EC%BA%90%EC%8B%9C-%EC%84%A0%ED%83%9D%ED%95%98%EA%B8%B0-e394202d5c87?ref=localhost#0083" rel="noreferrer">로컬 캐시 선택하기</a></li></ul></li><li>캐시 전략에 대한 참고링크<ul><li><a href="https://docs.oracle.com/cd/E15357_01/coh.360/e15723/cache_rtwtwbra.htm?ref=localhost#COHDG199" rel="noreferrer">Selecting a Cache Strategy</a></li></ul></li><li>Spring docs<ul><li><a href="https://docs.spring.io/spring-framework/reference/integration/cache.html?ref=localhost" rel="noopener&nbsp;noreferrer">https://docs.spring.io/spring-framework/reference/integration/cache.html</a></li><li><a href="https://docs.spring.io/spring-framework/reference/integration/cache/annotations.html?ref=localhost#cache-annotations-config" rel="noopener&nbsp;noreferrer">https://docs.spring.io/spring-framework/reference/integration/cache/annotations.html#cache-annotations-config</a></li></ul></li><li><a href="https://www.baeldung.com/spring-boot-ehcache?ref=localhost" rel="noopener&nbsp;noreferrer">https://www.baeldung.com/spring-boot-ehcache</a></li><li><a href="https://www.baeldung.com/spring-cache-tutorial?ref=localhost" rel="noopener&nbsp;noreferrer">https://www.baeldung.com/spring-cache-tutorial</a></li><li><a href="https://docs.spring.io/spring-data/redis/reference/redis.html?ref=localhost" rel="noopener&nbsp;noreferrer">https://docs.spring.io/spring-data/redis/reference/redis.html</a></li></ul>
 <p></p>
 
 		<section class="post-full-comments">
@@ -535,7 +543,7 @@ Secondhand는 동네를 검색할 수 있는 기능이 있습니다. 예를 들�
         </div>
     </div>
 </div>
-<script src="../assets/built/main.min.js%3Fv=3de860f2cd"></script>
+<script src="../assets/built/main.min.js%3Fv=4f37bf95cc"></script>
 <script>
     tocbot.init({
         // Where to render the table of contents.
