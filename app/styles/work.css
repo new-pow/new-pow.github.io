@@ -21,11 +21,6 @@
   text-decoration: underline;
 }
 
-#work-container a:hover,
-#work-container a:focus {
-  color: white;
-  background-color: black;
-}
 
 #work-container img {
   display: block;

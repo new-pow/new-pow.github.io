@@ -27,13 +27,6 @@
   margin-top: 20px;
 }
 
-#articles-container a:hover,
-#articles-container a:focus,
-#articles-container a:hover li,
-#articles-container a:focus li {
-  background-color: #0066cc;
-  color: white;
-}
 
 #articles-container .articles-tags {
   display: inline;

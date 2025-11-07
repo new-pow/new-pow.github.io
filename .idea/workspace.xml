@@ -5,37 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="28805ff9-1244-4cec-b640-40d08367bdcb" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/assets/built/main.min.js?v=6e6dc35a8b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/built/screen.css?v=6e6dc35a8b.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-500.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-500.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-600.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-600.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-700.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-700.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/inter-v12-latin-regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-500.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-500.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-600.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-600.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-700.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-700.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-700italic.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-700italic.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-italic.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-italic.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/fonts/lora-v25-latin-regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/default-skin.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/default-skin.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/images/preloader.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/content/images/2023/08/1646723882-2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/content/images/2023/08/ringed-planet_1fa90-1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/content/images/size/w256h256/2023/08/ringed-planet_1fa90.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/cards.min.css?v=6e6dc35a8b.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/cards.min.js?v=6e6dc35a8b" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/robots.txt" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/_articles/lorem-ipsum-0.md" beforeDir="false" afterPath="$PROJECT_DIR$/_articles/lorem-ipsum-0.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/article/0.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/article/0.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/article/1.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/article/1.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/articles.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/articles.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/about.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/about.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/article.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/article.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/articles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/articles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/dracula.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/dracula.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/init.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/katex.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/katex.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/work.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/work.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/public/styles/works.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/public/styles/works.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/styles/about.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/about.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/styles/article.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/article.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/styles/articles.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/articles.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/styles/init.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/init.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/styles/work.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/work.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/styles/works.css" beforeDir="false" afterPath="$PROJECT_DIR$/app/styles/works.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,44 +35,133 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "new-pow"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;new-pow&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/new-pow/new-pow.github.io.git",
-    "accountId": "89d8c51d-24cb-4ba7-82d0-06f30cf95959"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/new-pow/new-pow.github.io.git&quot;,
+    &quot;accountId&quot;: &quot;89d8c51d-24cb-4ba7-82d0-06f30cf95959&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+}</component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="33tynfxkYpm4w1qSWgGbJnkauvq" />
   <component name="ProjectViewState">
     <option name="abbreviatePackageNames" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/berapt/Documents/GitHub-Personal/new-pow.github.io",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "ts.external.directory.path": "/Users/berapt/Documents/GitHub-Personal/new-pow.github.io/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+    &quot;database.data.extractors.current.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/berapt/Documents/GitHub-Personal/new-pow.github.io&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/berapt/Documents/GitHub-Personal/new-pow.github.io/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/" />
+      <recent name="$PROJECT_DIR$/.claude" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="new-pow.github.io" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="new-pow.github.io" />
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
+      <module name="new-pow.github.io" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="ADDITIONAL_ARGS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="new-pow.github.io" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Python.FlaskServer">
+      <module name="new-pow.github.io" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <module name="new-pow.github.io" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <method v="2" />
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -99,7 +178,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1760150832053</updated>
-      <workItem from="1760150833826" duration="2175000" />
+      <workItem from="1760150833826" duration="3410000" />
+      <workItem from="1760744917079" duration="2448000" />
+      <workItem from="1760749658090" duration="9156000" />
+      <workItem from="1760951696471" duration="999000" />
+      <workItem from="1761303456625" duration="3713000" />
+      <workItem from="1762523456639" duration="242000" />
     </task>
     <servers />
   </component>

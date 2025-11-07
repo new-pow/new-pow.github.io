@@ -66,14 +66,3 @@ a {
   font-weight: 400;
 }
 
-#top-container .logo-link:hover,
-#top-container .logo-link:focus {
-  color: white;
-  background-color: #0066cc;
-}
-
-#top-container .info-link:hover,
-#top-container .info-link:focus {
-  color: white;
-  background-color: #0066cc;
-}

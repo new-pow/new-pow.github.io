@@ -17,11 +17,6 @@
   line-height: 12px;
 }
 
-#works-container .works-content:hover,
-#works-container .works-content:focus {
-  background-color: black;
-  color: white;
-}
 
 #works-container .works-content img {
   width: 100%;

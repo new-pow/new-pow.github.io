@@ -71,10 +71,6 @@
   font-size: 14px;
 }
 
-#article-navigation a:hover div {
-  background-color: #0066cc;
-  color: white;
-}
 
 #article-list-button-container {
   width: 90px;
@@ -93,10 +89,6 @@
   font-size: 20px;
 }
 
-#article-list-button-container #article-list-button:hover {
-  background-color: #0066cc;
-  color: white;
-}
 
 #article-comments {
   margin-top: 10px;
@@ -166,8 +158,6 @@
 #article-content-container a:hover,
 #article-content-container a:focus {
   text-decoration: none;
-  background-color: #0066cc;
-  color: white;
 }
 
 #article-content-container pre {

@@ -21,6 +21,4 @@
 #about-container a:hover,
 #about-container a:focus {
   text-decoration: none;
-  background-color: black;
-  color: white;
 }
